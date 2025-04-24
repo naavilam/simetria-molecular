@@ -1,0 +1,117 @@
+{
+  "nome": "D3h",
+  "descricao": "Grupo de simetria do etano eclipsado",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [
+        0,
+        0,
+        1
+      ],
+      "angulo": 120,
+      "comentario": "Rota\u00e7\u00e3o C3 em torno do eixo z (120\u00b0)"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [
+        0,
+        0,
+        1
+      ],
+      "angulo": 240,
+      "comentario": "Rota\u00e7\u00e3o C3 em torno do eixo z (240\u00b0)"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [
+        1,
+        0,
+        0
+      ],
+      "angulo": 180,
+      "comentario": "Rota\u00e7\u00e3o C2 em torno do eixo x (180\u00b0)"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [
+        0,
+        1,
+        0
+      ],
+      "angulo": 180,
+      "comentario": "Rota\u00e7\u00e3o C2 em torno do eixo y (180\u00b0)"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [
+        1,
+        -1,
+        0
+      ],
+      "angulo": 180,
+      "comentario": "Rota\u00e7\u00e3o C2 em plano diagonal (x = -y)"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [
+        1,
+        0,
+        0
+      ],
+      "comentario": "Reflex\u00e3o \u03c3v no plano yz"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [
+        0,
+        1,
+        0
+      ],
+      "comentario": "Reflex\u00e3o \u03c3v no plano xz"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [
+        1,
+        -1,
+        0
+      ],
+      "comentario": "Reflex\u00e3o \u03c3v no plano diagonal x = -y"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [
+        0,
+        0,
+        1
+      ],
+      "comentario": "Reflex\u00e3o \u03c3h no plano xy"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [
+        0,
+        0,
+        1
+      ],
+      "angulo": 120,
+      "comentario": "Rota\u00e7\u00e3o impr\u00f3pria S3 de 120\u00b0 (C3 + \u03c3h)"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [
+        0,
+        0,
+        1
+      ],
+      "angulo": 240,
+      "comentario": "Rota\u00e7\u00e3o impr\u00f3pria S3 de 240\u00b0 (C3^2 + \u03c3h)"
+    }
+  ],
+  "tolerancia": 0.01
+}
