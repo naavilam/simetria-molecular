@@ -1,0 +1,63 @@
+{
+  "nome": "Oh",
+  "descricao": "Grupo octaédrico completo do SF6 com 48 operações de simetria",
+  "operacoes": [
+    {"tipo": "identidade", "comentario": "Identidade (E)"},
+
+    {"tipo": "rotacao", "eixo": [1, 0, 0], "angulo": 180, "comentario": "Rotação C2 em torno do eixo x (180°)"},
+    {"tipo": "rotacao", "eixo": [0, 1, 0], "angulo": 180, "comentario": "Rotação C2 em torno do eixo y (180°)"},
+    {"tipo": "rotacao", "eixo": [0, 0, 1], "angulo": 180, "comentario": "Rotação C2 em torno do eixo z (180°)"},
+
+    {"tipo": "rotacao", "eixo": [1, 0, 0], "angulo": 90, "comentario": "Rotação C4 em torno do eixo x (90°)"},
+    {"tipo": "rotacao", "eixo": [1, 0, 0], "angulo": 270, "comentario": "Rotação C4⁻¹ em torno do eixo x (270°)"},
+    {"tipo": "rotacao", "eixo": [0, 1, 0], "angulo": 90, "comentario": "Rotação C4 em torno do eixo y (90°)"},
+    {"tipo": "rotacao", "eixo": [0, 1, 0], "angulo": 270, "comentario": "Rotação C4⁻¹ em torno do eixo y (270°)"},
+    {"tipo": "rotacao", "eixo": [0, 0, 1], "angulo": 90, "comentario": "Rotação C4 em torno do eixo z (90°)"},
+    {"tipo": "rotacao", "eixo": [0, 0, 1], "angulo": 270, "comentario": "Rotação C4⁻¹ em torno do eixo z (270°)"},
+
+    {"tipo": "rotacao", "eixo": [0.577, 0.577, 0.577], "angulo": 120, "comentario": "Rotação C3 em torno do eixo [1,1,1] (120°)"},
+    {"tipo": "rotacao", "eixo": [0.577, 0.577, 0.577], "angulo": 240, "comentario": "Rotação C3⁻¹ em torno do eixo [1,1,1] (240°)"},
+    {"tipo": "rotacao", "eixo": [-0.577, 0.577, 0.577], "angulo": 120, "comentario": "Rotação C3 em torno do eixo [-1,1,1] (120°)"},
+    {"tipo": "rotacao", "eixo": [-0.577, 0.577, 0.577], "angulo": 240, "comentario": "Rotação C3⁻¹ em torno do eixo [-1,1,1] (240°)"},
+    {"tipo": "rotacao", "eixo": [0.577, -0.577, 0.577], "angulo": 120, "comentario": "Rotação C3 em torno do eixo [1,-1,1] (120°)"},
+    {"tipo": "rotacao", "eixo": [0.577, -0.577, 0.577], "angulo": 240, "comentario": "Rotação C3⁻¹ em torno do eixo [1,-1,1] (240°)"},
+    {"tipo": "rotacao", "eixo": [0.577, 0.577, -0.577], "angulo": 120, "comentario": "Rotação C3 em torno do eixo [1,1,-1] (120°)"},
+    {"tipo": "rotacao", "eixo": [0.577, 0.577, -0.577], "angulo": 240, "comentario": "Rotação C3⁻¹ em torno do eixo [1,1,-1] (240°)"},
+
+    {"tipo": "rotacao", "eixo": [0.707, 0.707, 0], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [1,1,0] (180°)"},
+    {"tipo": "rotacao", "eixo": [0.707, -0.707, 0], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [1,-1,0] (180°)"},
+    {"tipo": "rotacao", "eixo": [0, 0.707, 0.707], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [0,1,1] (180°)"},
+    {"tipo": "rotacao", "eixo": [0, 0.707, -0.707], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [0,1,-1] (180°)"},
+    {"tipo": "rotacao", "eixo": [0.707, 0, 0.707], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [1,0,1] (180°)"},
+    {"tipo": "rotacao", "eixo": [0.707, 0, -0.707], "angulo": 180, "comentario": "Rotação C2 em torno do eixo [1,0,-1] (180°)"},
+
+    {"tipo": "reflexao", "plano_normal": [1, 0, 0], "comentario": "Reflexão σ no plano x=0"},
+    {"tipo": "reflexao", "plano_normal": [0, 1, 0], "comentario": "Reflexão σ no plano y=0"},
+    {"tipo": "reflexao", "plano_normal": [0, 0, 1], "comentario": "Reflexão σ no plano z=0"},
+    {"tipo": "reflexao", "plano_normal": [0.707, 0.707, 0], "comentario": "Reflexão σ no plano diagonal [1,1,0]"},
+    {"tipo": "reflexao", "plano_normal": [0.707, -0.707, 0], "comentario": "Reflexão σ no plano diagonal [1,-1,0]"},
+    {"tipo": "reflexao", "plano_normal": [0, 0.707, 0.707], "comentario": "Reflexão σ no plano diagonal [0,1,1]"},
+    {"tipo": "reflexao", "plano_normal": [0, 0.707, -0.707], "comentario": "Reflexão σ no plano diagonal [0,1,-1]"},
+    {"tipo": "reflexao", "plano_normal": [0.707, 0, 0.707], "comentario": "Reflexão σ no plano diagonal [1,0,1]"},
+    {"tipo": "reflexao", "plano_normal": [0.707, 0, -0.707], "comentario": "Reflexão σ no plano diagonal [1,0,-1]"},
+
+    {"tipo": "inversao", "comentario": "Inversão no centro da molécula"},
+
+    {"tipo": "impropria", "eixo": [1, 0, 0], "angulo": 90, "comentario": "Rotação imprópria S4 em torno do eixo x (90°)"},
+    {"tipo": "impropria", "eixo": [1, 0, 0], "angulo": 270, "comentario": "Rotação imprópria S4⁻¹ em torno do eixo x (270°)"},
+    {"tipo": "impropria", "eixo": [0, 1, 0], "angulo": 90, "comentario": "Rotação imprópria S4 em torno do eixo y (90°)"},
+    {"tipo": "impropria", "eixo": [0, 1, 0], "angulo": 270, "comentario": "Rotação imprópria S4⁻¹ em torno do eixo y (270°)"},
+    {"tipo": "impropria", "eixo": [0, 0, 1], "angulo": 90, "comentario": "Rotação imprópria S4 em torno do eixo z (90°)"},
+    {"tipo": "impropria", "eixo": [0, 0, 1], "angulo": 270, "comentario": "Rotação imprópria S4⁻¹ em torno do eixo z (270°)"},
+
+    {"tipo": "impropria", "eixo": [0.577, 0.577, 0.577], "angulo": 60, "comentario": "Rotação imprópria S6 em torno do eixo [1,1,1] (60°)"},
+    {"tipo": "impropria", "eixo": [0.577, 0.577, 0.577], "angulo": 300, "comentario": "Rotação imprópria S6⁻¹ em torno do eixo [1,1,1] (300°)"},
+    {"tipo": "impropria", "eixo": [-0.577, 0.577, 0.577], "angulo": 60, "comentario": "Rotação imprópria S6 em torno do eixo [-1,1,1] (60°)"},
+    {"tipo": "impropria", "eixo": [-0.577, 0.577, 0.577], "angulo": 300, "comentario": "Rotação imprópria S6⁻¹ em torno do eixo [-1,1,1] (300°)"},
+    {"tipo": "impropria", "eixo": [0.577, -0.577, 0.577], "angulo": 60, "comentario": "Rotação imprópria S6 em torno do eixo [1,-1,1] (60°)"},
+    {"tipo": "impropria", "eixo": [0.577, -0.577, 0.577], "angulo": 300, "comentario": "Rotação imprópria S6⁻¹ em torno do eixo [1,-1,1] (300°)"},
+    {"tipo": "impropria", "eixo": [0.577, 0.577, -0.577], "angulo": 60, "comentario": "Rotação imprópria S6 em torno do eixo [1,1,-1] (60°)"},
+    {"tipo": "impropria", "eixo": [0.577, 0.577, -0.577], "angulo": 300, "comentario": "Rotação imprópria S6⁻¹ em torno do eixo [1,1,-1] (300°)"}
+  ],
+  "tolerancia": 0.01
+}

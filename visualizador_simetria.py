@@ -44,4 +44,4 @@ def visualizar_molecula(path_xyz, titulo="Visualização 3D da molécula"):
     fig.show()
 
 if __name__ == "__main__":
-    visualizar_molecula("exemplos/etano_eclipsado.xyz", "Etano Eclipsado — Geometria D3h Alinhada")
+    visualizar_molecula("moleculas/etano_eclipsado.xyz", "Etano Eclipsado — Geometria D3h Alinhada")

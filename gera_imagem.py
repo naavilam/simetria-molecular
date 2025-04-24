@@ -1,9 +1,8 @@
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import os
+import sys
 
 def ler_xyz(path):
     with open(path, 'r') as f:
@@ -72,11 +71,21 @@ def plotar_molecula_com_estilo(original, transformada, titulo="Simetria aplicada
         plt.show()
 
 if __name__ == "__main__":
-    mol = ler_xyz("exemplos/etano_eclipsado.xyz")
+    if len(sys.argv) < 2:
+        print("Uso: python visualizador.py caminho_para_molecula.xyz")
+        sys.exit(1)
+
+    caminho_mol = sys.argv[1]
+    mol = ler_xyz(caminho_mol)
+
+    # Exemplo de operação: rotação C2 em Y
     R_y = np.array([
         [-1, 0, 0],
         [ 0, 1, 0],
         [ 0, 0, -1]
     ])
     mol_rot = aplicar_rotacao(mol, R_y)
-    plotar_molecula_com_estilo(mol, mol_rot, "Rotação C₂ eixo Y", mostrar_transformado=False, salvar_em="imagens/C2_y.png")
+
+    salvar_path = f"imagens/C2_y_{os.path.basename(caminho_mol).replace('.xyz','')}.png"
+    plotar_molecula_com_estilo(mol, mol_rot, "Rotação C₂ eixo Y", mostrar_transformado=False, salvar_em=salvar_path)
+

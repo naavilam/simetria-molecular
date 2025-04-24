@@ -72,8 +72,8 @@ def visualizar_comparacao(original, transformada, titulo="Simetria aplicada",
         desenhar_eixo(ax2, np.array([0, 0, 0]), [-0.5, np.sqrt(3)/2, 0], "C₂(b)", "orange")
 
     if mostrar_C2c:
-        desenhar_eixo(ax1, np.array([0, 0, 0]), [-0.5, np.sqrt(3)/2, 0], "C₂(c)", cor="purple")
-        desenhar_eixo(ax2, np.array([0, 0, 0]), [-0.5, np.sqrt(3)/2, 0], "C₂(c)", cor="purple")
+        desenhar_eixo(ax1, np.array([0, 0, 0]), [-0.5, -np.sqrt(3)/2, 0], "C₂(c)", "purple")
+        desenhar_eixo(ax2, np.array([0, 0, 0]), [-0.5, -np.sqrt(3)/2, 0], "C₂(c)", "purple")
 
     fig.suptitle(titulo, fontsize=14, weight="bold")
     for ax in [ax1, ax2]:
@@ -87,7 +87,7 @@ def visualizar_comparacao(original, transformada, titulo="Simetria aplicada",
     plt.pause(0.1)
 
 if __name__ == "__main__":
-    mol = ler_xyz("exemplos/etano_eclipsado.xyz")
+    mol = ler_xyz("moleculas/etano_eclipsado.xyz")
     R_y = np.array([
         [-1, 0, 0],
         [ 0, 1, 0],
@@ -99,6 +99,6 @@ if __name__ == "__main__":
         mostrar_C3=True,
         mostrar_C2a=True,
         mostrar_C2b=True,
-        mostrar_C3c=True
+        mostrar_C2c=True
     )
     input("Pressione Enter para fechar...")

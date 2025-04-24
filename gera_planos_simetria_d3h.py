@@ -1,7 +1,7 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import sys
 
 plt.ion()
 
@@ -38,7 +38,7 @@ def plot_plano(ax, ponto, normal, tamanho=2.0, cor='cyan', alpha=0.25, nome=None
     Xp, Yp, Zp = plano
     ax.plot_surface(Xp, Yp, Zp, alpha=alpha, color=cor, edgecolor='none')
     if nome:
-        offset = 1.3  # fator de afastamento
+        offset = 1.3
         pos_label = ponto + offset * d
         ax.text(*pos_label, nome, color='black', fontsize=12, ha='center')
 
@@ -57,7 +57,7 @@ def visualizar_interativamente(original, transformada, titulo="Simetria", mostra
     for i, ((el, coord), cor) in enumerate(zip(original, cores)):
         x, y, z = coord
         ax.scatter(x, y, z, color=cor, s=tamanho[el], edgecolor="k", marker="o")
-        ax.text(x + deslocamento, y + deslocamento, z + desl   ocamento, f"{i+1}",
+        ax.text(x + deslocamento, y + deslocamento, z + deslocamento, f"{i+1}",
                 fontsize=11, color="black", ha="center", va="center", weight="bold")
 
     if mostrar_transformado:
@@ -77,7 +77,7 @@ def visualizar_interativamente(original, transformada, titulo="Simetria", mostra
     if mostrar_sigma_h:
         plot_plano(ax, np.array([0, 0, 0], dtype=float), [0, 0, 1], cor='cyan', nome=r'$\sigma_h$')
     if mostrar_sigma_v1:
-        plot_plano(ax, np.array([0, 0, 0], dtype=float), [0, 1, 0], cor='lightgreen', nome=r'$\sigma_{v1}$')
+        plot_plano(ax, np.array([0, 0, 0], dtype=float), [1, 0, 0], cor='lightgreen', nome=r'$\sigma_{v1}$')
     if mostrar_sigma_v2:
         plot_plano(ax, np.array([0, 0, 0], dtype=float), [np.sqrt(3), 1, 0], cor='violet', nome=r'$\sigma_{v2}$')
     if mostrar_sigma_v3:
@@ -94,12 +94,19 @@ def visualizar_interativamente(original, transformada, titulo="Simetria", mostra
     plt.pause(0.1)
 
 if __name__ == "__main__":
-    mol = ler_xyz("exemplos/etano_eclipsado.xyz")
+    if len(sys.argv) < 2:
+        print("Uso: python visualizador_interativo.py caminho_para_molecula.xyz")
+        sys.exit(1)
+
+    caminho_mol = sys.argv[1]
+    mol = ler_xyz(caminho_mol)
+
     R_y = np.array([
         [-1, 0, 0],
         [ 0, 1, 0],
         [ 0, 0, -1]
     ])
     mol_rot = aplicar_rotacao(mol, R_y)
+
     visualizar_interativamente(mol, mol_rot, "Rotação C₂ eixo Y", mostrar_transformado=True)
     input("Pressione Enter para fechar...")
