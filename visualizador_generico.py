@@ -100,7 +100,7 @@ def main():
     parser = argparse.ArgumentParser(description="Visualizador genérico de simetria molecular")
     parser.add_argument("xyz", help="Arquivo .xyz da molécula")
     parser.add_argument("grupo", help="Arquivo .json com grupo de simetria")
-    parser.add_argument("--indice", type=int, help="Índice da operação a visualizar (0-based)")
+    parser.add_argument("--indice", type=int, help="Índice da operação a visualizar (1-based)")
     args = parser.parse_args()
 
     molecula = ler_xyz(args.xyz)
@@ -110,11 +110,12 @@ def main():
     operacoes = grupo["operacoes"]
 
     if args.indice is not None:
-        visualizar_simetria(molecula, operacoes[args.indice], args.indice)
+        indice = args.indice-1
+        visualizar_simetria(molecula, operacoes[indice], indice)
     else:
         print("Operações disponíveis:")
         for i, op in enumerate(operacoes):
-            print(f"{i}. {op['tipo']} - {op.get('comentario', '')}")
+            print(f"{i+1}. {op['tipo']} - {op.get('comentario', '')}")
 
 if __name__ == "__main__":
     main()

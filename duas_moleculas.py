@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d import Axes3D
 plt.ion()
 
 def ler_xyz(path):
-    with open(path, 'r') as f:
+    with open(path, ' 'r') as f:
         linhas = f.readlines()
     natomos = int(linhas[0])
     molecula = []
@@ -20,7 +20,7 @@ def ler_xyz(path):
 def aplicar_rotacao(molecula, Rmat):
     return [(el, Rmat @ np.array(coord)) for el, coord in molecula]
 
-def desenhar_molecula(ax, molecula, titulo, tamanho, deslocamento=0.1):
+def desenhar_molecula(ax, molecula, titulo, tamanho, deslocamento=5):
     base_colors = plt.cm.get_cmap("tab10", len(molecula))
     cores = [base_colors(i) for i in range(len(molecula))]
 
@@ -45,6 +45,7 @@ def desenhar_molecula(ax, molecula, titulo, tamanho, deslocamento=0.1):
     ax.set_zticks([])
     ax.set_axis_off()
     ax.set_box_aspect([1, 1, 1])
+    ax.view_init(elev=90, azim=0)  # Vista de cima, no plano XY
 
 def visualizar_comparacao(original, transformada, titulo="Simetria aplicada"):
     fig = plt.figure(figsize=(12, 6))
@@ -53,7 +54,7 @@ def visualizar_comparacao(original, transformada, titulo="Simetria aplicada"):
     ax1.set_proj_type("ortho")
     ax2.set_proj_type("ortho")
 
-    tamanho = {"C": 400, "H": 300}
+    tamanho = {"C": 900, "H": 600}
     desenhar_molecula(ax1, original, "Antes da simetria", tamanho)
     desenhar_molecula(ax2, transformada, "Depois da simetria", tamanho)
 
@@ -63,7 +64,7 @@ def visualizar_comparacao(original, transformada, titulo="Simetria aplicada"):
     plt.pause(0.1)
 
 if __name__ == "__main__":
-    mol = ler_xyz("exemplos/etano_eclipsado.xyz")
+    mol = ler_xyz("moleculas/etano_eclipsado.xyz")
     R_y = np.array([
         [-1, 0, 0],
         [ 0, 1, 0],
