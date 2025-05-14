@@ -9,29 +9,6 @@ from render_pyvista import visualizar_pyvista
 
 def aplicar_matriz(molecula, Rmat):
     return [(el, Rmat @ np.array(coord)) for el, coord in molecula]
-    
-# def aplicar_operacao(operacao):
-#     tipo = operacao["tipo"]
-#     if tipo == "identidade":
-#         return np.eye(3), None
-#     elif tipo == "rotacao":
-#         eixo = np.array(operacao["eixo"])
-#         angulo = operacao["angulo"]
-#         eixo = eixo / np.linalg.norm(eixo)
-#         return R.from_rotvec(np.deg2rad(angulo) * eixo).as_matrix(), eixo
-#     elif tipo == "reflexao":
-#         n = np.array(operacao["plano_normal"])
-#         n = n / np.linalg.norm(n)
-#         return np.eye(3) - 2 * np.outer(n, n), n
-#     elif tipo == "impropria":
-#         eixo = np.array(operacao["eixo"])
-#         angulo = operacao["angulo"]
-#         eixo = eixo / np.linalg.norm(eixo)
-#         rot = R.from_rotvec(np.deg2rad(angulo) * eixo).as_matrix()
-#         plano = np.eye(3) - 2 * np.outer([0, 0, 1], [0, 0, 1])
-#         return plano @ rot, eixo
-#     else:
-#         raise ValueError(f"Tipo de operação desconhecido: {tipo}")
 
 def aplicar_operacao(operacao):
     tipo = operacao["tipo"]
@@ -82,13 +59,13 @@ def aplicar_operacao(operacao):
                 "tipo": "eixo",
                 "origem": [0, 0, 0],
                 "direcao": eixo.tolist(),
-                "nome": operacao["nome"]
+                # "nome": operacao["nome"]
             },
             {
                 "tipo": "plano",
                 "origem": [0, 0, 0],
                 "normal": [0, 0, 1],  # suposição: perpendicular ao eixo
-                "nome": operacao["nome"]
+                # "nome": operacao["nome"]
             }
         ]
 
