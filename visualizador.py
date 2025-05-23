@@ -26,7 +26,7 @@ def aplicar_operacao(operacao):
             "tipo": "eixo",
             "origem": [0, 0, 0],  # ou operacao.get("origem", [0, 0, 0])
             "direcao": eixo.tolist(),
-            "nome": operacao["nome"]
+            # "nome": operacao["nome"]
         }
 
         return rot, destaque
@@ -40,35 +40,36 @@ def aplicar_operacao(operacao):
             "tipo": "plano",
             "origem": [0, 0, 0],  # pode ser ajustado
             "normal": n.tolist(),
-            "nome": operacao["nome"]
+            # "nome": operacao["nome"]
         }
 
         return reflexao, destaque
 
     elif tipo == "impropria":
-        eixo = np.array(operacao["eixo"])
+        eixo = np.array(operacao["eixo"], float)
         angulo = operacao["angulo"]
-        eixo = eixo / np.linalg.norm(eixo)
+        eixo /= np.linalg.norm(eixo)
         rot = R.from_rotvec(np.deg2rad(angulo) * eixo).as_matrix()
 
-        # Reflexão em plano ortogonal ao eixo
-        plano = np.eye(3) - 2 * np.outer([0, 0, 1], [0, 0, 1])
+        # pega o normal exato do JSON
+        normal = np.array(operacao["plano_normal"], float)
+        normal /= np.linalg.norm(normal)
+
+        # matriz de reflexão no plano perpendicular a esse normal
+        plano = np.eye(3) - 2 * np.outer(normal, normal)
 
         destaque = [
             {
-                "tipo": "eixo",
+                "tipo":   "eixo",
                 "origem": [0, 0, 0],
                 "direcao": eixo.tolist(),
-                # "nome": operacao["nome"]
             },
             {
-                "tipo": "plano",
+                "tipo":   "plano",
                 "origem": [0, 0, 0],
-                "normal": [0, 0, 1],  # suposição: perpendicular ao eixo
-                # "nome": operacao["nome"]
+                "normal": normal.tolist(),
             }
         ]
-
         return plano @ rot, destaque
 
     elif tipo == "inversao":
@@ -78,7 +79,7 @@ def aplicar_operacao(operacao):
         destaque = {
             "tipo": "ponto",
             "origem": centro,
-            "nome": operacao["nome"]
+            # "nome": operacao["nome"]
         }
 
         return inversao, destaque

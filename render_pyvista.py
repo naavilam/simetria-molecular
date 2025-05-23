@@ -39,11 +39,44 @@ def visualizar_pyvista(
             raio = tamanho.get(el, 0.2)
             esfera = pv.Sphere(radius=raio, center=coord)
             plotter.add_mesh(esfera, color=cor, smooth_shading=True)
+
         # Numeração dos átomos:
-        for idx, (elem, coord) in enumerate(molecula):
-            plotter.add_point_labels([coord], [str(idx + 1)],
-                                     font_size=14, text_color='white', point_size=0, shape_opacity=0, always_visible=True)
+        # for idx, (elem, coord) in enumerate(molecula):
+        #     plotter.add_point_labels([coord], [str(idx + 1)],
+        #                              font_size=14, text_color='white', point_size=0, shape_opacity=0, always_visible=True)
         
+        # Numera só os vizinhos, pulando o índice 0 (átomo central)
+        counter = 1
+        for idx, (elem, coord) in enumerate(molecula):
+            if idx == 0:
+                continue   # pula o átomo do meio
+            plotter.add_point_labels(
+                [coord], [str(counter)],
+                font_size=14,
+                text_color='white',
+                point_size=0,
+                shape_opacity=0,
+                always_visible=True
+            )
+            counter += 1
+    
+        # todas as ligações
+        # for i, (el1, c1) in enumerate(molecula):
+        #     for j, (el2, c2) in enumerate(molecula):
+        #         if i < j:
+        #             dist = np.linalg.norm(np.array(c1) - np.array(c2))
+        #             # C–H
+        #             if {el1, el2} == {'C','H'} and dist < 1.2:
+        #                 cor = 'gray'; lw = 3
+        #             # C–C
+        #             elif el1 == 'C' and el2 == 'C' and dist < 1.6:
+        #                 cor = 'black'; lw = 4
+        #             else:
+        #                 continue
+        #             linha = pv.Line(c1, c2)
+        #             plotter.add_mesh(linha, color=cor, line_width=lw)
+
+
         # 1. Ligações simples (ex: C–H)
         for i, (_, c1) in enumerate(molecula):
             for j, (_, c2) in enumerate(molecula):
@@ -53,24 +86,34 @@ def visualizar_pyvista(
                         linha = pv.Line(c1, c2)
                         plotter.add_mesh(linha, color="gray", line_width=3)
 
-        # 2. Ligações do anel com alternância
-        anel = [0, 1, 2, 3, 4, 5]
-        pares_anel = [(anel[i], anel[(i+1)%6]) for i in range(6)]
+        # 1. Ligações simples (ex: C–C)
+        for i, (el1, c1) in enumerate(molecula):
+            for j, (el2, c2) in enumerate(molecula):
+                if i < j and el1 == 'C' and el2 == 'C':
+                    dist = np.linalg.norm(np.array(c1) - np.array(c2))
+                    # corte típico para C–C simples ~1.5 Å
+                    if dist < 1.6:
+                        linha = pv.Line(c1, c2)
+                        plotter.add_mesh(linha, color='black', line_width=4)
 
-        for k, (i, j) in enumerate(pares_anel):
-            c1 = molecula[i][1]
-            c2 = molecula[j][1]
-            if k % 2 == 0:
-                deslocamento = 0.05 * np.cross(np.array(c2)-np.array(c1), [0,0,1])
-                norm = np.linalg.norm(deslocamento)
-                deslocamento = deslocamento / norm * 0.05 if norm != 0 else np.array([0.05,0,0])
-                l1 = pv.Line(np.array(c1)+deslocamento, np.array(c2)+deslocamento)
-                l2 = pv.Line(np.array(c1)-deslocamento, np.array(c2)-deslocamento)
-                plotter.add_mesh(l1, color="black", line_width=4)
-                plotter.add_mesh(l2, color="black", line_width=4)
-            else:
-                l = pv.Line(c1, c2)
-                plotter.add_mesh(l, color="black", line_width=4)
+        # 2. Ligações do anel com alternância
+        # anel = [0, 1, 2, 3, 4, 5]
+        # pares_anel = [(anel[i], anel[(i+1)%6]) for i in range(6)]
+
+        # for k, (i, j) in enumerate(pares_anel):
+        #     c1 = molecula[i][1]
+        #     c2 = molecula[j][1]
+        #     if k % 2 == 0:
+        #         deslocamento = 0.05 * np.cross(np.array(c2)-np.array(c1), [0,0,1])
+        #         norm = np.linalg.norm(deslocamento)
+        #         deslocamento = deslocamento / norm * 0.05 if norm != 0 else np.array([0.05,0,0])
+        #         l1 = pv.Line(np.array(c1)+deslocamento, np.array(c2)+deslocamento)
+        #         l2 = pv.Line(np.array(c1)-deslocamento, np.array(c2)-deslocamento)
+        #         plotter.add_mesh(l1, color="black", line_width=4)
+        #         plotter.add_mesh(l2, color="black", line_width=4)
+        #     else:
+        #         l = pv.Line(c1, c2)
+        #         plotter.add_mesh(l, color="black", line_width=4)
 
         if destaque:
             destaques = destaque if isinstance(destaque, list) else [destaque]
@@ -199,9 +242,25 @@ def visualizar_pyvista(
     # Molecula transformada
     plotter.subplot(0, 1)
     desenhar_molecula(transformada, "Depois da simetria", destaque=None)
+    # Ajuste fino da câmera
+    # parâmetros: (pos_camera), (foco_no_ponto), (vetor_up)
+    # new_cam_pos = [(3, -3, 2),  # x, y, z da câmera
+    #                (0, 0, 0),   # ponto focal (centro da molécula)
+    #                (0, 0, 1)]   # “para onde é cima” (eixo Z)
+
+    # plotter.camera_position = new_cam_pos
+
+
     plotter.add_text(
         titulo,
         position="upper_edge",
         font_size=14,
         color="black")
+    # Linka as câmeras de todas as views:
+    plotter.link_views()
+
+    # Agora qualquer alteração na camera.afetará ambos:
+    plotter.camera.azimuth -= 25 # gira
+    plotter.camera.elevation -= 20  # ergue a câmera
+    plotter.camera.roll +=  1     # inclina a cena no plano da tela
     plotter.show()

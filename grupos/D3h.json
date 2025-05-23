@@ -38,18 +38,18 @@
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [1, 0, 0],
-      "comentario": "Reflexão σv(a) no plano yz"
+      "plano_normal": [ 0.0000,  1.0000, 0.0000 ],
+      "comentario": "σv(a) – plano que contém o eixo C–C e H3–H5"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.5, 0.86602540378, 0],
-      "comentario": "Reflexão σv(b) no plano diagonal"
+      "plano_normal": [-0.8660, -0.5000, 0.0000 ],
+      "comentario": "σv(b) – plano que contém o eixo C–C e H4–H6"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.5, -0.86602540378, 0],
-      "comentario": "Reflexão σv(c) no plano diagonal"
+      "plano_normal": [ 0.8660, -0.5000, 0.0000 ],
+      "comentario": "σv(c) – plano que contém o eixo C–C e H5–H7"
     },
     {
       "tipo": "reflexao",
