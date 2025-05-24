@@ -3,9 +3,11 @@ import matplotlib.pyplot as plt
 import json
 import argparse
 from mpl_toolkits.mplot3d import Axes3D
-from read_molecule_coordinates import ler_xyz
+from load_molecules import ler_xyz
+from load_groups import load_group_symmetry_data
 from analise_simetria import analiza_simetria
-from operacoes import render_symmetry_op
+from gera_permutacoes import render_symmetry_op
+
 
 def read_input_arguments():
     parser = argparse.ArgumentParser()
@@ -13,13 +15,6 @@ def read_input_arguments():
     parser.add_argument("grupo", help="Arquivo .json com o grupo de simetria (campo 'operacoes' é lista)")
     parser.add_argument("--op", type=int, default=None, help="Índice da operação de simetria (1-based)")
     return parser.parse_args()
-
-def load_molecule_data(xyz):
-    return ler_xyz(xyz)
-
-def load_group_symmetry_data(grupo):
-    with open(grupo, "r") as f:
-        return json.load(f)
 
 def select_op(operacoes, selected):
     try:
@@ -31,7 +26,7 @@ def select_op(operacoes, selected):
 def main():
 
     args = read_input_arguments()
-    mol = load_molecule_data(args.xyz)
+    mol = ler_xyz(args.xyz)
     group = load_group_symmetry_data(args.grupo)
     group_op = group["operacoes"]
 

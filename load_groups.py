@@ -3,11 +3,15 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 import json
 
-def carregar_grupo_json(path_json):
-    with open(path_json, 'r') as f:
-        dados = json.load(f)
-    return dados["operacoes"]
+# def carregar_grupo_json(path_json):
+#     with open(path_json, 'r') as f:
+#         dados = json.load(f)
+#     return dados["operacoes"]
 
+def load_group_symmetry_data(grupo):
+    with open(grupo, "r") as f:
+        return json.load(f)
+        
 def aplicar_operacao(operacao):
     tipo = operacao["tipo"]
 

@@ -1,7 +1,6 @@
 import json
 import re
 import unicodedata
-from operacoes_latex_dict import operacoes_latex
 from pathlib import Path
 
 def compor(p1, p2):
