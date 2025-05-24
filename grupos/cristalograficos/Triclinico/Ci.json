@@ -1,0 +1,17 @@
+{
+  "nome": "Ci",
+  "descricao": "Grupo com apenas o centro de inversão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
+    }
+  ],
+  "tolerancia": 0.01
+}

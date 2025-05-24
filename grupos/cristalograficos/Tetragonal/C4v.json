@@ -1,0 +1,57 @@
+{
+  "nome": "C4v",
+  "descricao": "Grupo C4v: rotações C4 e quatro planos verticais de reflexão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C4 (90°)",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C4^{-1} (270°)",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão σv no plano xz",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,0],
+      "comentario": "Reflexão σv no plano yz",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.707,0.707,0],
+      "comentario": "Reflexão σd a 45°",
+      "nome": "\\sigma_{d1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.707,-0.707,0],
+      "comentario": "Reflexão σd a 135°",
+      "nome": "\\sigma_{d2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

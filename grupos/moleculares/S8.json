@@ -1,0 +1,44 @@
+{
+  "nome": "S8",
+  "descricao": "Grupo de simetria com operação imprópria S₈ (rotação de 45° seguida de reflexão no plano perpendicular).",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 45,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₈ (45° + σh)",
+      "nome": "\\mathrm{S}_{8}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 135,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₈³ (135° + σh)",
+      "nome": "\\mathrm{S}_{8}^{3}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 225,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₈⁵ (225° + σh)",
+      "nome": "\\mathrm{S}_{8}^{5}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 315,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₈⁷ (315° + σh)",
+      "nome": "\\mathrm{S}_{8}^{7}"
+    }
+  ],
+  "tolerancia": 0.02
+}

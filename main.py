@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import json
 import argparse
 from mpl_toolkits.mplot3d import Axes3D
-from input_coordinates import ler_xyz
+from read_molecule_coordinates import ler_xyz
 from analise_simetria import analiza_simetria
 from operacoes import render_symmetry_op
 

@@ -1,0 +1,35 @@
+{
+  "nome": "S4",
+  "descricao": "Grupo de simetria com rotação imprópria S₄",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄ (C₄ + σh)",
+      "nome": "\\mathrm{S}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁻¹",
+      "nome": "\\mathrm{S}_{4}^{3}"
+    }
+  ],
+  "tolerancia": 0.01
+}

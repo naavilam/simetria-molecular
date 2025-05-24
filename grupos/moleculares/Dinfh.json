@@ -1,0 +1,63 @@
+{
+  "nome": "Dinfh",
+  "descricao": "Grupo de simetria linear com rotação infinita (D∞h), representado idealmente.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ em torno do eixo z",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão σv em plano xz",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,0],
+      "comentario": "Reflexão σv em plano yz",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σh no plano xy",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão no centro",
+      "nome": "\\mathrm{i}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "comentario": "Rotação C₆ como aproximação de rotação infinita",
+      "nome": "\\mathrm{C}_{6}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C₃ como aproximação de rotação infinita",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 30,
+      "comentario": "Rotação C₁₂ como aproximação de rotação infinita",
+      "nome": "\\mathrm{C}_{12}"
+    }
+  ],
+  "tolerancia": 0.01
+}

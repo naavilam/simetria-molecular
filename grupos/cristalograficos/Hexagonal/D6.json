@@ -1,0 +1,89 @@
+{
+  "nome": "D6",
+  "descricao": "Grupo D6: rotações C6 e seis rotações C2 perpendiculares ao eixo principal.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "comentario": "Rotação C6 (60°)",
+      "nome": "\\mathrm{C}_{6}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C3 (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C3^2 (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "comentario": "Rotação C6^5 (300°)",
+      "nome": "\\mathrm{C}_{6}^{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1.0,0.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(a)}",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,0.866,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(b)}",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,-0.866,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(c)}",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.866,0.5,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(d)}",
+      "nome": "\\mathrm{C}_{2}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.866,0.5,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(e)}",
+      "nome": "\\mathrm{C}_{2}^{(e)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.0,-1.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(f)}",
+      "nome": "\\mathrm{C}_{2}^{(f)}"
+    }
+  ],
+  "tolerancia": 0.01
+}

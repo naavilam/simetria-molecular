@@ -1,0 +1,47 @@
+{
+  "nome": "C6",
+  "descricao": "Grupo cíclico de ordem 6: rotações de 60° em torno de um eixo.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "comentario": "Rotação C6 (60°)",
+      "nome": "\\mathrm{C}_{6}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C3 (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C3^2 (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "comentario": "Rotação C6^5 (300°)",
+      "nome": "\\mathrm{C}_{6}^{5}"
+    }
+  ],
+  "tolerancia": 0.01
+}

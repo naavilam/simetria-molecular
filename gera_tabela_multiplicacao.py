@@ -2,14 +2,41 @@ import json
 import re
 import unicodedata
 from operacoes_latex_dict import operacoes_latex
+from pathlib import Path
 
-def gerar_tabela_multiplicacao(dicionario_perms, registro_path="registro_operacoes.txt"):
+def compor(p1, p2):
+    return [p1[i] for i in p2]
+
+def gerar_hash_permutacoes(dicionario_perms):
+    return {tuple(p): nome for nome, p in dicionario_perms.items()}
+
+def nome_para_latex(nome, wrap_math=False):
+    nome = nome.replace("'", "^{\\prime}")
+    nome = nome.replace("²", "^2")
+
+    # primeiro: substituições literais
+    nome = nome.replace("sigma_v", "sigma_{v}")
+    nome = nome.replace("sigma_d", "sigma_{d}")
+    nome = nome.replace("sigma_h", "sigma_{h}")
+
+    # agora as regex
+    nome = re.sub(r"(C[2346])_\((\w)\)", r"\\mathrm{\1}^{(\2)}", nome)
+    nome = re.sub(r"(C[2346])", r"\\mathrm{\1}", nome)
+    nome = re.sub(r"(S[36])", r"\\mathrm{\1}", nome)
+    nome = re.sub(r"\bsigma_?(v\d+)", r"\\sigma_{\1}", nome)
+    nome = re.sub(r"\bsigma", r"\\sigma", nome)
+
+    return f"${nome}$" if wrap_math else nome
+
+
+def gerar_tabela_multiplicacao(dicionario_perms, registro_txt="registro_operacoes.txt", registro_tex="registro_operacoes.tex"):
     nomes = list(dicionario_perms.keys())
     permutacoes = list(dicionario_perms.values())
     hash_perms = gerar_hash_permutacoes(dicionario_perms)
 
     tabela = []
-    registro = []
+    registro_txt_linhas = []
+    registro_tex_linhas = ["\\begin{align*}"]
 
     for i in range(len(permutacoes)):
         linha = []
@@ -22,26 +49,53 @@ def gerar_tabela_multiplicacao(dicionario_perms, registro_path="registro_operaco
             nome_resultado = hash_perms.get(tuple(comp))
 
             if nome_resultado is None:
-                registro.append(f"⚠️ ERRO: {nome_i} * {nome_j} = ? (Permutação não encontrada)")
-            else:
-                registro.append(f"{nome_i} * {nome_j} = {nome_resultado}")
-                registro.append(f"  {pi} ∘ {pj} = {comp}")
+                registro_txt_linhas.append(f"⚠️ ERRO: {nome_i} * {nome_j} = ? (Permutação não encontrada)")
+                continue
 
             linha.append(nome_resultado)
+
+            # TXT
+            registro_txt_linhas.append(f"{nome_i} * {nome_j} = {nome_resultado}")
+            registro_txt_linhas.append(f"  {pi} ∘ {pj} = {comp}")
+
+            # LaTeX
+            latex_i = nome_para_latex(nome_i, wrap_math=False).replace('\\\\', '\\')
+            latex_j = nome_para_latex(nome_j, wrap_math=False).replace('\\\\', '\\')
+            latex_r = nome_para_latex(nome_resultado, wrap_math=False).replace('\\\\', '\\')
+
+            def perm_str(v): return "(" + ",".join(str(x + 1) for x in v) + ")"
+            registro_tex_linhas.append(
+                f"& {latex_r} = {latex_j} \\circ {latex_i}:\\; \\\\"
+                f"& {perm_str(list(range(len(pi))))} \\xrightarrow{{{latex_i}}} {perm_str(pi)} "
+                f"\\xrightarrow{{{latex_j}}} {perm_str(comp)}, \\\\"
+            )
+
         tabela.append(linha)
 
-    # Salvar registro detalhado (se desejado)
-    if registro_path:
-        with open(registro_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(registro))
+    registro_tex_linhas.append("\\end{align*}")
 
-    return nomes, tabela
+    output_dir = Path("analise")
+    output_dir.mkdir(exist_ok=True)
 
-def compor(p1, p2):
-    return [p1[i] for i in p2]
+    path_txt = output_dir / "tabela_multiplicacao.txt"
+    path_tex = output_dir / "tabela_multiplicacao.tex"
 
-def gerar_hash_permutacoes(dicionario_perms):
-    return {tuple(p): nome for nome, p in dicionario_perms.items()}
+    path_txt_rg = output_dir / "registro_operacoes_multiplicacao.txt"
+    path_tex_rg = output_dir / "registro_operacoes_multiplicacao.tex"
+
+    Path(path_txt_rg).write_text("\n".join(registro_txt_linhas), encoding="utf-8")
+    Path(path_tex_rg).write_text("\n".join(registro_tex_linhas), encoding="utf-8")
+
+    with open(path_txt, "w") as f:
+        for nome, linha in zip(nomes, tabela):
+            f.write(f"{nome}: " + " ".join(linha) + "\n")
+
+    with open(path_tex, "w") as f:
+        f.write(gerar_tabela_latex(nomes, tabela))
+
+    print("Tabelas de multiplicação geradas: tabela_multiplicacao.txt e tabela_multiplicacao.tex")
+    print("Registros de operações de multiplicação gerados: registro_operacoes_multiplicacao.txt e registro_operacoes_multiplicacoes.tex")
+    return tabela
 
 def imprimir_tabela_texto(nomes, tabela):
     header = "     " + " ".join(f"{nome:>6}" for nome in nomes)
@@ -57,20 +111,6 @@ def gerar_tabela_latex(nomes, tabela):
         linhas.append(f"{nome} & " + " & ".join(linha) + " \\ \hline")
     linhas.append("\end{tabular}")
     return "\n".join(linhas)
-
-def nome_para_latex(nome):
-    nome = nome.replace("'", "^{\\prime}")
-    nome = nome.replace("²", "^2")
-    nome = re.sub(r"(C[2346])_\((\w)\)", r"\\mathrm{\1}^{(\2)}", nome)
-    nome = re.sub(r"(C[2346])", r"\\mathrm{\1}", nome)
-    nome = re.sub(r"(S[36])", r"\\mathrm{\1}", nome)
-    nome = re.sub(r"(\bsigma)_?(v\d+)", r"\\sigma_{\2}", nome)
-    nome = re.sub(r"(\bsigma)", r"\\sigma", nome)
-    nome = re.sub(r"(\\sigma)_?(v\d+)", r"\\sigma_{\2}", nome)
-    nome = nome.replace("sigma_v", "sigma_{v}")
-    nome = nome.replace("sigma_d", "sigma_{d}")
-    nome = nome.replace("sigma_h", "sigma_{h}")
-    return f"${nome}$"
 
 def gerar_tabela_latex(nomes, tabela):
     colunas = "c|" + "c" * len(nomes)

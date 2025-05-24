@@ -1,0 +1,18 @@
+{
+  "nome": "Cs",
+  "descricao": "Grupo com apenas um plano de reflexão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σ no plano xy",
+      "nome": "\\sigma"
+    }
+  ],
+  "tolerancia": 0.01
+}

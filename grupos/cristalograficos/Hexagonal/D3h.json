@@ -1,0 +1,69 @@
+{
+  "nome": "D3h",
+  "descricao": "Grupo D3h: rotações C3, três C2 ortogonais, plano horizontal e rotações impróprias.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C3 (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C3^2 (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de x",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,0.866,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 em 120°",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,-0.866,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 em 240°",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σh no plano xy",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "plano_normal": [0,0,1],
+      "comentario": "Rot. imprópria S3 (C3 + σh)",
+      "nome": "\\mathrm{S}_{3}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "plano_normal": [0,0,1],
+      "comentario": "Rot. imprópria S3^2 (C3^2 + σh)",
+      "nome": "\\mathrm{S}_{3}^{2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

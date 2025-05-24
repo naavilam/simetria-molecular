@@ -1,0 +1,19 @@
+{
+  "nome": "C2",
+  "descricao": "Rotação de 180° em torno de um eixo.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ em torno de z",
+      "nome": "\\mathrm{C}_{2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

@@ -1,0 +1,60 @@
+{
+  "nome": "C4h",
+  "descricao": "Grupo C4h: rotações C4 com plano horizontal e rotações impróprias S4.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C4 (90°)",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C4^{-1} (270°)",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σₕ no plano xy",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S4 (C4 + σₕ)",
+      "nome": "\\mathrm{S}_{4}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S4^{-1} (C4^3 + σₕ)",
+      "nome": "\\mathrm{S}_{4}^{3}"
+    }
+  ],
+  "tolerancia": 0.01
+}

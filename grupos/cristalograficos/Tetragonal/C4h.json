@@ -1,0 +1,55 @@
+{
+  "nome": "C4h",
+  "descricao": "Grupo com eixo C₄ e plano horizontal σ_h",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C₄ em torno do eixo z",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ = C₄² em torno do eixo z",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C₄³ em torno do eixo z",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão horizontal (σ_h)",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁺ = C₄ + σ_h",
+      "nome": "\\mathrm{S}_{4}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁻ = C₄³ + σ_h",
+      "nome": "\\mathrm{S}_{4}^{3}"
+    }
+  ],
+  "tolerancia": 0.02
+}

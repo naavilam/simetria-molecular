@@ -1,0 +1,30 @@
+{
+  "nome": "C2h",
+  "descricao": "C₂ com um plano horizontal.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ em torno de z",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σₕ no plano xy",
+      "nome": "\\sigma_{h}"
+    }
+  ],
+  "tolerancia": 0.01
+}

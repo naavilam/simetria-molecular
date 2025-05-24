@@ -1,0 +1,61 @@
+{
+  "nome": "D4",
+  "descricao": "Grupo D4: rotação C4 principal e quatro rotações C2 ortogonais.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C4 (90°)",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C4^{-1} (270°)",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de x",
+      "nome": "\\mathrm{C}_{2x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de y",
+      "nome": "\\mathrm{C}_{2y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 entre eixos x e y",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 entre eixos x e -y",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    }
+  ],
+  "tolerancia": 0.01
+}

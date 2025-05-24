@@ -1,0 +1,12 @@
+{
+  "nome": "C1",
+  "descricao": "Grupo trivial sem qualquer simetria.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    }
+  ],
+  "tolerancia": 0.01
+}

@@ -1,0 +1,92 @@
+{
+  "nome": "C6h",
+  "descricao": "Grupo com rotação C₆ e plano horizontal σₕ",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "comentario": "Rotação C₆ (60°)",
+      "nome": "\\mathrm{C}_{6}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C₃ (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C₃² (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "comentario": "Rotação C₆⁵ (300°)",
+      "nome": "\\mathrm{C}_{6}^{5}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão no plano horizontal (σₕ)",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₆⁺",
+      "nome": "\\mathrm{S}_{6}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₆⁻",
+      "nome": "\\mathrm{S}_{6}^{5}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₃",
+      "nome": "\\mathrm{S}_{3}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₃²",
+      "nome": "\\mathrm{S}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação adicional C₂ (duplicada para simetria de classe)",
+      "nome": "\\mathrm{C}_{2}'"
+    }
+  ],
+  "tolerancia": 0.02
+}

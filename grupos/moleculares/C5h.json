@@ -1,0 +1,62 @@
+{
+  "nome": "C5h",
+  "descricao": "Grupo C5h: rotações C5 com plano horizontal e rotações impróprias S5.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 72,
+      "comentario": "Rotação C5 (72°)",
+      "nome": "\\mathrm{C}_{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 144,
+      "comentario": "Rotação C5^2 (144°)",
+      "nome": "\\mathrm{C}_{5}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 216,
+      "comentario": "Rotação C5^3 (216°)",
+      "nome": "\\mathrm{C}_{5}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 288,
+      "comentario": "Rotação C5^4 (288°)",
+      "nome": "\\mathrm{C}_{5}^{4}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σh no plano xy",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 72,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S5 (C5 + σh)",
+      "nome": "\\mathrm{S}_{5}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 288,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S5^4 (C5^4 + σh)",
+      "nome": "\\mathrm{S}_{5}^{4}"
+    }
+  ],
+  "tolerancia": 0.01
+}

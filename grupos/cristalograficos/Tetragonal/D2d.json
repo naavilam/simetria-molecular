@@ -1,0 +1,65 @@
+{
+  "nome": "D2d",
+  "descricao": "Grupo com eixo C₂, 2 eixos C₂' e 2 planos diédricos (S₄)",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ principal no eixo z",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C₂' em torno de [1,1,0]",
+      "nome": "\\mathrm{C}_{2}^{\\prime(1)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C₂' em torno de [-1,1,0]",
+      "nome": "\\mathrm{C}_{2}^{\\prime(2)}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁺ = C₄ + σ_h",
+      "nome": "\\mathrm{S}_{4}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁻ = C₄³ + σ_h",
+      "nome": "\\mathrm{S}_{4}^{3}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁺⁵ = C₄⁵ + σ_h",
+      "nome": "\\mathrm{S}_{4}^{5}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "Rotação imprópria S₄⁻³ = C₄⁷ + σ_h",
+      "nome": "\\mathrm{S}_{4}^{7}"
+    }
+  ],
+  "tolerancia": 0.02
+}

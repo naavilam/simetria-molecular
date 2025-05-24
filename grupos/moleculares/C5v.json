@@ -1,0 +1,70 @@
+{
+  "nome": "C5v",
+  "descricao": "Grupo C5v: rotações C5 e cinco planos verticais de reflexão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 72,
+      "comentario": "Rotação C5 (72°)",
+      "nome": "\\mathrm{C}_{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 144,
+      "comentario": "Rotação C5^2 (144°)",
+      "nome": "\\mathrm{C}_{5}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 216,
+      "comentario": "Rotação C5^3 (216°)",
+      "nome": "\\mathrm{C}_{5}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 288,
+      "comentario": "Rotação C5^4 (288°)",
+      "nome": "\\mathrm{C}_{5}^{4}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1.0,0.0,0.0],
+      "comentario": "Reflexão σv (0°)",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.309,0.951,0.0],
+      "comentario": "Reflexão σv (72°)",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.809,0.588,0.0],
+      "comentario": "Reflexão σv (144°)",
+      "nome": "\\sigma_{v3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.809,-0.588,0.0],
+      "comentario": "Reflexão σv (216°)",
+      "nome": "\\sigma_{v4}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.309,-0.951,0.0],
+      "comentario": "Reflexão σv (288°)",
+      "nome": "\\sigma_{v5}"
+    }
+  ],
+  "tolerancia": 0.01
+}

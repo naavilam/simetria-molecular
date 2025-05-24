@@ -1,0 +1,33 @@
+{
+  "nome": "D2",
+  "descricao": "Grupo D2: três rotações C2 mutuamente perpendiculares.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de x",
+      "nome": "\\mathrm{C}_{2x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de y",
+      "nome": "\\mathrm{C}_{2y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de z",
+      "nome": "\\mathrm{C}_{2z}"
+    }
+  ],
+  "tolerancia": 0.01
+}

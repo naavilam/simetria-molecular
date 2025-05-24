@@ -1,0 +1,25 @@
+{
+  "nome": "Cinfv",
+  "descricao": "Grupo C∞v: simetria de moléculas lineares heteronucleares (como HCl). Inclui infinitas rotações e planos verticais.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": "infinito",
+      "comentario": "Infinitas rotações em torno do eixo molecular z",
+      "nome": "\\mathrm{C}_{\\infty}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Infinitos planos σv contendo o eixo",
+      "nome": "\\sigma_{v}^{\\infty}"
+    }
+  ],
+  "tolerancia": 0.01
+}

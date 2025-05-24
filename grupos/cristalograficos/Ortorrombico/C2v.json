@@ -1,0 +1,31 @@
+{
+  "nome": "C2v",
+  "descricao": "C₂ com dois planos verticais.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C₂ em torno de z",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão σᵥ no plano xz",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,0],
+      "comentario": "Reflexão σᵥ no plano yz",
+      "nome": "\\sigma_{v2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

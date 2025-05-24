@@ -1,0 +1,47 @@
+{
+  "nome": "D3",
+  "descricao": "Grupo diédrico com operação C₃ e 3 operações C₂ perpendiculares",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C₃ (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C₃² (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1.0,0.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C₂ ao longo de x",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,0.866025,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C₂ ao longo de eixo em 120°",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,-0.866025,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C₂ ao longo de eixo em 240°",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
+    }
+  ],
+  "tolerancia": 0.02
+}

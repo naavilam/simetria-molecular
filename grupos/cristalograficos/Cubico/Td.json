@@ -1,0 +1,125 @@
+{
+  "nome": "T_d",
+  "descricao": "Grupo Td: simetrias completas do tetraedro (inclui reflexões diédricas).",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{2(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "C2 em torno de z",
+      "nome": "\\mathrm{C}_{2}^{(z)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "C2 em torno de y",
+      "nome": "\\mathrm{C}_{2}^{(y)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "C2 em torno de x",
+      "nome": "\\mathrm{C}_{2}^{(x)}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,1,0],
+      "comentario": "Plano diédrico [1,1,0]",
+      "nome": "\\sigma_{d1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-1,1,0],
+      "comentario": "Plano diédrico [-1,1,0]",
+      "nome": "\\sigma_{d2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,1],
+      "comentario": "Plano diédrico [1,0,1]",
+      "nome": "\\sigma_{d3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-1,0,1],
+      "comentario": "Plano diédrico [-1,0,1]",
+      "nome": "\\sigma_{d4}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,1],
+      "comentario": "Plano diédrico [0,1,1]",
+      "nome": "\\sigma_{d5}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,-1,1],
+      "comentario": "Plano diédrico [0,-1,1]",
+      "nome": "\\sigma_{d6}"
+    }
+  ],
+  "tolerancia": 0.01
+}

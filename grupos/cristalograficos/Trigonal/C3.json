@@ -1,0 +1,26 @@
+{
+  "nome": "C3",
+  "descricao": "Rotação de 120° em torno de um eixo principal (C3)",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C3 (120°) em torno do eixo z",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C3^2 (240°) em torno do eixo z",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

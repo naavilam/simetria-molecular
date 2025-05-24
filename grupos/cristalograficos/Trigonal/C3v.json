@@ -1,0 +1,44 @@
+{
+  "nome": "C3v",
+  "descricao": "Grupo com rotação C₃ e 3 planos de reflexão verticais",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C₃ (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C₃² (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão σv (plano x=0)",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.5,0.866,0],
+      "comentario": "Reflexão σv'",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.5,-0.866,0],
+      "comentario": "Reflexão σv''",
+      "nome": "\\sigma_{v3}"
+    }
+  ],
+  "tolerancia": 0.02
+}

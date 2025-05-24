@@ -1,0 +1,33 @@
+{
+  "nome": "C4",
+  "descricao": "Grupo cíclico de ordem 4: rotações de 90° em torno de um eixo.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C4 em torno de z (90°)",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 em torno de z (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C4^{-1} em torno de z (270°)",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    }
+  ],
+  "tolerancia": 0.01
+}

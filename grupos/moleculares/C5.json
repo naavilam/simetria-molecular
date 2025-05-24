@@ -1,0 +1,40 @@
+{
+  "nome": "C5",
+  "descricao": "Grupo cíclico de ordem 5: rotações de 72° em torno de um eixo.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 72,
+      "comentario": "Rotação C5 (72°) em torno de z",
+      "nome": "\\mathrm{C}_{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 144,
+      "comentario": "Rotação C5^2 (144°) em torno de z",
+      "nome": "\\mathrm{C}_{5}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 216,
+      "comentario": "Rotação C5^3 (216°) em torno de z",
+      "nome": "\\mathrm{C}_{5}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 288,
+      "comentario": "Rotação C5^4 (288°) em torno de z",
+      "nome": "\\mathrm{C}_{5}^{4}"
+    }
+  ],
+  "tolerancia": 0.01
+}

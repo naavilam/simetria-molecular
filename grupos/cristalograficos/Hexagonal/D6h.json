@@ -1,0 +1,168 @@
+{
+  "nome": "D6h",
+  "descricao": "Grupo D6h: rotações C6, seis C2 perpendiculares, reflexões, inversão e rotações impróprias.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "comentario": "Rotação C6 (60°)",
+      "nome": "\\mathrm{C}_{6}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "comentario": "Rotação C3 (120°)",
+      "nome": "\\mathrm{C}_{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "comentario": "Rotação C3^2 (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "comentario": "Rotação C6^5 (300°)",
+      "nome": "\\mathrm{C}_{6}^{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1.0,0.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(a)}",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,0.866,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(b)}",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.5,-0.866,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(c)}",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.866,0.5,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(d)}",
+      "nome": "\\mathrm{C}_{2}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.866,0.5,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(e)}",
+      "nome": "\\mathrm{C}_{2}^{(e)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.0,-1.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(f)}",
+      "nome": "\\mathrm{C}_{2}^{(f)}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1.0,0.0,0.0],
+      "comentario": "Reflexão σv (x=0)",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.5,0.866,0.0],
+      "comentario": "Reflexão σv (120°)",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.5,-0.866,0.0],
+      "comentario": "Reflexão σv (240°)",
+      "nome": "\\sigma_{v3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.866,0.5,0.0],
+      "comentario": "Reflexão σd (30°)",
+      "nome": "\\sigma_{d1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [-0.866,0.5,0.0],
+      "comentario": "Reflexão σd (150°)",
+      "nome": "\\sigma_{d2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.0,-1.0,0.0],
+      "comentario": "Reflexão σd (270°)",
+      "nome": "\\sigma_{d3}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0.0,0.0,1.0],
+      "comentario": "Reflexão σh (plano xy)",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 60,
+      "plano_normal": [0,0,1],
+      "comentario": "S6 (C6 + σh)",
+      "nome": "\\mathrm{S}_{6}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 300,
+      "plano_normal": [0,0,1],
+      "comentario": "S6^5 (C6^5 + σh)",
+      "nome": "\\mathrm{S}_{6}^{5}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 120,
+      "plano_normal": [0,0,1],
+      "comentario": "S3 (C3 + σh)",
+      "nome": "\\mathrm{S}_{3}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 240,
+      "plano_normal": [0,0,1],
+      "comentario": "S3^2 (C3^2 + σh)",
+      "nome": "\\mathrm{S}_{3}^{2}"
+    }
+  ],
+  "tolerancia": 0.01
+}

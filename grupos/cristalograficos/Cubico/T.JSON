@@ -1,0 +1,89 @@
+{
+  "nome": "T",
+  "descricao": "Grupo T: simetrias rotacionais do tetraedro (sem reflexões).",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 120,
+      "comentario": "C3 em torno de [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 240,
+      "comentario": "C3^2 em torno de [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{2(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "C2 em torno de z",
+      "nome": "\\mathrm{C}_{2}^{(z)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "C2 em torno de y",
+      "nome": "\\mathrm{C}_{2}^{(y)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "C2 em torno de x",
+      "nome": "\\mathrm{C}_{2}^{(x)}"
+    }
+  ],
+  "tolerancia": 0.01
+}

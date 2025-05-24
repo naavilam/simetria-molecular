@@ -1,0 +1,75 @@
+{
+  "nome": "D5",
+  "descricao": "Grupo D5: rotações C5 e cinco rotações C2 perpendiculares ao eixo principal.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 72,
+      "comentario": "Rotação C5 (72°)",
+      "nome": "\\mathrm{C}_{5}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 144,
+      "comentario": "Rotação C5^2 (144°)",
+      "nome": "\\mathrm{C}_{5}^{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 216,
+      "comentario": "Rotação C5^3 (216°)",
+      "nome": "\\mathrm{C}_{5}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 288,
+      "comentario": "Rotação C5^4 (288°)",
+      "nome": "\\mathrm{C}_{5}^{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1.0,0.0,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(a)}",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.309,0.951,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(b)}",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.809,0.588,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(c)}",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-0.809,-0.588,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(d)}",
+      "nome": "\\mathrm{C}_{2}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0.309,-0.951,0.0],
+      "angulo": 180,
+      "comentario": "Rotação C2^{(e)}",
+      "nome": "\\mathrm{C}_{2}^{(e)}"
+    }
+  ],
+  "tolerancia": 0.01
+}

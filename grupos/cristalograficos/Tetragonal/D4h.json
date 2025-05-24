@@ -1,0 +1,112 @@
+{
+  "nome": "D4h",
+  "descricao": "Grupo D4h: rotações C4, rotações C2 ortogonais, planos de reflexão e inversão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "Rotação C4 (90°)",
+      "nome": "\\mathrm{C}_{4}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 (180°)",
+      "nome": "\\mathrm{C}_{2}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "Rotação C4^{-1} (270°)",
+      "nome": "\\mathrm{C}_{4}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de x",
+      "nome": "\\mathrm{C}_{2x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de y",
+      "nome": "\\mathrm{C}_{2y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 entre eixos x e y",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 entre eixos x e -y",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão σh (plano xy)",
+      "nome": "\\sigma_{h}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão σv (plano yz)",
+      "nome": "\\sigma_{v1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,0],
+      "comentario": "Reflexão σv (plano xz)",
+      "nome": "\\sigma_{v2}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,1,0],
+      "comentario": "Reflexão σd (45°)",
+      "nome": "\\sigma_{d1}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,-1,0],
+      "comentario": "Reflexão σd (135°)",
+      "nome": "\\sigma_{d2}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "plano_normal": [0,0,1],
+      "comentario": "S4 (C4 + σh)",
+      "nome": "\\mathrm{S}_{4}"
+    },
+    {
+      "tipo": "impropria",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "plano_normal": [0,0,1],
+      "comentario": "S4^{-1} (C4^3 + σh)",
+      "nome": "\\mathrm{S}_{4}^{3}"
+    }
+  ],
+  "tolerancia": 0.01
+}

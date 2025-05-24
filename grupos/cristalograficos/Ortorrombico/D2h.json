@@ -1,0 +1,56 @@
+{
+  "nome": "D2h",
+  "descricao": "Grupo D2h: três rotações C2 ortogonais, três planos de reflexão e inversão.",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de x",
+      "nome": "\\mathrm{C}_{2x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de y",
+      "nome": "\\mathrm{C}_{2y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "Rotação C2 ao redor de z",
+      "nome": "\\mathrm{C}_{2z}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [1,0,0],
+      "comentario": "Reflexão no plano yz",
+      "nome": "\\sigma_{yz}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,1,0],
+      "comentario": "Reflexão no plano xz",
+      "nome": "\\sigma_{xz}"
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão no plano xy",
+      "nome": "\\sigma_{xy}"
+    },
+    {
+      "tipo": "inversao",
+      "comentario": "Inversão no centro (i)",
+      "nome": "\\mathrm{i}"
+    }
+  ],
+  "tolerancia": 0.01
+}

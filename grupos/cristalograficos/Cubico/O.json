@@ -1,0 +1,131 @@
+{
+  "nome": "O",
+  "descricao": "Grupo octaédrico O: rotações simétricas do cubo/octaedro sem inversão",
+  "operacoes": [
+    {
+      "tipo": "identidade",
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 120,
+      "comentario": "C₃ em [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,1],
+      "angulo": 240,
+      "comentario": "C₃² em [1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(a)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 120,
+      "comentario": "C₃ em [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [-1,1,1],
+      "angulo": 240,
+      "comentario": "C₃² em [-1,1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(b)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 120,
+      "comentario": "C₃ em [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,-1,1],
+      "angulo": 240,
+      "comentario": "C₃² em [1,-1,1]",
+      "nome": "\\mathrm{C}_{3}^{2(c)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 120,
+      "comentario": "C₃ em [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,1,-1],
+      "angulo": 240,
+      "comentario": "C₃² em [1,1,-1]",
+      "nome": "\\mathrm{C}_{3}^{2(d)}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 180,
+      "comentario": "C₂ eixo x",
+      "nome": "\\mathrm{C}_{2x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 180,
+      "comentario": "C₂ eixo y",
+      "nome": "\\mathrm{C}_{2y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 180,
+      "comentario": "C₂ eixo z",
+      "nome": "\\mathrm{C}_{2z}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 90,
+      "comentario": "C₄ eixo x",
+      "nome": "\\mathrm{C}_{4x}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [1,0,0],
+      "angulo": 270,
+      "comentario": "C₄⁻¹ eixo x",
+      "nome": "\\mathrm{C}_{4x}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 90,
+      "comentario": "C₄ eixo y",
+      "nome": "\\mathrm{C}_{4y}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,1,0],
+      "angulo": 270,
+      "comentario": "C₄⁻¹ eixo y",
+      "nome": "\\mathrm{C}_{4y}^{3}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 90,
+      "comentario": "C₄ eixo z",
+      "nome": "\\mathrm{C}_{4z}"
+    },
+    {
+      "tipo": "rotacao",
+      "eixo": [0,0,1],
+      "angulo": 270,
+      "comentario": "C₄⁻¹ eixo z",
+      "nome": "\\mathrm{C}_{4z}^{3}"
+    }
+  ],
+  "tolerancia": 0.01
+}
