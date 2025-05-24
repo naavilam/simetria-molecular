@@ -1,10 +1,28 @@
+"""
+Essa classe recebe coordenadas da molecula e operações de simetria selecionada pelo usuario para ser renderizada.
+1) Le informações dos eixos e planos da operação
+2) Aplica a matriz correspondente às coordenadas da molécula
+3) Chama a biblioteca pyvista para renderizar
+"""
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+from render_pyvista import visualizar_pyvista
+
+def render_symmetry_op(mol, op):
+    Rmat, destaque = detalhe_operacao(op)
+    mol_transformada = aplicar_matriz(mol, Rmat)
+    comentario = op["comentario"]
+    desc = op.get("comentario", f"operação {comentario}")
+    print(f"Molécula transformada pela operação: {desc}")
+    for elemento, coord in mol_transformada:
+        x, y, z = coord
+        print(f"{elemento} {x:.6f} {y:.6f} {z:.6f}")
+    visualizar_pyvista(mol, mol_transformada, f"Operação: {desc}", destaque=destaque)
 
 def aplicar_matriz(molecula, Rmat):
     return [(el, Rmat @ np.array(coord)) for el, coord in molecula]
 
-def aplicar_operacao(operacao):
+def detalhe_operacao(operacao):
     tipo = operacao["tipo"]
 
     if tipo == "identidade":
@@ -64,6 +82,7 @@ def aplicar_operacao(operacao):
                 "normal": normal.tolist(),
             }
         ]
+
         return plano @ rot, destaque
 
     elif tipo == "inversao":
@@ -75,7 +94,6 @@ def aplicar_operacao(operacao):
             "origem": centro,
             # "nome": operacao["nome"]
         }
-
         return inversao, destaque
 
     else:

@@ -1,18 +1,15 @@
 import numpy as np
-from operacoes import aplicar_operacao, aplicar_matriz
+from operacoes import detalhe_operacao, aplicar_matriz
 from gera_tabela_multiplicacao import *
 
 def analiza_simetria(mol, operacoes):
     perm_dict = {}
-    print("Operações disponíveis:")
-    print(operacoes)
     for idx, op in enumerate(operacoes, start=1):
         desc = op.get("comentario", f"operação {idx}")
         print(f"[{idx}] {desc}")
-        Rmat, destaque = aplicar_operacao(op)
+        Rmat, destaque = detalhe_operacao(op)
         mol_transformada = aplicar_matriz(mol, Rmat)
         permutacao = obter_permutacao(mol,mol_transformada)
-        print(permutacao)
         perm_dict[op["nome"]] = permutacao
     for nome, perm in perm_dict.items():
         print(f"{nome}: {perm}")

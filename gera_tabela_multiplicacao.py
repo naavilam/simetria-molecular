@@ -1,9 +1,7 @@
-
 import json
 import re
 import unicodedata
-
-
+from operacoes_latex_dict import operacoes_latex
 
 def compor(p1, p2):
     return [p1[i] for i in p2]
@@ -43,8 +41,6 @@ def gerar_tabela_latex(nomes, tabela):
     linhas.append("\end{tabular}")
     return "\n".join(linhas)
 
-
-
 def nome_para_latex(nome):
     nome = nome.replace("'", "^{\\prime}")
     nome = nome.replace("²", "^2")
@@ -58,8 +54,6 @@ def nome_para_latex(nome):
     nome = nome.replace("sigma_d", "sigma_{d}")
     nome = nome.replace("sigma_h", "sigma_{h}")
     return f"${nome}$"
-
-from operacoes_latex_dict import operacoes_latex
 
 def gerar_tabela_latex(nomes, tabela):
     colunas = "c|" + "c" * len(nomes)
