@@ -3,12 +3,6 @@ import re
 import unicodedata
 from operacoes_latex_dict import operacoes_latex
 
-def compor(p1, p2):
-    return [p1[i] for i in p2]
-
-def gerar_hash_permutacoes(dicionario_perms):
-    return {tuple(p): nome for nome, p in dicionario_perms.items()}
-
 def gerar_tabela_multiplicacao(dicionario_perms):
     nomes = list(dicionario_perms.keys())
     permutacoes = list(dicionario_perms.values())
@@ -25,6 +19,12 @@ def gerar_tabela_multiplicacao(dicionario_perms):
             linha.append(nome_resultado)
         tabela.append(linha)
     return nomes, tabela
+
+def compor(p1, p2):
+    return [p1[i] for i in p2]
+
+def gerar_hash_permutacoes(dicionario_perms):
+    return {tuple(p): nome for nome, p in dicionario_perms.items()}
 
 def imprimir_tabela_texto(nomes, tabela):
     header = "     " + " ".join(f"{nome:>6}" for nome in nomes)
