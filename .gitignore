@@ -1,0 +1,63 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Editor/IDE
+.vscode/
+*.swp
+*.sublime-project
+*.sublime-workspace
+.idea/
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+ENV/
+
+# Arquivos temporários e logs
+*.log
+*.tmp
+*.bak
+
+# Arquivos de saída LaTeX
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.out
+*.toc
+*.lof
+*.lot
+*.pdf
+
+# Arquivos de imagens/resultados
+*.png
+*.jpg
+*.gif
+frames_animados/
+__render__/
+
+# Arquivos de visualização exportados
+*.glb
+*.obj
+*.stl
+
+# Arquivos gerados por simetria
+tabela.txt
+tabela.tex
+operacoes_multiplicacao.txt
+operacoes_multiplicacao.tex
+*.xyz~
+*.json~
+
+# IPython/Jupyter cache
+.ipynb_checkpoints/
+*.ipynb
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

@@ -4,236 +4,164 @@
   "operacoes": [
     {
       "tipo": "identidade",
-      "comentario": "Identidade (E)"
+      "comentario": "Identidade (E)",
+      "nome": "\\mathrm{E}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 60,
-      "comentario": "Rotação C6 em torno do eixo z (60°)"
+      "comentario": "Rotação C6 em torno do eixo z (60°)",
+      "nome": "\\mathrm{C}_{6}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 120,
-      "comentario": "Rotação C3 em torno do eixo z (120°)"
+      "comentario": "Rotação C3 em torno do eixo z (120°)",
+      "nome": "\\mathrm{C}_{3}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 180,
-      "comentario": "Rotação C2 em torno do eixo z (180°)"
+      "comentario": "Rotação C2 em torno do eixo z (180°)",
+      "nome": "\\mathrm{C}_{2}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 240,
-      "comentario": "Rotação C3^2 em torno do eixo z (240°)"
+      "comentario": "Rotação C3^2 em torno do eixo z (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 300,
-      "comentario": "Rotação C6^5 em torno do eixo z (300°)"
+      "comentario": "Rotação C6^5 em torno do eixo z (300°)",
+      "nome": "\\mathrm{C}_{6}^{5}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        1.0,
-        0.0,
-        0.0
-      ],
+      "eixo": [1.0, 0.0, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2′ em torno do eixo passando por átomos ([1.0, 0.0, 0.0])",
-      "nome": "C₂′"
+      "nome": "\\mathrm{C}_{2}^{\\prime(c)}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        -0.5,
-        0.866025,
-        0.0
-      ],
+      "eixo": [-0.5, 0.866025, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2′ em torno do eixo passando por átomos ([-0.5, 0.866, 0.0])",
-      "nome": "C₂′"
+      "nome": "\\mathrm{C}_{2}^{\\prime(a)}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        -0.5,
-        -0.866025,
-        0.0
-      ],
+      "eixo": [-0.5, -0.866025, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2′ em torno do eixo passando por átomos ([-0.5, -0.866, 0.0])",
-      "nome": "C₂′"
+      "nome": "\\mathrm{C}_{2}^{\\prime(b)}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        0.866025,
-        0.5,
-        0.0
-      ],
+      "eixo": [0.866025, 0.5, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2″ em torno do eixo entre os átomos ([0.866, 0.5, 0.0])",
-      "nome": "C₂″"
+      "nome": "\\mathrm{C}_{2}^{\\prime\\prime(a)}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        -0.866025,
-        0.5,
-        0.0
-      ],
+      "eixo": [-0.866025, 0.5, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2″ em torno do eixo entre os átomos ([-0.866, 0.5, 0.0])",
-      "nome": "C₂″"
+      "nome": "\\mathrm{C}_{2}^{\\prime\\prime(b)}"
     },
     {
       "tipo": "rotacao",
-      "eixo": [
-        -0.0,
-        -1.0,
-        0.0
-      ],
+      "eixo": [-0.0, -1.0, 0.0],
       "angulo": 180,
       "comentario": "Rotação C2″ em torno do eixo entre os átomos ([-0.0, -1.0, 0.0])",
-      "nome": "C₂″"
+      "nome": "\\mathrm{C}_{2}^{\\prime\\prime(c)}"
     },
     {
       "tipo": "inversao",
-      "comentario": "Inversão (i)"
+      "comentario": "Inversão (i)",
+      "nome": "\\mathrm{i}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        1.0,
-        0.0,
-        0.0
-      ],
+      "plano_normal": [1.0, 0.0, 0.0],
       "comentario": "Reflexão σᵥ no plano que corta átomos ([1.0, 0.0, 0.0])",
-      "nome": "σᵥ"
+      "nome": "\\sigma_{v1}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        -0.5,
-        0.866025,
-        0.0
-      ],
+      "plano_normal": [-0.5, 0.866025, 0.0],
       "comentario": "Reflexão σᵥ no plano que corta átomos ([-0.5, 0.866, 0.0])",
-      "nome": "σᵥ"
+      "nome": "\\sigma_{v2}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        -0.5,
-        -0.866025,
-        0.0
-      ],
+      "plano_normal": [-0.5, -0.866025, 0.0],
       "comentario": "Reflexão σᵥ no plano que corta átomos ([-0.5, -0.866, 0.0])",
-      "nome": "σᵥ"
+      "nome": "\\sigma_{v3}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        0.866025,
-        0.5,
-        0.0
-      ],
+      "plano_normal": [0.866025, 0.5, 0.0],
       "comentario": "Reflexão σ𝒹 no plano entre os átomos ([0.866, 0.5, 0.0])",
-      "nome": "σ𝒹"
+      "nome": "\\sigma_{d1}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        -0.866025,
-        0.5,
-        0.0
-      ],
+      "plano_normal": [-0.866025, 0.5, 0.0],
       "comentario": "Reflexão σ𝒹 no plano entre os átomos ([-0.866, 0.5, 0.0])",
-      "nome": "σ𝒹"
+      "nome": "\\sigma_{d2}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        -0.0,
-        -1.0,
-        0.0
-      ],
+      "plano_normal": [-0.0, -1.0, 0.0],
       "comentario": "Reflexão σ𝒹 no plano entre os átomos ([-0.0, -1.0, 0.0])",
-      "nome": "σ𝒹"
+      "nome": "\\sigma_{d3}"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [
-        0.5,
-        -0.866,
-        0
-      ],
-      "comentario": "Reflexão σv em um plano contendo átomo em 300°"
+      "plano_normal": [0.5, -0.866, 0],
+      "comentario": "Reflexão σv em um plano contendo átomo em 300°",
+      "nome": "\\sigma_{v4}"
     },
     {
       "tipo": "impropria",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 120,
-      "comentario": "Rotação imprópria S3 de 120° (C3 + σh)"
+      "comentario": "Rotação imprópria S3 de 120° (C3 + σh)",
+      "nome": "\\mathrm{S}_{3}",
+      "plano_normal": [0, 0, 1]
     },
     {
       "tipo": "impropria",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 240,
-      "comentario": "Rotação imprópria S3 de 240° (C3^2 + σh)"
+      "comentario": "Rotação imprópria S3 de 240° (C3^2 + σh)",
+      "nome": "\\mathrm{S}_{3}^{2}",
+      "plano_normal": [0, 0, 1]
     },
     {
       "tipo": "impropria",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 60,
-      "comentario": "Rotação imprópria S6 de 60° (C6 + σh)"
+      "comentario": "Rotação imprópria S6 de 60° (C6 + σh)",
+      "nome": "\\mathrm{S}_{6}",
+      "plano_normal": [0, 0, 1]
     },
     {
       "tipo": "impropria",
-      "eixo": [
-        0,
-        0,
-        1
-      ],
+      "eixo": [0, 0, 1],
       "angulo": 300,
-      "comentario": "Rotação imprópria S6 de 300° (C6^5 + σh)"
+      "comentario": "Rotação imprópria S6 de 300° (C6^5 + σh)",
+      "nome": "\\mathrm{S}_{6}^{5}",
+      "plano_normal": [0, 0, 1]
     }
   ],
   "tolerancia": 0.02

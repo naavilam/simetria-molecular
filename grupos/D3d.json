@@ -4,68 +4,120 @@
   "operacoes": [
     {
       "tipo": "identidade",
-      "comentario": "Identidade E"
+      "comentario": "Identidade E",
+      "nome": "E"
     },
     {
       "tipo": "rotacao",
-      "eixo": [0, 0, 1],
+      "eixo": [
+        0,
+        0,
+        1
+      ],
       "angulo": 120,
-      "comentario": "C3⁺: rotação de +120° em torno do eixo C–C"
+      "comentario": "C3⁺: rotação de +120° em torno do eixo C–C",
+      "nome": "C3"
     },
     {
       "tipo": "rotacao",
-      "eixo": [0, 0, 1],
+      "eixo": [
+        0,
+        0,
+        1
+      ],
       "angulo": 240,
-      "comentario": "C3⁻: rotação de –120° (ou +240°) em torno do eixo C–C"
+      "comentario": "C3⁻: rotação de –120° (ou +240°) em torno do eixo C–C",
+      "nome": "C3²"
     },
     {
-      "tipo":    "rotacao",
-      "eixo":    [ 0.0000,  1.0000, 0.0000 ],
-      "angulo":  180,
-      "comentario": "C₂′(a): rotação de 180° em torno do eixo y (interseção de σd(a) e σh)"
+      "tipo": "rotacao",
+      "eixo": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "angulo": 180,
+      "comentario": "C₂′(a): rotação de 180° em torno do eixo y (interseção de σd(a) e σh)",
+      "nome": "C2"
     },
     {
-      "tipo":    "rotacao",
-      "eixo":    [ 0.8660,  0.5000, 0.0000 ],
-      "angulo":  180,
-      "comentario": "C₂′(b): rotação de 180° em torno da normal a σd(b)"
+      "tipo": "rotacao",
+      "eixo": [
+        0.866,
+        0.5,
+        0.0
+      ],
+      "angulo": 180,
+      "comentario": "C₂′(b): rotação de 180° em torno da normal a σd(b)",
+      "nome": "C2′"
     },
     {
-      "tipo":    "rotacao",
-      "eixo":    [-0.8660,  0.5000, 0.0000 ],
-      "angulo":  180,
-      "comentario": "C₂′(c): rotação de 180° em torno da normal a σd(c)"
+      "tipo": "rotacao",
+      "eixo": [
+        -0.866,
+        0.5,
+        0.0
+      ],
+      "angulo": 180,
+      "comentario": "C₂′(c): rotação de 180° em torno da normal a σd(c)",
+      "nome": "C2′_2"
     },
     {
       "tipo": "inversao",
-      "comentario": "Inversão i (centro de simetria)"
+      "comentario": "Inversão i (centro de simetria)",
+      "nome": "i"
     },
     {
       "tipo": "impropria",
-      "eixo": [0, 0, 1],
+      "eixo": [
+        0,
+        0,
+        1
+      ],
       "angulo": 60,
-      "comentario": "S6⁺: rotação de +60° seguida de reflexão σh"
+      "comentario": "S6⁺: rotação de +60° seguida de reflexão σh",
+      "nome": "S6"
     },
     {
       "tipo": "impropria",
-      "eixo": [0, 0, 1],
+      "eixo": [
+        0,
+        0,
+        1
+      ],
       "angulo": 300,
-      "comentario": "S6⁻: rotação de –60° (ou +300°) seguida de reflexão σh"
+      "comentario": "S6⁻: rotação de –60° (ou +300°) seguida de reflexão σh",
+      "nome": "S6⁵"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [ 0.0000,  1.0000, 0.0000 ],
-      "comentario": "σd(a): espelho no plano que contém H(φ=0°) & H(φ=180°)"
+      "plano_normal": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "comentario": "σd(a): espelho no plano que contém H(φ=0°) & H(φ=180°)",
+      "nome": "σd"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [ 0.8660,  0.5000, 0.0000 ],
-      "comentario": "σd(b): espelho no plano que contém H(φ=120°) & H(φ=300°)"
+      "plano_normal": [
+        0.866,
+        0.5,
+        0.0
+      ],
+      "comentario": "σd(b): espelho no plano que contém H(φ=120°) & H(φ=300°)",
+      "nome": "σd_2"
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.8660,  0.5000, 0.0000 ],
-      "comentario": "σd(c): espelho no plano que contém H(φ=240°) & H(φ=60°)"
+      "plano_normal": [
+        -0.866,
+        0.5,
+        0.0
+      ],
+      "comentario": "σd(c): espelho no plano que contém H(φ=240°) & H(φ=60°)",
+      "nome": "σd_3"
     }
   ],
   "tolerancia": 0.02
