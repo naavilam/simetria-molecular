@@ -22,59 +22,13 @@ from pathlib import Path
 
 class TabelaMultiplicacao:
 
-    """Description
-    """
-    
-    @staticmethod
-    def compor(p1, p2):
-        """Description
-        
-        Args:
-            p1 (TYPE): Description
-            p2 (TYPE): Description
-        
-        Returns:
-            TYPE: Description
+    def __init__(self, permutacoes):
+        """Summary
         """
-        return [p1[i] for i in p2]
+        self.permutacoes = permutacoes
 
-    @staticmethod
-    def gerar_hash_permutacoes(dicionario_perms):
-        """Description
-        
-        Args:
-            dicionario_perms (TYPE): Description
-        
-        Returns:
-            TYPE: Description
-        """
-        return {tuple(p): nome for nome, p in dicionario_perms.items()}
-
-    @staticmethod
-    def nome_para_latex(nome, wrap_math=False):
-        """Description
-        
-        Args:
-            nome (TYPE): Description
-            wrap_math (bool, optional): Description
-        
-        Returns:
-            TYPE: Description
-        """
-        nome = nome.replace("'", "^{\\prime}").replace("²", "^2")
-        nome = nome.replace("sigma_v", "sigma_{v}")
-        nome = nome.replace("sigma_d", "sigma_{d}")
-        nome = nome.replace("sigma_h", "sigma_{h}")
-        nome = re.sub(r"(C[2346])_\((\w)\)", r"\\mathrm{\1}^{(\2)}", nome)
-        nome = re.sub(r"(C[2346])", r"\\mathrm{\1}", nome)
-        nome = re.sub(r"(S[36])", r"\\mathrm{\1}", nome)
-        nome = re.sub(r"\bsigma_?(v\d+)", r"\\sigma_{\1}", nome)
-        nome = re.sub(r"\bsigma", r"\\sigma", nome)
-        return f"${nome}$" if wrap_math else nome
-
-    @classmethod
-    def gerar(cls, dicionario_perms, registro_txt="registro_operacoes.txt", registro_tex="registro_operacoes.tex"):
-        """Description
+    def gerar(self, registro_txt="registro_operacoes.txt", registro_tex="registro_operacoes.tex"):
+        """Calcula tabela de multiplicação
         
         Args:
             dicionario_perms (TYPE): Description
@@ -84,9 +38,9 @@ class TabelaMultiplicacao:
         Returns:
             TYPE: Description
         """
-        nomes = list(dicionario_perms.keys())
-        perms = list(dicionario_perms.values())
-        hash_perms = cls.gerar_hash_permutacoes(dicionario_perms)
+        nomes = list(self.permutacoes.keys())
+        perms = list(self.permutacoes.values())
+        hash_perms = self._gerar_hash_permutacoes()
 
         tabela = []
         log_txt = []
@@ -97,7 +51,7 @@ class TabelaMultiplicacao:
             for j, pj in enumerate(perms):
                 nome_i = nomes[i]
                 nome_j = nomes[j]
-                comp = cls.compor(pi, pj)
+                comp = self._compor(pi, pj)
                 nome_res = hash_perms.get(tuple(comp))
 
                 if nome_res is None:
@@ -119,7 +73,7 @@ class TabelaMultiplicacao:
                     """
                     return "(" + ",".join(str(x + 1) for x in v) + ")"
 
-                li, lj, lr = map(lambda n: cls.nome_para_latex(n).replace('\\\\', '\\'), [nome_i, nome_j, nome_res])
+                li, lj, lr = map(lambda n: self._nome_para_latex(n).replace('\\\\', '\\'), [nome_i, nome_j, nome_res])
                 log_tex.append(
                     f"& {lr} = {lj} \\circ {li}:\\; \\\\"
                     f"& {perm_str(list(range(len(pi))))} \\xrightarrow{{{li}}} {perm_str(pi)} "
@@ -141,13 +95,55 @@ class TabelaMultiplicacao:
                 f_txt.write(f"{nome}: " + " ".join(linha) + "\n")
 
         with open(output_dir / "tabela_multiplicacao.tex", "w") as f_tex:
-            f_tex.write(cls.gerar_tabela_latex(nomes, tabela))
+            f_tex.write(self._gerar_tabela_latex(nomes, tabela))
 
         print("Tabelas e registros de multiplicação gerados com sucesso.")
         return tabela
+    def _compor(self, p1, p2):
+        """Description
+        
+        Args:
+            p1 (TYPE): Description
+            p2 (TYPE): Description
+        
+        Returns:
+            TYPE: Description
+        """
+        return [p1[i] for i in p2]
 
-    @staticmethod
-    def gerar_tabela_latex(nomes, tabela):
+    def _gerar_hash_permutacoes(self):
+        """Description
+        
+        Args:
+            dicionario_perms (TYPE): Description
+        
+        Returns:
+            TYPE: Description
+        """
+        return {tuple(p): nome for nome, p in self.permutacoes.items()}
+
+    def _nome_para_latex(self, nome, wrap_math=False):
+        """Description
+        
+        Args:
+            nome (TYPE): Description
+            wrap_math (bool, optional): Description
+        
+        Returns:
+            TYPE: Description
+        """
+        nome = nome.replace("'", "^{\\prime}").replace("²", "^2")
+        nome = nome.replace("sigma_v", "sigma_{v}")
+        nome = nome.replace("sigma_d", "sigma_{d}")
+        nome = nome.replace("sigma_h", "sigma_{h}")
+        nome = re.sub(r"(C[2346])_\((\w)\)", r"\\mathrm{\1}^{(\2)}", nome)
+        nome = re.sub(r"(C[2346])", r"\\mathrm{\1}", nome)
+        nome = re.sub(r"(S[36])", r"\\mathrm{\1}", nome)
+        nome = re.sub(r"\bsigma_?(v\d+)", r"\\sigma_{\1}", nome)
+        nome = re.sub(r"\bsigma", r"\\sigma", nome)
+        return f"${nome}$" if wrap_math else nome
+
+    def _gerar_tabela_latex(self, nomes, tabela):
         """Description
         
         Args:
@@ -166,8 +162,7 @@ class TabelaMultiplicacao:
         linhas.append("\\bottomrule\n\\end{tabular}")
         return "\n".join(linhas)
 
-    @staticmethod
-    def imprimir_tabela_texto(nomes, tabela):
+    def _imprimir_tabela_texto(self, nomes, tabela):
         """Description
         
         Args:

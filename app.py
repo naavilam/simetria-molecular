@@ -17,10 +17,9 @@
 """
 
 import argparse
-from load_molecules import ler_xyz
-from load_groups import load_group_symmetry_data
-from analise_simetria import analiza_simetria
-from gera_permutacoes import render_symmetry_op
+from molecule import Molecule
+from group_symmetry import GroupSymmetry
+from molecule_symmetry import MoleculeSymmetry
 
 class MoleculeSymmetryApp:
 
@@ -37,9 +36,9 @@ class MoleculeSymmetryApp:
         """Summary
         """
         self.args = self._read_input_arguments()
-        self.mol = ler_xyz(self.args.xyz)
-        self.group = load_group_symmetry_data(self.args.grupo)
-        self.group_op = self.group["operacoes"]
+        self.mol = Molecule(self.args.xyz)
+        self.group = GroupSymmetry(self.args.grupo)
+        self.selected_op = self._validate_op(self.args.op)
 
     def _read_input_arguments(self):
         """Summary
@@ -51,23 +50,28 @@ class MoleculeSymmetryApp:
         return parser.parse_args()
 
     def _validate_op(self, selected):
-        """Summary
-        """
-        try:
-            return self.group_op[selected - 1]
-        except IndexError:
-            print(f"Operação inválida: {selected}")
-            return None
-
-    def _run(self):
-        """Summary
+        """Valida se a operação inserida é valida
         """
         if self.args.op is None:
-            analiza_simetria(self.mol, self.group_op)
+            self.selected_op = None
+            return
         else:
-            selected_op = self._validate_op(self.args.op)
-            if selected_op:
-                render_symmetry_op(self.mol, selected_op)
+            try:
+                return self.group_op[selected - 1]
+            except IndexError:
+                print(f"Operação inválida: {selected}")
+                return None
+
+    def _run(self):
+        """Caso tenha escolhido a operação esta é renderizada, 
+        caso contrário é feita uma análise completa da simetria
+        """
+        ms = MoleculeSymmetry(self.mol, self.group)
+        
+        if self.selected_op is None:
+            ms.analize_symmetry()
+        else:
+            ms.render_symmetry_operation(selected_op)
 
 if __name__ == "__main__":
     app = MoleculeSymmetryApp()

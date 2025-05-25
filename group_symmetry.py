@@ -18,46 +18,33 @@
 
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from render_pyvista import visualizar_pyvista
+import json
 
-class OperacaoSimetria:
+class GroupSymmetry:
 
-    """Description
+    """Summary
     """
     
-    @staticmethod
-    def aplicar_matriz(molecula, Rmat):
-        """Description
-        
-        Args:
-            molecula (TYPE): Description
-            Rmat (TYPE): Description
-        
-        Returns:
-            TYPE: Description
+    def __init__(self, path_arquivo_json):
+        """Summary
         """
-        return [(el, Rmat @ np.array(coord)) for el, coord in molecula]
+        self.path = path_arquivo_json
+        self.dados = self._carregar()
 
-    @classmethod
-    def renderizar(cls, mol, op):
-        """Description
-        
-        Args:
-            mol (TYPE): Description
-            op (TYPE): Description
+    def get_operacoes(self):
+        """Summary
         """
-        Rmat, destaque = cls.detalhe_operacao(op)
-        mol_transformada = cls.aplicar_matriz(mol, Rmat)
-        comentario = op.get("comentario", op.get("nome", "operação sem nome"))
-        print(f"Molécula transformada pela operação: {comentario}")
-        for elemento, coord in mol_transformada:
-            x, y, z = coord
-            print(f"{elemento} {x:.6f} {y:.6f} {z:.6f}")
-        visualizar_pyvista(mol, mol_transformada, f"Operação: {comentario}", destaque=destaque)
+        return self.dados.get("operacoes", [])
+
+    def _carregar(self):
+        """Summary
+        """
+        with open(self.path, "r", encoding="utf-8") as f:
+            return json.load(f)
 
     @staticmethod
     def detalhe_operacao(operacao):
-        """Description
+        """Retorna a operacao e o eixo/plano de simetria da operacao
         
         Args:
             operacao (TYPE): Description

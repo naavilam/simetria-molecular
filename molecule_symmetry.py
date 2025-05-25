@@ -17,33 +17,100 @@
 """
 
 import numpy as np
+from group_symmetry import GroupSymmetry
+from tabela_multiplicacao import TabelaMultiplicacao
+from classe_conjugacao import ClasseConjugacao
 from scipy.spatial.transform import Rotation as R
-import json
+from render_pyvista import visualizar_pyvista
 
-class GrupoSimetria:
 
-    """Summary
+class MoleculeSymmetry:
+
+    """Description
+    
+    Attributes:
+        mol (TYPE): Description
+        operacoes (TYPE): Description
+        permutacoes (dict): Description
     """
     
-    def __init__(self, path_arquivo_json):
-        """Summary
-        """
-        self.path = path_arquivo_json
-        self.dados = self.carregar()
+    def __init__(self, molecule, group):
+        self.molecule = molecule
+        self.group = group
 
-    def carregar(self):
-        """Summary
+    def analize_symmetry(self):
+        """Executa a análise de simetria e imprime os resultados.
         """
-        with open(self.path, "r", encoding="utf-8") as f:
-            return json.load(f)
+        print("Operações de simetria disponíveis:")
+        permutacoes = {}
+        for idx, op in enumerate(self.group.get_operacoes(), start=1):
+            desc = op.get("comentario", f"operação {idx}")
+            print(f"[{idx}] {desc}")
+            Rmat, destaque = self.group.detalhe_operacao(op)
+            mol_transformada = self._aplicar_matriz(Rmat)
+            permutacao = self._obter_permutacao(self.molecule, mol_transformada)
+            permutacoes[op["nome"]] = permutacao
 
-    def get_operacoes(self):
-        """Summary
+        print("*****************Permutações Básicas*****************")
+        self._list_permutations(permutacoes)
+        print("********Fim da Analise das Permutações Básicas*******")
+
+
+        tab_mult = TabelaMultiplicacao(permutacoes).gerar()
+        class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
+
+    def render_symmetry_operation(operation):
+        """Calcula apenas a operacao selecionada e renderiza imagem da molecula 
+        antes e depois em modo 3D interativo
+        
+        Args:
+            operation (TYPE): Description
         """
-        return self.dados.get("operacoes", [])
+        Rmat, destaque = GroupSymmetry.detalhe_operacao(operation)
+        mol_transformada = self._aplicar_matriz(Rmat)
+        comentario = operation.get("comentario", operation.get("nome", "operação sem nome"))
+        print(f"Molécula transformada pela operação: {comentario}")
+        for elemento, coord in mol_transformada:
+            x, y, z = coord
+            print(f"{elemento} {x:.6f} {y:.6f} {z:.6f}")
+        visualizar_pyvista(self.molecule, mol_transformada, f"Operação: {comentario}", destaque=destaque)
 
-    @staticmethod
-    def aplicar_operacao(operacao):
+
+    def _obter_permutacao(self, orig_coords, transf_coords, tol=1e-3):
+        """Compara coordenadas para identificar a permutação resultante.
+        
+        Args:
+            orig_coords (list): Lista de coordenadas originais.
+            transf_coords (list): Lista de coordenadas transformadas.
+            tol (float): Tolerância para comparacão de similaridade.
+        
+        Returns:
+            list: Permutação dos índices.
+        """
+        permutacao = []
+        for _, coord in transf_coords:
+            for i, (_, ref) in enumerate(orig_coords.como_tuplas()):
+                if np.allclose(coord, ref, atol=tol):
+                    permutacao.append(i)
+                    break
+            else:
+                permutacao.append(None)
+        return permutacao
+
+    def _aplicar_matriz(self, Rmat):
+        """Description
+        
+        Args:
+            molecula (TYPE): Description
+            Rmat (TYPE): Description
+        
+        Returns:
+            TYPE: Description
+        """
+        return [(el, Rmat @ np.array(coord)) for el, coord in self.molecule.como_tuplas()]
+
+
+    def _aplicar_operacao(self, operacao):
         """Summary
         
         Raises:
@@ -76,3 +143,7 @@ class GrupoSimetria:
 
         else:
             raise ValueError(f"Tipo de operação desconhecido: {tipo}")
+
+    def _list_permutations(self, permutacoes):
+        for nome, perm in permutacoes.items():
+            print(f"{nome}: {perm}")

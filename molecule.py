@@ -17,63 +17,41 @@
 """
 
 import numpy as np
-from gera_permutacoes import detalhe_operacao, aplicar_matriz
-from gera_tabela_multiplicacao import gerar_tabela_multiplicacao
-from gera_classes_conjugacao import gerar_classe_conjugacao
 
+class Molecule:
 
-class SimetriaMolecular:
-
-    """Description
-    
-    Attributes:
-        mol (TYPE): Description
-        operacoes (TYPE): Description
-        permutacoes (dict): Description
+    """Summary
     """
     
-    def __init__(self, mol, operacoes):
-        self.mol = mol
-        self.operacoes = operacoes
-        self.permutacoes = {}
-
-    def analisar(self):
-        """Executa a análise de simetria e imprime os resultados.
+    def __init__(self, path_arquivo_xyz):
+        """Summary
         """
-        for idx, op in enumerate(self.operacoes, start=1):
-            desc = op.get("comentario", f"operação {idx}")
-            print(f"[{idx}] {desc}")
-            Rmat, destaque = detalhe_operacao(op)
-            mol_transformada = aplicar_matriz(self.mol, Rmat)
-            permutacao = self.obter_permutacao(self.mol, mol_transformada)
-            self.permutacoes[op["nome"]] = permutacao
+        self.path = path_arquivo_xyz
+        self.elementos = []
+        self.coordenadas = []
+        self._carregar()
 
-        print("*****************Operações Básicas*****************")
-        for nome, perm in self.permutacoes.items():
-            print(f"{nome}: {perm}")
-        print("********Fim da Analise das Operações Básicas*******")
-
-        tab_mult = gerar_tabela_multiplicacao(self.permutacoes)
-        gerar_classe_conjugacao(self.permutacoes, tab_mult)
-
-    @staticmethod
-    def obter_permutacao(orig_coords, transf_coords, tol=1e-3):
-        """Compara coordenadas para identificar a permutação resultante.
-        
-        Args:
-            orig_coords (list): Lista de coordenadas originais.
-            transf_coords (list): Lista de coordenadas transformadas.
-            tol (float): Tolerância para comparacão de similaridade.
-        
-        Returns:
-            list: Permutação dos índices.
+    def _carregar(self):
+        """Summary
         """
-        permutacao = []
-        for _, coord in transf_coords:
-            for i, (_, ref) in enumerate(orig_coords):
-                if np.allclose(coord, ref, atol=tol):
-                    permutacao.append(i)
-                    break
-            else:
-                permutacao.append(None)
-        return permutacao
+        with open(self.path, 'r') as f:
+            linhas = f.readlines()
+
+        natomos = int(linhas[0])
+        dados = linhas[2:2 + natomos]
+
+        self.elementos = []
+        self.coordenadas = []
+
+        for linha in dados:
+            partes = linha.split()
+            elemento = partes[0]
+            coords = np.array(list(map(float, partes[1:4])))
+            self.elementos.append(elemento)
+            self.coordenadas.append(coords)
+
+    def como_tuplas(self):
+        return list(zip(self.elementos, self.coordenadas))
+
+    def __len__(self):
+        return len(self.elementos)

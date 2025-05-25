@@ -20,13 +20,18 @@ import json
 import re
 from pathlib import Path
 
-class ClassesConjugacao:
+class ClasseConjugacao:
 
-    """Description
+    """Summary
     """
     
-    @staticmethod
-    def compor(p1, p2):
+    def __init__(self, permutacoes, tabela_mult):
+        """Summary
+        """
+        self.permutacoes = permutacoes
+        self.tabela_mult = tabela_mult
+
+    def _compor(self, p1, p2):
         """Description
         
         Args:
@@ -38,17 +43,16 @@ class ClassesConjugacao:
         """
         return [p1[i] for i in p2]
 
-    @classmethod
-    def gerar_classe_conjugacao(cls, dicionario_perms, tab_mult):
+    def gerar_classe_conjugacao(self):
         """Description
         
         Args:
             dicionario_perms (TYPE): Description
             tab_mult (TYPE): Description
         """
-        nomes = list(dicionario_perms.keys())
-        perms = list(dicionario_perms.values())
-        nome_por_perm = {tuple(p): nome for nome, p in dicionario_perms.items()}
+        nomes = list(self.permutacoes.keys())
+        perms = list(self.permutacoes.values())
+        nome_por_perm = {tuple(p): nome for nome, p in self.permutacoes.items()}
 
         classes = {}
         for i, nome_i in enumerate(nomes):
@@ -57,15 +61,15 @@ class ClassesConjugacao:
             for j, nome_j in enumerate(nomes):
                 pj = perms[j]
                 pj_inv = [pj.index(k) for k in range(len(pj))]
-                comp1 = cls.compor(pj, pi)
-                conj = cls.compor(comp1, pj_inv)
+                comp1 = self._compor(pj, pi)
+                conj = self._compor(comp1, pj_inv)
                 nome_conjugado = nome_por_perm.get(tuple(conj))
                 if nome_conjugado:
                     conj_class.add(nome_conjugado)
             classes[nome_i] = conj_class
 
-        cls.salvar_classes_conjugacao(classes)
-        cls.gerar_operacoes_conjugacao_expandido_v2(dicionario_perms, tab_mult)
+        self.salvar_classes_conjugacao(classes)
+        self.gerar_operacoes_conjugacao_expandido_v2(self.permutacoes, self.tabela_mult)
 
     @staticmethod
     def gerar_operacoes_conjugacao_expandido_v2(dicionario_perms, tabela_mult, destino_tex="analise/registro_classes_expandido.tex"):
