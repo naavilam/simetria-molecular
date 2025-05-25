@@ -22,6 +22,7 @@ from tabela_multiplicacao import TabelaMultiplicacao
 from classe_conjugacao import ClasseConjugacao
 from scipy.spatial.transform import Rotation as R
 from render_pyvista import visualizar_pyvista
+from molecule import Molecule
 
 
 class MoleculeSymmetry:
@@ -59,7 +60,7 @@ class MoleculeSymmetry:
         tab_mult = TabelaMultiplicacao(permutacoes).gerar()
         class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
 
-    def render_symmetry_operation(operation):
+    def render_symmetry_operation(self, operation):
         """Calcula apenas a operacao selecionada e renderiza imagem da molecula 
         antes e depois em modo 3D interativo
         
@@ -70,7 +71,7 @@ class MoleculeSymmetry:
         mol_transformada = self._aplicar_matriz(Rmat)
         comentario = operation.get("comentario", operation.get("nome", "operação sem nome"))
         print(f"Molécula transformada pela operação: {comentario}")
-        for elemento, coord in mol_transformada:
+        for elemento, coord in mol_transformada.como_tuplas():
             x, y, z = coord
             print(f"{elemento} {x:.6f} {y:.6f} {z:.6f}")
         visualizar_pyvista(self.molecule, mol_transformada, f"Operação: {comentario}", destaque=destaque)
@@ -107,7 +108,13 @@ class MoleculeSymmetry:
         Returns:
             TYPE: Description
         """
-        return [(el, Rmat @ np.array(coord)) for el, coord in self.molecule.como_tuplas()]
+        elementos = [el for el, _ in self.molecule.como_tuplas()]
+        coords = [Rmat @ np.array(coord) for _, coord in self.molecule.como_tuplas()]
+        nova = Molecule.__new__(Molecule)
+        nova.elementos = elementos
+        nova.coordenadas = coords
+        return nova
+        # return [(el, Rmat @ np.array(coord)) for el, coord in self.molecule.como_tuplas()]
 
 
     def _aplicar_operacao(self, operacao):

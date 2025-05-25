@@ -52,7 +52,7 @@ def visualizar_pyvista(
         ][:len(molecula)]
 
         # Adiciona cores:
-        for i, (el, coord) in enumerate(molecula):
+        for i, (el, coord) in enumerate(molecula.como_tuplas()):
             cor = cores[i % len(cores)]
             raio = tamanho.get(el, 0.2)
             esfera = pv.Sphere(radius=raio, center=coord)
@@ -65,7 +65,7 @@ def visualizar_pyvista(
         
         # Numera só os vizinhos, pulando o índice 0 (átomo central)
         counter = 1
-        for idx, (elem, coord) in enumerate(molecula):
+        for idx, (elem, coord) in enumerate(molecula.como_tuplas()):
             if idx == 0:
                 continue   # pula o átomo do meio
             plotter.add_point_labels(
@@ -96,8 +96,8 @@ def visualizar_pyvista(
 
 
         # 1. Ligações simples (ex: C–H)
-        for i, (_, c1) in enumerate(molecula):
-            for j, (_, c2) in enumerate(molecula):
+        for i, (_, c1) in enumerate(molecula.como_tuplas()):
+            for j, (_, c2) in enumerate(molecula.como_tuplas()):
                 if i < j:
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     if dist < 1.2:
@@ -105,8 +105,8 @@ def visualizar_pyvista(
                         plotter.add_mesh(linha, color="gray", line_width=3)
 
         # 1. Ligações simples (ex: C–C)
-        for i, (el1, c1) in enumerate(molecula):
-            for j, (el2, c2) in enumerate(molecula):
+        for i, (el1, c1) in enumerate(molecula.como_tuplas()):
+            for j, (el2, c2) in enumerate(molecula.como_tuplas()):
                 if i < j and el1 == 'C' and el2 == 'C':
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     # corte típico para C–C simples ~1.5 Å

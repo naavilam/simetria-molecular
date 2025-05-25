@@ -57,7 +57,8 @@ class MoleculeSymmetryApp:
             return
         else:
             try:
-                return self.group_op[selected - 1]
+                self.selected_op = self.args.op
+                return self.group.get_operacoes()[selected - 1]
             except IndexError:
                 print(f"Operação inválida: {selected}")
                 return None
@@ -71,7 +72,7 @@ class MoleculeSymmetryApp:
         if self.selected_op is None:
             ms.analize_symmetry()
         else:
-            ms.render_symmetry_operation(selected_op)
+            ms.render_symmetry_operation(self.selected_op)
 
 if __name__ == "__main__":
     app = MoleculeSymmetryApp()
