@@ -1,9 +1,4 @@
-"""
-Essa classe recebe coordenadas da molecula e operações de simetria selecionada pelo usuario para ser renderizada.
-1) Le informações dos eixos e planos da operação
-2) Aplica a matriz correspondente às coordenadas da molécula
-3) Chama a biblioteca pyvista para renderizar
-"""
+
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 from render_pyvista import visualizar_pyvista

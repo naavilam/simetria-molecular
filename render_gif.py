@@ -1,3 +1,17 @@
+"""Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos Aplicada para Sólidos e Moléculas.
+Author: Chanah Yocheved Bat Sarah
+Contact: contact@chanah.dev
+Date: 2025-05-24
+License: Custom Attribution License
+
+Copyright (c) 2025 Chanah Yocheved Bat Sarah
+
+Permission is granted to use, copy, modify, and distribute this file,
+provided that this notice is retained in full and that the origin of the
+software is clearly attributed to the original author.
+
+For licensing inquiries: contact@chanah.dev
+"""
 import pyvista as pv
 import imageio.v2 as imageio
 import numpy as np
@@ -6,12 +20,29 @@ import os
 import sys
 
 def ler_xyz(path):
+    """Summary
+    
+    Args:
+        path (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     with open(path) as f:
         linhas = f.readlines()[2:]
     coords = [list(map(float, linha.split()[1:4])) for linha in linhas]
     return np.array(coords)
 
 def rotacao_matriz(eixo, angulo_rad):
+    """Summary
+    
+    Args:
+        eixo (TYPE): Description
+        angulo_rad (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     eixo = eixo / np.linalg.norm(eixo)
     ux, uy, uz = eixo
     cos = np.cos(angulo_rad)
@@ -23,6 +54,17 @@ def rotacao_matriz(eixo, angulo_rad):
     ])
 
 def aplicar_rotacao_interpolada(coords, eixo, angulo_total, steps):
+    """Summary
+    
+    Args:
+        coords (TYPE): Description
+        eixo (TYPE): Description
+        angulo_total (TYPE): Description
+        steps (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     frames = []
     for i in range(steps + 1):
         theta = angulo_total * i / steps
@@ -31,17 +73,39 @@ def aplicar_rotacao_interpolada(coords, eixo, angulo_total, steps):
     return frames
 
 def aplicar_reflexao_interpolada(coords, plano_normal, steps):
+    """Summary
+    
+    Args:
+        coords (TYPE): Description
+        plano_normal (TYPE): Description
+        steps (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     plano_normal = plano_normal / np.linalg.norm(plano_normal)
     refletido = coords - 2 * np.outer(coords @ plano_normal, plano_normal)
     frames = [(1 - alpha) * coords + alpha * refletido for alpha in np.linspace(0, 1, steps + 1)]
     return frames
 
 def desenhar_molecula(plotter, coords, cor='gray'):
+    """Summary
+    
+    Args:
+        plotter (TYPE): Description
+        coords (TYPE): Description
+        cor (str, optional): Description
+    """
     for ponto in coords:
         esfera = pv.Sphere(radius=0.2, center=ponto)
         plotter.add_mesh(esfera, color=cor, show_edges=False)
 
 def main():
+    """Summary
+    
+    Returns:
+        TYPE: Description
+    """
     if len(sys.argv) < 3:
         print("Uso: python script_gif_final.py molecula.xyz operacoes.json")
         return

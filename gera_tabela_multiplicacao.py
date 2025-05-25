@@ -1,14 +1,18 @@
+
 import json
 import re
 import unicodedata
 from pathlib import Path
 
+# Def: compor
 def compor(p1, p2):
     return [p1[i] for i in p2]
 
+# Def: gerar_hash_permutacoes
 def gerar_hash_permutacoes(dicionario_perms):
     return {tuple(p): nome for nome, p in dicionario_perms.items()}
 
+# Def: nome_para_latex
 def nome_para_latex(nome, wrap_math=False):
     nome = nome.replace("'", "^{\\prime}")
     nome = nome.replace("²", "^2")
@@ -27,7 +31,7 @@ def nome_para_latex(nome, wrap_math=False):
 
     return f"${nome}$" if wrap_math else nome
 
-
+# Def: gerar_tabela_multiplicacao
 def gerar_tabela_multiplicacao(dicionario_perms, registro_txt="registro_operacoes.txt", registro_tex="registro_operacoes.tex"):
     nomes = list(dicionario_perms.keys())
     permutacoes = list(dicionario_perms.values())
@@ -61,7 +65,8 @@ def gerar_tabela_multiplicacao(dicionario_perms, registro_txt="registro_operacoe
             latex_i = nome_para_latex(nome_i, wrap_math=False).replace('\\\\', '\\')
             latex_j = nome_para_latex(nome_j, wrap_math=False).replace('\\\\', '\\')
             latex_r = nome_para_latex(nome_resultado, wrap_math=False).replace('\\\\', '\\')
-
+            
+            # Def: perm_str
             def perm_str(v): return "(" + ",".join(str(x + 1) for x in v) + ")"
             registro_tex_linhas.append(
                 f"& {latex_r} = {latex_j} \\circ {latex_i}:\\; \\\\"
@@ -96,12 +101,14 @@ def gerar_tabela_multiplicacao(dicionario_perms, registro_txt="registro_operacoe
     print("Registros de operações de multiplicação gerados: registro_operacoes_multiplicacao.txt e registro_operacoes_multiplicacoes.tex")
     return tabela
 
+# Def: imprimir_tabela_texto
 def imprimir_tabela_texto(nomes, tabela):
     header = "     " + " ".join(f"{nome:>6}" for nome in nomes)
     print(header)
     for nome, linha in zip(nomes, tabela):
         print(f"{nome:>5} " + " ".join(f"{val:>6}" for val in linha))
 
+# Def: gerar_tabela_latex
 def gerar_tabela_latex(nomes, tabela):
     colunas = "|c|" + "c|" * len(nomes)
     linhas = [f"\begin{{tabular}}{{{colunas}}}\hline"]
@@ -111,6 +118,7 @@ def gerar_tabela_latex(nomes, tabela):
     linhas.append("\end{tabular}")
     return "\n".join(linhas)
 
+# Def: gerar_tabela_latex
 def gerar_tabela_latex(nomes, tabela):
     colunas = "c|" + "c" * len(nomes)
     linhas = ["\\begin{tabular}{" + colunas + "}", "\\toprule"]
