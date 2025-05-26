@@ -1,23 +1,84 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Análise de Simetria Molecular</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
-
-    iframe {
-      border: none;
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Grupos e Moléculas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input[type="text"] {
+            width: 250px;
+            padding: 5px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-  <iframe src="https://huggingface.co/spaces/naraavila/simetria-molecular" title="Simetria Molecular"></iframe>
+    <h1>Seleção de Grupos e Moléculas</h1>
+
+    <div class="container">
+        <label for="grupoCristalografico">Grupos Cristalográficos (Hexagonal):</label>
+        <select id="grupoCristalografico">
+            <option value="">Selecione um grupo</option>
+            <option value="C3">C3</option>
+            <option value="C3h">C3h</option>
+            <option value="C3v">C3v</option>
+            <option value="D3">D3</option>
+            <option value="D3h">D3h</option>
+            <option value="D3d">D3d</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <label for="grupoMolecular">Grupos Moleculares:</label>
+        <select id="grupoMolecular">
+            <option value="">Selecione um grupo</option>
+            <option value="Cinfv">C∞v</option>
+            <option value="Dinfh">D∞h</option>
+            <option value="I">I (Icosaédrico)</option>
+            <option value="Ih">Ih (Icosaédrico com inversão)</option>
+            <option value="O">O (Octaédrico)</option>
+            <option value="Oh">Oh (Octaédrico com inversão)</option>
+            <option value="Td">Td (Tetraédrico)</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <label for="molecula">Moléculas:</label>
+        <select id="molecula">
+            <option value="">Selecione uma molécula</option>
+            <option value="benzeno">Benzeno (C6H6)</option>
+            <option value="etano_eclipsado">Etano Eclipsado (C2H6)</option>
+            <option value="etano_estrelado">Etano Estrelado (C2H6)</option>
+            <option value="metano">Metano (CH4)</option>
+            <option value="hexafluoreto_enxofre">Hexafluoreto de Enxofre (SF6)</option>
+            <option value="outro">Outro (especifique)</option>
+        </select>
+        <br>
+        <input type="text" id="outroMolecula" placeholder="Descreva manualmente" style="display:none;">
+    </div>
+
+    <script>
+        const selectMolecula = document.getElementById('molecula');
+        const outroMoleculaInput = document.getElementById('outroMolecula');
+
+        selectMolecula.addEventListener('change', function() {
+            if (this.value === 'outro') {
+                outroMoleculaInput.style.display = 'block';
+            } else {
+                outroMoleculaInput.style.display = 'none';
+                outroMoleculaInput.value = '';
+            }
+        });
+    </script>
 </body>
 </html>
