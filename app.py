@@ -21,6 +21,41 @@ from molecule import Molecule
 from group_symmetry import GroupSymmetry
 from molecule_symmetry import MoleculeSymmetry
 
+import os
+
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+
+# Ativa modo FastAPI
+app = FastAPI()
+
+# Libera CORS para todos os domínios (inclusive seu GitHub Pages)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # ou substitua por ['https://naavilam.github.io'] se quiser restringir
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Endpoint para expor arquivos JSON dos grupos
+@app.get("/api/grupo/{sistema}/{grupo}")
+async def get_grupo(sistema: str, grupo: str):
+    path = f"static/grupos/{sistema}/{grupo}.json"
+    if os.path.exists(path):
+        return FileResponse(path, media_type="application/json")
+    return {"detail": f"Grupo '{grupo}' não encontrado em '{sistema}'"}
+
+# Endpoint para expor arquivos JSON das moléculas
+@app.get("/api/molecula/{nome}")
+async def get_molecula(nome: str):
+    path = f"static/moleculas/{nome}.json"
+    if os.path.exists(path):
+        return FileResponse(path, media_type="application/json")
+    return {"detail": f"Molécula '{nome}' não encontrada"}
+
+
 class MoleculeSymmetryApp:
 
     """Description
@@ -132,41 +167,6 @@ def render(mol_xyz, grupo_json, operacao_id):
 #     else:
 #         launch_interface() # 🌐 Modo Gradio
 
-
-import os
-import sys
-
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
-from fastapi.middleware.cors import CORSMiddleware
-
-# Ativa modo FastAPI
-app = FastAPI()
-
-# Libera CORS para todos os domínios (inclusive seu GitHub Pages)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # ou substitua por ['https://naavilam.github.io'] se quiser restringir
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Endpoint para expor arquivos JSON dos grupos
-@app.get("/api/grupo/{sistema}/{grupo}")
-async def get_grupo(sistema: str, grupo: str):
-    path = f"static/grupos/{sistema}/{grupo}.json"
-    if os.path.exists(path):
-        return FileResponse(path, media_type="application/json")
-    return {"detail": f"Grupo '{grupo}' não encontrado em '{sistema}'"}
-
-# Endpoint para expor arquivos JSON das moléculas
-@app.get("/api/molecula/{nome}")
-async def get_molecula(nome: str):
-    path = f"static/moleculas/{nome}.json"
-    if os.path.exists(path):
-        return FileResponse(path, media_type="application/json")
-    return {"detail": f"Molécula '{nome}' não encontrada"}
 
 
 
