@@ -31,12 +31,12 @@
     </style>
 </head>
 <body>
-    <h1>Seleção de Grupos e Moléculas</h1>
+    <h1>🔬 Análise de Simetria Molecular</h1>
 
     <div class="container">
-        <label for="grupo">Grupos:</label>
+        <h2> <label for="grupo">1. Escolha o Grupo de Simetria</label> </h2>
         <select id="grupoSelect">
-            <option value="">Selecione um grupo</option>
+            <option value="">Selecione um grupo ...</option>
             <optgroup label="Cristalográficos (Hexagonal)">
                 <option value="cristalograficos/Hexagonal/C3h">C3h</option>
                 <option value="cristalograficos/Hexagonal/C6">C6</option>
@@ -93,13 +93,13 @@
                 <option value="outro">Outro (especifique)</option>
             </optgroup>
         </select>
-        <textarea id="grupoOutput" placeholder="Dados do grupo aparecerão aqui"></textarea>
+        <textarea id="grupoOutput" placeholder="Json do grupo ..."></textarea>
     </div>
 
     <div class="container">
-        <label for="molecula">Moléculas:</label>
+        <h1><label for="molecula">2. Escolha a Molécula</label></h1>
         <select id="moleculaSelect">
-            <option value="">Selecione uma molécula</option>
+            <option value="">Selecione uma molécula ...</option>
             <option value="benzeno">Benzeno (C6H6)</option>
             <option value="etano_eclipsado">Etano Eclipsado (C2H6)</option>
             <option value="etano_estrelado">Etano Estrelado (C2H6)</option>
@@ -107,7 +107,7 @@
             <option value="hexafluoreto_enxofre">Hexafluoreto de Enxofre (SF6)</option>
             <option value="outro">Outra (especifique)</option>
         </select>
-        <textarea id="moleculaOutput" placeholder="Dados da molécula aparecerão aqui" readonly ></textarea>
+        <textarea id="moleculaOutput" placeholder="Coordenadas xyz ..." readonly ></textarea>
     </div>
 
     <script>
