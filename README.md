@@ -1,6 +1,6 @@
 ---
 title: Simetria Molecular
-emoji: 🧪
+emoji: 🔬
 colorFrom: indigo
 colorTo: blue
 sdk: docker
