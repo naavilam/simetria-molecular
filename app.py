@@ -20,6 +20,7 @@ import argparse
 from molecule import Molecule
 from group_symmetry import GroupSymmetry
 from molecule_symmetry import MoleculeSymmetry
+from vtkmodules.vtkFiltersSources import vtkCapsuleSource
 
 import os
 
@@ -113,49 +114,49 @@ class MoleculeSymmetryApp:
 #####################################################################################
 #Backend Hugging face
 
-import gradio as gr
+# import gradio as gr
 
-# ========================================
-# 🔹 Interface gráfica (Gradio)
-# ========================================
+# # ========================================
+# # 🔹 Interface gráfica (Gradio)
+# # ========================================
 
-def launch_interface():
-    interface = gr.Interface(
-        fn=render,
-        inputs=[
-            gr.Textbox(label="Molécula (.xyz)", lines=10),
-            gr.Textbox(label="Grupo de simetria (.json)", lines=10),
-            gr.Number(label="Operação #", value=1)
-        ],
-        outputs=gr.HTML(label="Visualização 3D")
-    )
-    interface.launch()
+# def launch_interface():
+#     interface = gr.Interface(
+#         fn=render,
+#         inputs=[
+#             gr.Textbox(label="Molécula (.xyz)", lines=10),
+#             gr.Textbox(label="Grupo de simetria (.json)", lines=10),
+#             gr.Number(label="Operação #", value=1)
+#         ],
+#         outputs=gr.HTML(label="Visualização 3D")
+#     )
+#     interface.launch()
 
 
-# ========================================
-# 🔹 Função usada pela interface Gradio
-# ========================================
-def render(mol_xyz, grupo_json, operacao_id):
-    try:
-        linhas = mol_xyz.strip().splitlines()
-        coords = [list(map(float, linha.split()[1:4])) for linha in linhas[2:]]
-        coords = np.array(coords)
+# # ========================================
+# # 🔹 Função usada pela interface Gradio
+# # ========================================
+# def render(mol_xyz, grupo_json, operacao_id):
+#     try:
+#         linhas = mol_xyz.strip().splitlines()
+#         coords = [list(map(float, linha.split()[1:4])) for linha in linhas[2:]]
+#         coords = np.array(coords)
 
-        grupo = json.loads(grupo_json)
-        op = grupo["operacoes"][int(operacao_id) - 1]
-        eixo = np.array(op["eixo"])
-        angulo = np.deg2rad(op["angulo"])
-        rot = pv.transformations.axis_angle_rotation_matrix(eixo, angulo)
+#         grupo = json.loads(grupo_json)
+#         op = grupo["operacoes"][int(operacao_id) - 1]
+#         eixo = np.array(op["eixo"])
+#         angulo = np.deg2rad(op["angulo"])
+#         rot = pv.transformations.axis_angle_rotation_matrix(eixo, angulo)
 
-        coords_rot = coords @ rot.T
-        p = pv.Plotter(off_screen=True)
-        p.add_points(coords, color="gray")
-        p.add_points(coords_rot, color="blue")
-        html_path = "/tmp/render.html"
-        p.export_html(html_path)
-        return html_path
-    except Exception as e:
-        return f"<pre>{str(e)}</pre>"
+#         coords_rot = coords @ rot.T
+#         p = pv.Plotter(off_screen=True)
+#         p.add_points(coords, color="gray")
+#         p.add_points(coords_rot, color="blue")
+#         html_path = "/tmp/render.html"
+#         p.export_html(html_path)
+#         return html_path
+#     except Exception as e:
+#         return f"<pre>{str(e)}</pre>"
 
 # ========================================
 # 🔹 Fim Gradio

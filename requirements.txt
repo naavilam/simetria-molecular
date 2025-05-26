@@ -2,3 +2,5 @@ gradio
 numpy
 pyvista
 scipy
+uvicorn
+vtk
