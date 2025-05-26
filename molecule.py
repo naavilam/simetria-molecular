@@ -16,6 +16,7 @@
 ====================================================================================================================================================
 """
 
+from types import ClassMethodDescriptorType
 import numpy as np
 
 class Molecule:
@@ -23,32 +24,36 @@ class Molecule:
     """Summary
     """
     
-    def __init__(self, path_arquivo_xyz):
+    def __init__(self, elementos, coordenadas):
         """Summary
         """
-        self.path = path_arquivo_xyz
-        self.elementos = []
-        self.coordenadas = []
-        self._carregar()
+        self.elementos = elementos
+        self.coordenadas = coordenadas
 
-    def _carregar(self):
-        """Summary
-        """
-        with open(self.path, 'r') as f:
+    @classmethod
+    def from_file(cls, path_file):
+        with open(path_file, 'r') as f:
             linhas = f.readlines()
+        elementos, coordenadas = cls._carregar(linhas)
+        return cls(elementos, coordenadas)
 
+    @classmethod
+    def _carregar(cls, linhas):
+        """Summary
+        """
         natomos = int(linhas[0])
         dados = linhas[2:2 + natomos]
 
-        self.elementos = []
-        self.coordenadas = []
+        elementos = []
+        coordenadas = []
 
         for linha in dados:
             partes = linha.split()
             elemento = partes[0]
             coords = np.array(list(map(float, partes[1:4])))
-            self.elementos.append(elemento)
-            self.coordenadas.append(coords)
+            elementos.append(elemento)
+            coordenadas.append(coords)
+        return elementos, coordenadas
 
     def como_tuplas(self):
         return list(zip(self.elementos, self.coordenadas))

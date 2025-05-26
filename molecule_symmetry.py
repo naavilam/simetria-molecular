@@ -39,7 +39,7 @@ class MoleculeSymmetry:
         self.molecule = molecule
         self.group = group
 
-    def analize_symmetry(self):
+    def analize_symmetry_completely(self):
         """Executa a análise de simetria e imprime os resultados.
         """
         print("Operações de simetria disponíveis:")
@@ -59,6 +59,8 @@ class MoleculeSymmetry:
 
         tab_mult = TabelaMultiplicacao(permutacoes).gerar()
         class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
+
+        return permutacoes, tab_mult, class_conj
 
     def render_symmetry_operation(self, operation):
         """Calcula apenas a operacao selecionada e renderiza imagem da molecula 
@@ -89,7 +91,7 @@ class MoleculeSymmetry:
             list: Permutação dos índices.
         """
         permutacao = []
-        for _, coord in transf_coords:
+        for _, coord in transf_coords.como_tuplas():
             for i, (_, ref) in enumerate(orig_coords.como_tuplas()):
                 if np.allclose(coord, ref, atol=tol):
                     permutacao.append(i)

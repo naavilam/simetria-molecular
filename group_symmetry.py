@@ -24,23 +24,28 @@ class GroupSymmetry:
 
     """Summary
     """
-    
-    def __init__(self, path_arquivo_json):
+    def __init__(self, dados):
         """Summary
         """
-        self.path = path_arquivo_json
-        self.dados = self._carregar()
+        self.dados = dados
+
+    @classmethod
+    def from_file(cls, path_json):
+        path = path_json
+        dados = cls._carregar(path_json)
+        return cls(dados=dados)
+
+    @classmethod
+    def _carregar(cls, path_json):
+        """Summary
+        """
+        with open(path_json, "r", encoding="utf-8") as f:
+            return json.load(f)
 
     def get_operacoes(self):
         """Summary
         """
         return self.dados.get("operacoes", [])
-
-    def _carregar(self):
-        """Summary
-        """
-        with open(self.path, "r", encoding="utf-8") as f:
-            return json.load(f)
 
     @staticmethod
     def detalhe_operacao(operacao):

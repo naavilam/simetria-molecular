@@ -24,9 +24,10 @@ from vtkmodules.vtkFiltersSources import vtkCapsuleSource
 
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+import os, shutil, zipfile, uuid, json
 
 # Ativa modo FastAPI
 app = FastAPI()
@@ -39,14 +40,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# @app.get("/api/grupo/{sistema}/{grupo}")
-# async def get_grupo(sistema: str, grupo: str):
-#     path = f"static/grupos/{sistema}/{grupo}.json"
-#     if os.path.exists(path):
-#         return FileResponse(path, media_type="application/json")
-#     return {"detail": f"Grupo '{grupo}' não encontrado em '{sistema}'"}
 
 # Endpoint para expor arquivos JSON dos grupos
 @app.get("/api/grupo/{familia}/{geometria}/{grupo}")
@@ -71,7 +64,72 @@ async def get_molecula(nome: str):
         return FileResponse(path, media_type="text/plain")
     return {"detail": f"Molécula '{nome}' não encontrada"}
 
+@app.post("/api/analise")
+async def analise(
+    molecula: UploadFile = File(...),
+    grupo: UploadFile = File(...)
+):
+    # Criar pasta temporária única
+    temp_id = str(uuid.uuid4())
+    workdir = f"/tmp/analise_{temp_id}"
+    os.makedirs(workdir, exist_ok=True)
 
+    # Salvar arquivos
+    mol_path = os.path.join(workdir, molecula.filename)
+    grupo_path = os.path.join(workdir, grupo.filename)
+
+    with open(mol_path, "wb") as f:
+        f.write(await molecula.read())
+    with open(grupo_path, "wb") as f:
+        f.write(await grupo.read())
+
+    permutacoes, tab_multi, class_conj = MoleculeSymmetryApp.from_files(molecula, grupo).run(selected_op=None)
+    
+    # Aqui entraria a análise real (placeholder por enquanto)
+    resultado = {
+        "permutacoes": permutacoes,
+        "tabela_multiplicacao": tab_multi,
+        "classes_conjugacao": class_conj,
+        "mensagem": "Análise simulada"
+    }
+
+    # Salvar resultado.json
+    resultado_path = os.path.join(workdir, "resultado.json")
+    with open(resultado_path, "w") as f:
+        json.dump(resultado, f, indent=2)
+
+    # Compactar .zip
+    zip_path = f"{workdir}.zip"
+    with zipfile.ZipFile(zip_path, "w") as zipf:
+        zipf.write(mol_path, arcname=molecula.filename)
+        zipf.write(grupo_path, arcname=grupo.filename)
+        zipf.write(resultado_path, arcname="resultado.json")
+
+    return FileResponse(zip_path, filename="analise.zip", media_type="application/zip")
+
+# @app.post("/api/renderizar")
+# async def renderizar(
+#     selected_op: op
+# ):
+#     # Criar pasta temporária única
+#     temp_id = str(uuid.uuid4())
+#     workdir = f"/tmp/analise_{temp_id}"
+#     os.makedirs(workdir, exist_ok=True)
+
+#     # Salvar arquivos
+#     mol_path = os.path.join(workdir, molecula.filename)
+#     grupo_path = os.path.join(workdir, grupo.filename)
+
+#     with open(mol_path, "wb") as f:
+#         f.write(await molecula.read())
+#     with open(grupo_path, "wb") as f:
+#         f.write(await grupo.read())
+
+#     app = MoleculeSymmetryApp.from_files(molecula, grupo).run(selected_op)
+
+    
+
+    
 class MoleculeSymmetryApp:
 
     """Description
@@ -83,105 +141,57 @@ class MoleculeSymmetryApp:
         mol (TYPE): Description
     """
     
-    def __init__(self):
+    def __init__(self, mol, group):
         """Summary
         """
-        self.args = self._read_input_arguments()
-        self.mol = Molecule(self.args.xyz)
-        self.group = GroupSymmetry(self.args.grupo)
-        self.selected_op = self._validate_op(self.args.op)
+        self.mol = mol
+        self.group = group
 
-    def _read_input_arguments(self):
-        """Summary
-        """
-        parser = argparse.ArgumentParser()
-        parser.add_argument("xyz", help="Arquivo .xyz da molécula")
-        parser.add_argument("grupo", help="Arquivo .json com o grupo de simetria")
-        parser.add_argument("--op", type=int, default=None, help="Índice da operação (1-based)")
-        return parser.parse_args()
+    @classmethod
+    def from_files(cls, mol_file, group_file):
+        group = GroupSymmetry.from_file(group_file)
+        mol = Molecule.from_file(mol_file)
+        return cls(mol=mol, group=group)
 
-    def _validate_op(self, selected):
+    def _validate_op(self, selected, group):
         """Valida se a operação inserida é valida
         """
-        if self.args.op is None:
-            self.selected_op = None
+        if selected is None:
             return
         else:
             try:
-                self.selected_op = self.args.op
-                return self.group.get_operacoes()[selected - 1]
+                return group.get_operacoes()[selected - 1]
             except IndexError:
                 print(f"Operação inválida: {selected}")
                 return None
 
-    def _run(self):
+    def run(self, selected_op):
         """Caso tenha escolhido a operação esta é renderizada, 
         caso contrário é feita uma análise completa da simetria
         """
+
+        selected_op = self._validate_op(selected_op, self.group)
+
         ms = MoleculeSymmetry(self.mol, self.group)
-        
-        if self.selected_op is None:
-            ms.analize_symmetry()
+
+        if selected_op is None:
+            return ms.analize_symmetry_completely()
         else:
-            ms.render_symmetry_operation(self.selected_op)
+            ms.render_symmetry_operation(selected_op)
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("xyz", help="Arquivo .xyz da molécula")
+    parser.add_argument("grupo", help="Arquivo .json com o grupo de simetria")
+    parser.add_argument("--op", type=int, default=None, help="Índice da operação (1-based)")
+  
+    args = parser.parse_args()
+    xyz = args.xyz
+    grupo = args.grupo
+    op = args.op
 
-#####################################################################################
-#Backend Hugging face
-
-# import gradio as gr
-
-# # ========================================
-# # 🔹 Interface gráfica (Gradio)
-# # ========================================
-
-# def launch_interface():
-#     interface = gr.Interface(
-#         fn=render,
-#         inputs=[
-#             gr.Textbox(label="Molécula (.xyz)", lines=10),
-#             gr.Textbox(label="Grupo de simetria (.json)", lines=10),
-#             gr.Number(label="Operação #", value=1)
-#         ],
-#         outputs=gr.HTML(label="Visualização 3D")
-#     )
-#     interface.launch()
-
-
-# # ========================================
-# # 🔹 Função usada pela interface Gradio
-# # ========================================
-# def render(mol_xyz, grupo_json, operacao_id):
-#     try:
-#         linhas = mol_xyz.strip().splitlines()
-#         coords = [list(map(float, linha.split()[1:4])) for linha in linhas[2:]]
-#         coords = np.array(coords)
-
-#         grupo = json.loads(grupo_json)
-#         op = grupo["operacoes"][int(operacao_id) - 1]
-#         eixo = np.array(op["eixo"])
-#         angulo = np.deg2rad(op["angulo"])
-#         rot = pv.transformations.axis_angle_rotation_matrix(eixo, angulo)
-
-#         coords_rot = coords @ rot.T
-#         p = pv.Plotter(off_screen=True)
-#         p.add_points(coords, color="gray")
-#         p.add_points(coords_rot, color="blue")
-#         html_path = "/tmp/render.html"
-#         p.export_html(html_path)
-#         return html_path
-#     except Exception as e:
-#         return f"<pre>{str(e)}</pre>"
-
-# ========================================
-# 🔹 Fim Gradio
-# ========================================
-# if __name__ == "__main__":
-#     if len(sys.argv) > 1:
-#         app = MoleculeSymmetryApp()
-#         app._run()
-#     else:
-#         launch_interface() # 🌐 Modo Gradio
+    app = MoleculeSymmetryApp.from_files(xyz, grupo)
+    app.run(op)
 
 
 
