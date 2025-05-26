@@ -40,20 +40,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# @app.get("/api/grupo/{sistema}/{grupo}")
+# async def get_grupo(sistema: str, grupo: str):
+#     path = f"static/grupos/{sistema}/{grupo}.json"
+#     if os.path.exists(path):
+#         return FileResponse(path, media_type="application/json")
+#     return {"detail": f"Grupo '{grupo}' não encontrado em '{sistema}'"}
+
 # Endpoint para expor arquivos JSON dos grupos
-@app.get("/api/grupo/{sistema}/{grupo}")
-async def get_grupo(sistema: str, grupo: str):
-    path = f"static/grupos/{sistema}/{grupo}.json"
+@app.get("/api/grupo/{familia}/{geometria}/{grupo}")
+def get_grupo_cristalografico(familia: str, geometria: str, grupo: str):
+    path = f"static/grupos/{familia}/{geometria}/{grupo}.json"
     if os.path.exists(path):
         return FileResponse(path, media_type="application/json")
-    return {"detail": f"Grupo '{grupo}' não encontrado em '{sistema}'"}
+    return {"detail": f"Grupo '{grupo}.json' não encontrado em '{geometria}'"}
+
+@app.get("/api/grupo/{familia}/{grupo}")
+def get_grupo_molecular(familia: str, grupo: str):
+    path = f"static/grupos/{familia}/{grupo}.json"
+    if os.path.exists(path):
+        return FileResponse(path, media_type="application/json")
+    return {"detail": f"Grupo '{grupo}.json' não encontrado em '{familia}'"}
 
 # Endpoint para expor arquivos JSON das moléculas
 @app.get("/api/molecula/{nome}")
 async def get_molecula(nome: str):
-    path = f"static/moleculas/{nome}.json"
+    path = f"static/moleculas/{nome}.xyz"
     if os.path.exists(path):
-        return FileResponse(path, media_type="application/json")
+        return FileResponse(path, media_type="text/plain")
     return {"detail": f"Molécula '{nome}' não encontrada"}
 
 
