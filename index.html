@@ -15,7 +15,7 @@
         label {
             font-weight: bold;
         }
-        select, input[type="text"], textarea {
+        select, input[type="text"], textarea, button {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
@@ -23,6 +23,10 @@
         }
         textarea {
             height: 150px;
+            display: block;
+        }
+        button {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -70,35 +74,72 @@
     </div>
 
     <script>
-        const baseUrl = 'https://huggingface.co/spaces/naraavila/simetria-moleculargrupos/grupos/';
+        const baseUrlGrupos = 'https://naraavila-simetria-molecular.hf.space/file/static/grupos/';
+        const baseUrlMoleculas = 'https://naraavila-simetria-molecular.hf.space/file/static/moleculas/';
 
-        document.getElementById('grupo').addEventListener('change', function() {
-            const grupoSelecionado = this.value;
-            const output = document.getElementById('grupoOutput');
+        grupoSelect.addEventListener('change', () => {
+            const grupoSelecionado = grupoSelect.value;
             if (grupoSelecionado) {
-                fetch(baseUrl + grupoSelecionado + '.json')
+                fetch(baseUrlGrupos + grupoSelecionado + '.json')
                     .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
-                    .then(data => output.value = JSON.stringify(data, null, 2))
-                    .catch(err => output.value = err);
+                    .then(data => grupoOutput.value = JSON.stringify(data, null, 2))
+                    .catch(err => grupoOutput.value = err);
             } else {
-                output.value = '';
+                grupoOutput.value = '';
             }
         });
 
-        const selectMolecula = document.getElementById('molecula');
+        // function fetchGrupo() {
+        //     const grupoSelecionado = document.getElementById('grupo').value;
+        //     const output = document.getElementById('grupoOutput');
+        //     if (grupoSelecionado) {
+        //         fetch(baseUrlGrupos + grupoSelecionado + '.json')
+        //             .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
+        //             .then(data => output.value = JSON.stringify(data, null, 2))
+        //             .catch(err => output.value = err);
+        //     } else {
+        //         output.value = '';
+        //     }
+        // }
+
+        // function fetchMolecula() {
+        //     const moleculaSelecionada = document.getElementById('molecula').value;
+        //     const outroMoleculaInput = document.getElementById('outroMolecula');
+        //     const moleculaOutput = document.getElementById('moleculaOutput');
+
+        //     if (moleculaSelecionada === 'outro') {
+        //         outroMoleculaInput.style.display = 'block';
+        //         moleculaOutput.value = outroMoleculaInput.value;
+        //     } else {
+        //         outroMoleculaInput.style.display = 'none';
+        //         outroMoleculaInput.value = '';
+
+        //         if (moleculaSelecionada) {
+        //             fetch(baseUrlMoleculas + moleculaSelecionada + '.json')
+        //                 .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
+        //                 .then(data => moleculaOutput.value = JSON.stringify(data, null, 2))
+        //                 .catch(err => moleculaOutput.value = err);
+        //         } else {
+        //             moleculaOutput.value = '';
+        //         }
+        //     }
+
+        const moleculaSelect = document.getElementById('molecula');
         const outroMoleculaInput = document.getElementById('outroMolecula');
         const moleculaOutput = document.getElementById('moleculaOutput');
 
-        selectMolecula.addEventListener('change', function() {
-            if (this.value === 'outro') {
+        moleculaSelect.addEventListener('change', () => {
+            const moleculaSelecionada = moleculaSelect.value;
+
+            if (moleculaSelecionada === 'outro') {
                 outroMoleculaInput.style.display = 'block';
-                moleculaOutput.value = '';
+                moleculaOutput.value = outroMoleculaInput.value;
             } else {
                 outroMoleculaInput.style.display = 'none';
                 outroMoleculaInput.value = '';
 
-                if (this.value) {
-                    fetch(baseUrl + 'moleculas/' + this.value + '.json')
+                if (moleculaSelecionada) {
+                    fetch(baseUrlMoleculas + moleculaSelecionada + '.json')
                         .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
                         .then(data => moleculaOutput.value = JSON.stringify(data, null, 2))
                         .catch(err => moleculaOutput.value = err);
@@ -107,6 +148,7 @@
                 }
             }
         });
+        
     </script>
 </body>
 </html>
