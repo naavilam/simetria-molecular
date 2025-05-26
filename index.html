@@ -15,10 +15,14 @@
         label {
             font-weight: bold;
         }
-        select, input[type="text"] {
-            width: 250px;
+        select, input[type="text"], textarea {
+            width: 100%;
             padding: 5px;
             margin-top: 5px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
         }
     </style>
 </head>
@@ -26,30 +30,28 @@
     <h1>Seleção de Grupos e Moléculas</h1>
 
     <div class="container">
-        <label for="grupoCristalografico">Grupos Cristalográficos (Hexagonal):</label>
-        <select id="grupoCristalografico">
+        <label for="grupo">Grupos:</label>
+        <select id="grupo">
             <option value="">Selecione um grupo</option>
-            <option value="C3">C3</option>
-            <option value="C3h">C3h</option>
-            <option value="C3v">C3v</option>
-            <option value="D3">D3</option>
-            <option value="D3h">D3h</option>
-            <option value="D3d">D3d</option>
+            <optgroup label="Cristalográficos (Hexagonal)">
+                <option value="Hexagonal/C3">C3</option>
+                <option value="Hexagonal/C3h">C3h</option>
+                <option value="Hexagonal/C3v">C3v</option>
+                <option value="Hexagonal/D3">D3</option>
+                <option value="Hexagonal/D3h">D3h</option>
+                <option value="Hexagonal/D3d">D3d</option>
+            </optgroup>
+            <optgroup label="Moleculares">
+                <option value="Moleculares/Cinfv">C∞v</option>
+                <option value="Moleculares/Dinfh">D∞h</option>
+                <option value="Moleculares/I">I (Icosaédrico)</option>
+                <option value="Moleculares/Ih">Ih (Icosaédrico com inversão)</option>
+                <option value="Moleculares/O">O (Octaédrico)</option>
+                <option value="Moleculares/Oh">Oh (Octaédrico com inversão)</option>
+                <option value="Moleculares/Td">Td (Tetraédrico)</option>
+            </optgroup>
         </select>
-    </div>
-
-    <div class="container">
-        <label for="grupoMolecular">Grupos Moleculares:</label>
-        <select id="grupoMolecular">
-            <option value="">Selecione um grupo</option>
-            <option value="Cinfv">C∞v</option>
-            <option value="Dinfh">D∞h</option>
-            <option value="I">I (Icosaédrico)</option>
-            <option value="Ih">Ih (Icosaédrico com inversão)</option>
-            <option value="O">O (Octaédrico)</option>
-            <option value="Oh">Oh (Octaédrico com inversão)</option>
-            <option value="Td">Td (Tetraédrico)</option>
-        </select>
+        <textarea id="grupoOutput" placeholder="Dados do grupo aparecerão aqui"></textarea>
     </div>
 
     <div class="container">
@@ -63,20 +65,46 @@
             <option value="hexafluoreto_enxofre">Hexafluoreto de Enxofre (SF6)</option>
             <option value="outro">Outro (especifique)</option>
         </select>
-        <br>
         <input type="text" id="outroMolecula" placeholder="Descreva manualmente" style="display:none;">
+        <textarea id="moleculaOutput" placeholder="Dados da molécula aparecerão aqui"></textarea>
     </div>
 
     <script>
+        const baseUrl = 'https://huggingface.co/spaces/naraavila/simetria-moleculargrupos/grupos/';
+
+        document.getElementById('grupo').addEventListener('change', function() {
+            const grupoSelecionado = this.value;
+            const output = document.getElementById('grupoOutput');
+            if (grupoSelecionado) {
+                fetch(baseUrl + grupoSelecionado + '.json')
+                    .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
+                    .then(data => output.value = JSON.stringify(data, null, 2))
+                    .catch(err => output.value = err);
+            } else {
+                output.value = '';
+            }
+        });
+
         const selectMolecula = document.getElementById('molecula');
         const outroMoleculaInput = document.getElementById('outroMolecula');
+        const moleculaOutput = document.getElementById('moleculaOutput');
 
         selectMolecula.addEventListener('change', function() {
             if (this.value === 'outro') {
                 outroMoleculaInput.style.display = 'block';
+                moleculaOutput.value = '';
             } else {
                 outroMoleculaInput.style.display = 'none';
                 outroMoleculaInput.value = '';
+
+                if (this.value) {
+                    fetch(baseUrl + 'moleculas/' + this.value + '.json')
+                        .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
+                        .then(data => moleculaOutput.value = JSON.stringify(data, null, 2))
+                        .catch(err => moleculaOutput.value = err);
+                } else {
+                    moleculaOutput.value = '';
+                }
             }
         });
     </script>
