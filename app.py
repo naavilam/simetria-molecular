@@ -15,7 +15,7 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
-
+import sys
 import argparse
 from molecule import Molecule
 from group_symmetry import GroupSymmetry
