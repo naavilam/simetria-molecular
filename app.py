@@ -75,5 +75,74 @@ class MoleculeSymmetryApp:
             ms.render_symmetry_operation(self.selected_op)
 
 if __name__ == "__main__":
-    app = MoleculeSymmetryApp()
-    app._run()
+    if len(sys.argv) > 1:
+        app = MoleculeSymmetryApp()
+        app._run()
+    else:
+        launch_interface() # 🌐 Modo Gradio
+
+
+#####################################################################################
+#Backend Hugging face
+
+import gradio as gr
+
+
+# ========================================
+# 🔹 Função usada pela interface Gradio
+# ========================================
+def render(mol_xyz, grupo_json, operacao_id):
+    try:
+        linhas = mol_xyz.strip().splitlines()
+        coords = [list(map(float, linha.split()[1:4])) for linha in linhas[2:]]
+        coords = np.array(coords)
+
+        grupo = json.loads(grupo_json)
+        op = grupo["operacoes"][int(operacao_id) - 1]
+        eixo = np.array(op["eixo"])
+        angulo = np.deg2rad(op["angulo"])
+        rot = pv.transformations.axis_angle_rotation_matrix(eixo, angulo)
+
+        coords_rot = coords @ rot.T
+        p = pv.Plotter(off_screen=True)
+        p.add_points(coords, color="gray")
+        p.add_points(coords_rot, color="blue")
+        html_path = "/tmp/render.html"
+        p.export_html(html_path)
+        return html_path
+    except Exception as e:
+        return f"<pre>{str(e)}</pre>"
+
+# ========================================
+# 🔹 Interface gráfica (Gradio)
+# ========================================
+def launch_interface():
+    interface = gr.Interface(
+        fn=render,
+        inputs=[
+            gr.Textbox(label="Molécula (.xyz)", lines=10),
+            gr.Textbox(label="Grupo de simetria (.json)", lines=10),
+            gr.Number(label="Operação #", value=1)
+        ],
+        outputs=gr.HTML(label="Visualização 3D")
+    )
+    interface.launch()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
