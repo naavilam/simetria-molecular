@@ -35,24 +35,62 @@
 
     <div class="container">
         <label for="grupo">Grupos:</label>
-        <select id="grupo">
+        <select id="grupoSelect">
             <option value="">Selecione um grupo</option>
             <optgroup label="Cristalográficos (Hexagonal)">
-                <option value="Hexagonal/C3">C3</option>
-                <option value="Hexagonal/C3h">C3h</option>
-                <option value="Hexagonal/C3v">C3v</option>
-                <option value="Hexagonal/D3">D3</option>
-                <option value="Hexagonal/D3h">D3h</option>
-                <option value="Hexagonal/D3d">D3d</option>
+                <option value="cristalograficos/Hexagonal/C3h">C3h</option>
+                <option value="cristalograficos/Hexagonal/C6">C6</option>
+                <option value="cristalograficos/Hexagonal/C6h">C6h</option>
+                <option value="cristalograficos/Hexagonal/C6v">C6v</option>
+                <option value="cristalograficos/Hexagonal/D3h">D3h</option>
+                <option value="cristalograficos/Hexagonal/D6">D6</option>
+                <option value="cristalograficos/Hexagonal/D6h">D6h</option>
+            </optgroup>
+            <optgroup label="Cristalográficos (Monoclinico)">
+                <option value="cristalograficos/Monoclinico/C2">C2</option>
+                <option value="cristalograficos/Monoclinico/C2h">C2h</option>
+                <option value="cristalograficos/Monoclinico/Cs">Cs</option>
+            </optgroup>
+            <optgroup label="Cristalográficos (Ortorrombico)">
+                <option value="cristalograficos/Ortorrombico/C2v">C2v</option>
+                <option value="cristalograficos/Ortorrombico/D2">D2</option>
+                <option value="cristalograficos/Ortorrombico/D2h">D2h</option>
+            </optgroup>
+            <optgroup label="Cristalográficos (Tetragonal)">
+                <option value="cristalograficos/Tetragonal/C4">C4</option>
+                <option value="cristalograficos/Tetragonal/C4h">C4h</option>
+                <option value="cristalograficos/Tetragonal/C4v">C4v</option>
+                <option value="cristalograficos/Tetragonal/D2d">D2d</option>
+                <option value="cristalograficos/Tetragonal/D4">D4</option>
+                <option value="cristalograficos/Tetragonal/D4h">D4h</option>
+                <option value="cristalograficos/Tetragonal/S4">S4</option>
+            </optgroup>
+            <optgroup label="Cristalográficos (Triclinico)">
+                <option value="cristalograficos/Triclinico/C1">C1</option>
+                <option value="cristalograficos/Triclinico/Ci">Ci</option>
+            </optgroup>
+            <optgroup label="Cristalográficos (Trigonal)">
+                <option value="cristalograficos/Trigonal/C3">C3</option>
+                <option value="cristalograficos/Trigonal/C3v">C3v</option>
+                <option value="cristalograficos/Trigonal/D3">D3</option>
+                <option value="cristalograficos/Trigonal/D3d">D3d</option>
+                <option value="cristalograficos/Trigonal/S6">S6</option>
             </optgroup>
             <optgroup label="Moleculares">
-                <option value="Moleculares/Cinfv">C∞v</option>
-                <option value="Moleculares/Dinfh">D∞h</option>
-                <option value="Moleculares/I">I (Icosaédrico)</option>
-                <option value="Moleculares/Ih">Ih (Icosaédrico com inversão)</option>
-                <option value="Moleculares/O">O (Octaédrico)</option>
-                <option value="Moleculares/Oh">Oh (Octaédrico com inversão)</option>
-                <option value="Moleculares/Td">Td (Tetraédrico)</option>
+                <option value="moleculares/C3v">C3v</option>
+                <option value="moleculares/C4h">C4h</option>
+                <option value="moleculares/C5">C5</option>
+                <option value="moleculares/C5h">C5h</option>
+                <option value="moleculares/C5v">C5v</option>
+                <option value="moleculares/Cinfv">C∞v</option>
+                <option value="moleculares/Dinfh">D∞h</option>
+                <option value="moleculares/D3d">D3d</option>
+                <option value="moleculares/D5">D5</option>
+                <option value="moleculares/D5h">D5h</option>
+                <option value="moleculares/I">I</option>
+                <option value="moleculares/Ih">Ih</option>
+                <option value="moleculares/S8">S8</option>
+                <option value="outro">Outro (especifique)</option>
             </optgroup>
         </select>
         <textarea id="grupoOutput" placeholder="Dados do grupo aparecerão aqui"></textarea>
@@ -60,95 +98,68 @@
 
     <div class="container">
         <label for="molecula">Moléculas:</label>
-        <select id="molecula">
+        <select id="moleculaSelect">
             <option value="">Selecione uma molécula</option>
             <option value="benzeno">Benzeno (C6H6)</option>
             <option value="etano_eclipsado">Etano Eclipsado (C2H6)</option>
             <option value="etano_estrelado">Etano Estrelado (C2H6)</option>
             <option value="metano">Metano (CH4)</option>
             <option value="hexafluoreto_enxofre">Hexafluoreto de Enxofre (SF6)</option>
-            <option value="outro">Outro (especifique)</option>
+            <option value="outro">Outra (especifique)</option>
         </select>
-        <input type="text" id="outroMolecula" placeholder="Descreva manualmente" style="display:none;">
-        <textarea id="moleculaOutput" placeholder="Dados da molécula aparecerão aqui"></textarea>
+        <textarea id="moleculaOutput" placeholder="Dados da molécula aparecerão aqui" readonly ></textarea>
     </div>
 
     <script>
-        const baseUrlGrupos = 'https://naraavila-simetria-molecular.hf.space/file/static/grupos/';
-        const baseUrlMoleculas = 'https://naraavila-simetria-molecular.hf.space/file/static/moleculas/';
+        const baseUrlGrupos = 'https://naraavila-simetria-molecular.hf.space/api/grupo/';
+        const baseUrlMoleculas = 'https://naraavila-simetria-molecular.hf.space/api/molecula/';
+
+        // const baseUrlGrupos = 'http://localhost:7860/api/grupo/';
+        // const baseUrlMoleculas = 'http://localhost:7860/api/molecula/';
+
 
         grupoSelect.addEventListener('change', () => {
+
+
             const grupoSelecionado = grupoSelect.value;
-            if (grupoSelecionado) {
-                fetch(baseUrlGrupos + grupoSelecionado + '.json')
-                    .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
-                    .then(data => grupoOutput.value = JSON.stringify(data, null, 2))
-                    .catch(err => grupoOutput.value = err);
+            if (grupoSelecionado === 'outro') {
+                grupoOutput.readOnly = false;
+                grupoOutput.value = "";
             } else {
-                grupoOutput.value = '';
+                if (grupoSelecionado) {
+                    fetch(baseUrlGrupos + grupoSelecionado)
+                        .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
+                        .then(data => grupoOutput.value = JSON.stringify(data, null, 2))
+                        .catch(err => grupoOutput.value = err);
+                    grupoOutput.readOnly = true;   
+                } else {
+                    grupoOutput.value = '';
+                }
             }
         });
 
-        // function fetchGrupo() {
-        //     const grupoSelecionado = document.getElementById('grupo').value;
-        //     const output = document.getElementById('grupoOutput');
-        //     if (grupoSelecionado) {
-        //         fetch(baseUrlGrupos + grupoSelecionado + '.json')
-        //             .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
-        //             .then(data => output.value = JSON.stringify(data, null, 2))
-        //             .catch(err => output.value = err);
-        //     } else {
-        //         output.value = '';
-        //     }
-        // }
 
-        // function fetchMolecula() {
-        //     const moleculaSelecionada = document.getElementById('molecula').value;
-        //     const outroMoleculaInput = document.getElementById('outroMolecula');
-        //     const moleculaOutput = document.getElementById('moleculaOutput');
-
-        //     if (moleculaSelecionada === 'outro') {
-        //         outroMoleculaInput.style.display = 'block';
-        //         moleculaOutput.value = outroMoleculaInput.value;
-        //     } else {
-        //         outroMoleculaInput.style.display = 'none';
-        //         outroMoleculaInput.value = '';
-
-        //         if (moleculaSelecionada) {
-        //             fetch(baseUrlMoleculas + moleculaSelecionada + '.json')
-        //                 .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
-        //                 .then(data => moleculaOutput.value = JSON.stringify(data, null, 2))
-        //                 .catch(err => moleculaOutput.value = err);
-        //         } else {
-        //             moleculaOutput.value = '';
-        //         }
-        //     }
-
-        const moleculaSelect = document.getElementById('molecula');
-        const outroMoleculaInput = document.getElementById('outroMolecula');
         const moleculaOutput = document.getElementById('moleculaOutput');
 
         moleculaSelect.addEventListener('change', () => {
             const moleculaSelecionada = moleculaSelect.value;
-
             if (moleculaSelecionada === 'outro') {
-                outroMoleculaInput.style.display = 'block';
-                moleculaOutput.value = outroMoleculaInput.value;
+                moleculaOutput.readOnly = false;
+                moleculaOutput.value = "";
             } else {
-                outroMoleculaInput.style.display = 'none';
-                outroMoleculaInput.value = '';
-
                 if (moleculaSelecionada) {
-                    fetch(baseUrlMoleculas + moleculaSelecionada + '.json')
-                        .then(response => response.ok ? response.json() : Promise.reject('Erro ao carregar o JSON'))
-                        .then(data => moleculaOutput.value = JSON.stringify(data, null, 2))
+                    fetch(baseUrlMoleculas + moleculaSelecionada)
+                        .then(response => response.ok ? response.text() : Promise.reject('Erro ao carregar o XYZ'))
+                        .then(data => moleculaOutput.value = data)
                         .catch(err => moleculaOutput.value = err);
+                    moleculaOutput.readOnly = true;
                 } else {
                     moleculaOutput.value = '';
                 }
             }
         });
-        
+
+
     </script>
 </body>
 </html>
