@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simetria Molecular</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      max-width: 960px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      font-family: monospace;
+      margin-bottom: 1rem;
+    }
+    select, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔬 Análise de Simetria Molecular</h1>
+
+  <section>
+    <h2>1. Escolha o Grupo de Simetria</h2>
+    <select id="grupoSelect">
+      <option value="">Selecione um grupo...</option>
+      <option value="D3h">D3h</option>
+      <option value="C2v">C2v</option>
+      <!-- mais grupos -->
+    </select>
+    <textarea id="grupoEditor" placeholder="JSON do grupo..."></textarea>
+  </section>
+
+  <section>
+    <h2>2. Escolha a Molécula</h2>
+    <select id="molSelect">
+      <option value="">Selecione uma molécula...</option>
+      <option value="etano_eclipsado">Etano Eclipsado</option>
+      <option value="agua">Água</option>
+      <!-- mais moleculas -->
+    </select>
+    <textarea id="molEditor" placeholder="Coordenadas XYZ..."></textarea>
+  </section>
+
+  <section>
+    <h2>3. Ações</h2>
+    <button onclick="analisarSimetria()">📦 Analisar Simetria (ZIP)</button>
+    <button onclick="renderizarOperacao()">🧿 Renderizar Operação</button>
+    <select id="opSelect">
+      <option value="">Escolha a operação...</option>
+    </select>
+  </section>
+
+  <section>
+    <h2>Resultado:</h2>
+    <div id="resultado"></div>
+    <canvas id="renderCanvas" width="600" height="400" style="border: 1px solid #ccc;"></canvas>
+  </section>
+
+  <script>
+    function analisarSimetria() {
+      alert("[Analisar] ainda não implementado");
+    }
+
+    function renderizarOperacao() {
+      alert("[Renderizar] ainda não implementado");
+    }
+  </script>
+</body>
+</html>
