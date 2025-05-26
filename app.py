@@ -74,18 +74,27 @@ class MoleculeSymmetryApp:
         else:
             ms.render_symmetry_operation(self.selected_op)
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        app = MoleculeSymmetryApp()
-        app._run()
-    else:
-        launch_interface() # 🌐 Modo Gradio
-
 
 #####################################################################################
 #Backend Hugging face
 
 import gradio as gr
+
+# ========================================
+# 🔹 Interface gráfica (Gradio)
+# ========================================
+
+def launch_interface():
+    interface = gr.Interface(
+        fn=render,
+        inputs=[
+            gr.Textbox(label="Molécula (.xyz)", lines=10),
+            gr.Textbox(label="Grupo de simetria (.json)", lines=10),
+            gr.Number(label="Operação #", value=1)
+        ],
+        outputs=gr.HTML(label="Visualização 3D")
+    )
+    interface.launch()
 
 
 # ========================================
@@ -114,25 +123,14 @@ def render(mol_xyz, grupo_json, operacao_id):
         return f"<pre>{str(e)}</pre>"
 
 # ========================================
-# 🔹 Interface gráfica (Gradio)
+# 🔹 Fim Gradio
 # ========================================
-def launch_interface():
-    interface = gr.Interface(
-        fn=render,
-        inputs=[
-            gr.Textbox(label="Molécula (.xyz)", lines=10),
-            gr.Textbox(label="Grupo de simetria (.json)", lines=10),
-            gr.Number(label="Operação #", value=1)
-        ],
-        outputs=gr.HTML(label="Visualização 3D")
-    )
-    interface.launch()
-
-
-
-
-
-
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        app = MoleculeSymmetryApp()
+        app._run()
+    else:
+        launch_interface() # 🌐 Modo Gradio
 
 
 
