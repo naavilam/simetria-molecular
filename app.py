@@ -71,8 +71,12 @@ async def get_molecula(nome: str):
 @app.post("/api/analise")
 async def analise(
     molecula: UploadFile = File(...),
-    grupo: UploadFile = File(...)
+    grupo: UploadFile = File(...),
+    payload: str = Form(...)
 ):
+    # Decodifica o JSON
+    data = AnaliseRequest.parse_raw(payload)
+
     # Criar pasta temporária única
     temp_id = str(uuid.uuid4())
     workdir = f"/tmp/analise_{temp_id}"
@@ -107,26 +111,6 @@ async def analise(
         f.write(conteudo_texto)
 
     return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
-
-# @app.post("/api/renderizar")
-# async def renderizar(
-#     selected_op: op
-# ):
-#     # Criar pasta temporária única
-#     temp_id = str(uuid.uuid4())
-#     workdir = f"/tmp/analise_{temp_id}"
-#     os.makedirs(workdir, exist_ok=True)
-
-#     # Salvar arquivos
-#     mol_path = os.path.join(workdir, molecula.filename)
-#     grupo_path = os.path.join(workdir, grupo.filename)
-
-#     with open(mol_path, "wb") as f:
-#         f.write(await molecula.read())
-#     with open(grupo_path, "wb") as f:
-#         f.write(await grupo.read())
-
-#     app = MoleculeSymmetryApp.from_files(molecula, grupo).run(selected_op)
 
 class MoleculeSymmetryApp:
 
@@ -181,16 +165,6 @@ class MoleculeSymmetryApp:
             return ""
 
 
-        # sym_analyzer = SymmetryAnalyser(self.mol, self.group)
-
-        # if selected_op is None:
-        #     return sym_analyzer.run_analysis()
-        # else:
-        #     selected_op = self._get_op(selected_op, self.group)
-        #     sym_visualizer = SymmetryVisualizer(self.mol, )
-        #     return sym_visualizer.render(selected_op)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("xyz", help="Arquivo .xyz da molécula")
@@ -217,4 +191,3 @@ if __name__ == "__main__":
     #         f.write(conteudo_latex)
 
     #     print("Arquivo 'analise_terminal.tex' gerado com sucesso!")
-
