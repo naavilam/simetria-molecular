@@ -19,7 +19,7 @@
 from enum import nonmember
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from core.operation import Operation
+# from core.operation import Operation
 import json
 
 class Group:
