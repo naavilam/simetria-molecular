@@ -20,19 +20,17 @@ import sys
 import argparse
 
 from numpy import select
-from core.molecule import Molecule
-from core.group import Group
-from engine.symmetry_analyser import SymmetryAnalyser
-from engine.symmetry_visualizer import SymmetryVisualizer
+from core.core_molecula import Molecule
+from core.core_grupo import Group
+from engine.engine_symmetry_analyser import SymmetryAnalyzer
 from vtkmodules.vtkFiltersSources import vtkCapsuleSource
-from core.operation import Operation
 from representation_strategy_builder import RepresentationType
 
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os, shutil, zipfile, uuid, json
-from analise.analise_tipo import AnaliseTipo
+from analysis.analise_tipo import AnaliseTipo
 from render.render_tipo import RenderTipo
 
 # Ativa modo FastAPI
@@ -89,8 +87,12 @@ async def analise(
     with open(grupo_path, "wb") as f:
         f.write(await grupo.read())
 
-    conteudo_latex = MoleculeSymmetryApp.from_files(mol_path, grupo_path).run(selected_op=None)
+    # tipos textuais para dowload: texto ou latex
+    conteudo_texto = MoleculeSymmetryApp.from_files(mol_path, grupo_path).run(selected_op=None)
     
+    # tipos gráficos para renderizar: gif ou 3D
+
+
     # Nomeia arquivo latex de resposta
     nome_base = molecula.filename.rsplit(".", 1)[0]
     if nome_base.lower() in ["outro", "outro.xyz", "personalizado"]:
@@ -102,7 +104,7 @@ async def analise(
     tex_path = os.path.join(workdir, nome_tex)
 
     with open(tex_path, "w") as f:
-        f.write(conteudo_latex)
+        f.write(conteudo_texto)
 
     return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
 
@@ -176,6 +178,7 @@ class MoleculeSymmetryApp:
 
             return symmetry_analysis
         else:
+            return ""
 
 
         # sym_analyzer = SymmetryAnalyser(self.mol, self.group)

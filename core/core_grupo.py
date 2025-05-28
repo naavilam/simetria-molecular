@@ -49,8 +49,7 @@ class Group:
 
         nome = dados.get("nome")
         ordem = dados.get("ordem")
-        operacoes_raw = dados.get("operacoes", [])
-        operacoes = [Operation.from_dict(op_dict) for op_dict in operacoes_raw]
+        operacoes = dados.get("operacoes")
         tolerancia = dados.get("tolerancia")
 
         # Tentar inferir sistema a partir do caminho

@@ -18,13 +18,13 @@
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
-from representation.representation_item_interface import Representation
+from representation.representation_interface import Representation
 from representation.representation_type import RepresentationType
 from enum import Enum
 
 if TYPE_CHECKING:
-    from core.group import Group
-    from core.molecule import Molecule
+    from core.core_grupo import Group
+    from core.core_molecula import Molecule
 
 
 class RepresentationStrategyBuilder(ABC):
@@ -35,7 +35,6 @@ class RepresentationStrategyBuilder(ABC):
         """Gera uma representação baseada no grupo e na molécula."""
         ...
 
-class RepresentationStrategyBuilder:
     @staticmethod
     def get(tipo: RepresentationType):
         if tipo == RepresentationType.PERMUTATION:
@@ -45,28 +44,5 @@ class RepresentationStrategyBuilder:
         else:
             raise ValueError(f"Representação desconhecida: {tipo}")
 
-class PermutationRepresentationStrategy(RepresentationStrategy):
-    """Estratégia de construção de representação como permutações (1D)."""
-
-    def construir(self, group: 'Group', molecule: 'Molecule') -> Representation:
-        representation = Representation(group.nome)
-        for operacao in group.operacoes:
-            nome = operacao.nome
-            matriz = operacao.matriz()
-            mol_transformada = matriz @ molecule  # operador @ implementado na classe Molecule
-            permutacao = Permutation.from_coords(molecule, mol_transformada, tol=group.tolerancia)
-            representation.adicionar(nome, permutacao.indices)
-        return representation
 
 
-class Matrix3DRepresentationStrategy(RepresentationStrategy):
-    """
-    Implementa a estratégia de representação matricial 3D (rotacional) para cada operação do grupo.
-    """
-    def construir(self, group: 'GroupSymmetry', molecule: 'Molecule') -> Representation:
-        representation = Representation(group.nome)
-        for operacao in group.operacoes:
-            nome = operacao.nome
-            matriz = operacao.matriz()
-            representation.adicionar(nome, matriz)
-        return representation

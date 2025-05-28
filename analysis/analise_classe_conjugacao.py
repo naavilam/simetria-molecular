@@ -24,7 +24,7 @@ from representation.representation import Representation
 
 # conjugacy_class.py
 
-class ConjugacyClass:
+class ClasseConjugacao:
     def __init__(self, representation: Representation, mult_table: dict):
         self.rep = representation
         self.tab = mult_table

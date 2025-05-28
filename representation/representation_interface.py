@@ -21,15 +21,15 @@ from abc import ABC, abstractmethod
 # ---------------------------------------------------------------------
 # Interface de Item de Representação (Contrato de permutação, matriz, etc)
 # ---------------------------------------------------------------------
-class RepresentationItem(ABC):
+class Representation(ABC):
     @abstractmethod
-    def compose(self, other: "RepresentationItem") -> "RepresentationItem":
+    def compose(self, other: "Representation") -> "Representation":
         pass
 
     @abstractmethod
-    def inverse(self) -> "RepresentationItem":
+    def inverse(self) -> "Representation":
         pass
 
     @abstractmethod
-    def equals(self, other: "RepresentationItem") -> bool:
+    def equals(self, other: "Representation") -> bool:
         pass

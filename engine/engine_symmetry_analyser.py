@@ -18,19 +18,17 @@
 # symmetry_analyzer.py
 import numpy as np
 from time import perf_counter
-from analysis.tabela_multiplicacao import TabelaMultiplicacao
-from analysis.classe_conjugacao import ClasseConjugacao
-from analysis.permutations import Permutations
-from core.molecule import Molecule
-from core.operation import Operation
-from render.latex import LatexReportGenerator
-from render.pyvista import PyvistaVisualizer
+from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
+from analysis.analise_classe_conjugacao import ClasseConjugacao
+from core.core_molecula import Molecule
+from render.render_latex import LatexReportGenerator
+from render.render_3D import PyvistaVisualizer
 from representation.representation_strategy_builder import RepresentationStrategyBuilder,RepresentationType 
 
 from representations.strategy_builder import RepresentationStrategyBuilder, RepresentationType
 from representations.representation import Representation
-from group import Group
-from molecule import Molecule
+from core.core_grupo import Group
+
 
 class SymmetryAnalyzer:
 
@@ -63,26 +61,24 @@ class SymmetryAnalyzer:
         # suponha que você já criou a representação usando a estratégia
         representation = strategy.construir(grupo, molecula)
 
-        # tabela de multiplicação
-        tabela = MultiplicationTable(representation).gerar()
+        # # tabela de multiplicação
+        # tabela = MultiplicationTable(representation).gerar()
 
-        # classes de conjugação
-        classes = ConjugacyClass(representation, tabela).gerar()
-        
-
+        # # classes de conjugação
+        # classes = ConjugacyClass(representation, tabela).gerar()
         # permutacoes = Permutations(self.molecule, self.group.operacoes, self.group.tolerancia).run_permutacoes()
         # print(permutacoes)
         # tab_mult = TabelaMultiplicacao(permutacoes).gerar()
         # class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
 
         tempo = perf_counter() - inicio
-
-        return {
-            "permutacoes": permutacoes,
-            "tabela": tab_mult,
-            "classes": class_conj,
-            "tempo_execucao": f"{tempo:.2f}s"
-        }
+        return 0
+        # return {
+        #     "permutacoes": permutacoes,
+        #     "tabela": tab_mult,
+        #     "classes": class_conj,
+        #     "tempo_execucao": f"{tempo:.2f}s"
+        # }
 
     def render(self, formato="latex") -> str:
         if formato == "latex":

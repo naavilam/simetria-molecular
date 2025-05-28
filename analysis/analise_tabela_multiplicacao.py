@@ -19,10 +19,9 @@
 import json
 import re
 from pathlib import Path
-from analysis.permutations import Permutation
+from representation.representation_interface import Representation
 
-
-class MultiplicationTable:
+class TabelaMultiplicacao:
     def __init__(self, representation: Representation):
         self.rep = representation
         self.tabela = {}
