@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
+**                                                                Date: 2025-05-27                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -16,47 +16,20 @@
 ====================================================================================================================================================
 """
 
-from types import ClassMethodDescriptorType
-import numpy as np
+from abc import ABC, abstractmethod
 
-class Molecule:
+# ---------------------------------------------------------------------
+# Interface de Item de Representação (Contrato de permutação, matriz, etc)
+# ---------------------------------------------------------------------
+class RepresentationItem(ABC):
+    @abstractmethod
+    def compose(self, other: "RepresentationItem") -> "RepresentationItem":
+        pass
 
-    """Summary
-    """
-    
-    def __init__(self, elementos, coordenadas):
-        """Summary
-        """
-        self.elementos = elementos
-        self.coordenadas = coordenadas
+    @abstractmethod
+    def inverse(self) -> "RepresentationItem":
+        pass
 
-    @classmethod
-    def from_file(cls, path_file):
-        with open(path_file, 'r') as f:
-            linhas = f.readlines()
-        elementos, coordenadas = cls._carregar(linhas)
-        return cls(elementos, coordenadas)
-
-    @classmethod
-    def _carregar(cls, linhas):
-        """Summary
-        """
-        natomos = int(linhas[0])
-        dados = linhas[2:2 + natomos]
-
-        elementos = []
-        coordenadas = []
-
-        for linha in dados:
-            partes = linha.split()
-            elemento = partes[0]
-            coords = np.array(list(map(float, partes[1:4])))
-            elementos.append(elemento)
-            coordenadas.append(coords)
-        return elementos, coordenadas
-
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
-
-    def __len__(self):
-        return len(self.elementos)
+    @abstractmethod
+    def equals(self, other: "RepresentationItem") -> bool:
+        pass

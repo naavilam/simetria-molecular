@@ -1,6 +1,7 @@
 {
   "nome": "D3d",
   "descricao": "Grupo D3d: rotações C3, três C2 perpendiculares e três planos diédricos equivalentes a S6.",
+  "ordem": 12,
   "operacoes": [
     {
       "tipo": "identidade",

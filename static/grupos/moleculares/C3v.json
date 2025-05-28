@@ -1,5 +1,6 @@
 {
   "nome": "C3v",
+  "ordem": 6,
   "descricao": "Grupo C3v: rotações C3 e três planos verticais de reflexão.",
   "operacoes": [
     {

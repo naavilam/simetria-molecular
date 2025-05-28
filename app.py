@@ -15,19 +15,25 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
+
 import sys
 import argparse
-from molecule import Molecule
-from group_symmetry import GroupSymmetry
-from molecule_symmetry import MoleculeSymmetry
-from vtkmodules.vtkFiltersSources import vtkCapsuleSource
 
-import os
+from numpy import select
+from core.molecule import Molecule
+from core.group import Group
+from engine.symmetry_analyser import SymmetryAnalyser
+from engine.symmetry_visualizer import SymmetryVisualizer
+from vtkmodules.vtkFiltersSources import vtkCapsuleSource
+from core.operation import Operation
+from representation_strategy_builder import RepresentationType
 
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os, shutil, zipfile, uuid, json
+from analise.analise_tipo import AnaliseTipo
+from render.render_tipo import RenderTipo
 
 # Ativa modo FastAPI
 app = FastAPI()
@@ -83,29 +89,22 @@ async def analise(
     with open(grupo_path, "wb") as f:
         f.write(await grupo.read())
 
-    permutacoes, tab_multi, class_conj = MoleculeSymmetryApp.from_files(molecula, grupo).run(selected_op=None)
+    conteudo_latex = MoleculeSymmetryApp.from_files(mol_path, grupo_path).run(selected_op=None)
     
-    # Aqui entraria a análise real (placeholder por enquanto)
-    resultado = {
-        "permutacoes": permutacoes,
-        "tabela_multiplicacao": tab_multi,
-        "classes_conjugacao": class_conj,
-        "mensagem": "Análise simulada"
-    }
+    # Nomeia arquivo latex de resposta
+    nome_base = molecula.filename.rsplit(".", 1)[0]
+    if nome_base.lower() in ["outro", "outro.xyz", "personalizado"]:
+        nome_tex = "Analise_Simetria_Molecula_Personalizada.tex"
+    else:
+        nome_tex = f"Analise_Simetria_Molecula_{nome_base}.tex"
 
-    # Salvar resultado.json
-    resultado_path = os.path.join(workdir, "resultado.json")
-    with open(resultado_path, "w") as f:
-        json.dump(resultado, f, indent=2)
+    # Caminho completo
+    tex_path = os.path.join(workdir, nome_tex)
 
-    # Compactar .zip
-    zip_path = f"{workdir}.zip"
-    with zipfile.ZipFile(zip_path, "w") as zipf:
-        zipf.write(mol_path, arcname=molecula.filename)
-        zipf.write(grupo_path, arcname=grupo.filename)
-        zipf.write(resultado_path, arcname="resultado.json")
+    with open(tex_path, "w") as f:
+        f.write(conteudo_latex)
 
-    return FileResponse(zip_path, filename="analise.zip", media_type="application/zip")
+    return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
 
 # @app.post("/api/renderizar")
 # async def renderizar(
@@ -127,9 +126,6 @@ async def analise(
 
 #     app = MoleculeSymmetryApp.from_files(molecula, grupo).run(selected_op)
 
-    
-
-    
 class MoleculeSymmetryApp:
 
     """Description
@@ -141,43 +137,56 @@ class MoleculeSymmetryApp:
         mol (TYPE): Description
     """
     
-    def __init__(self, mol, group):
+    def __init__(self, molecule, group):
         """Summary
         """
-        self.mol = mol
+        self.molecule = molecule
         self.group = group
 
     @classmethod
     def from_files(cls, mol_file, group_file):
-        group = GroupSymmetry.from_file(group_file)
-        mol = Molecule.from_file(mol_file)
-        return cls(mol=mol, group=group)
+        group = Group.from_file(group_file)
+        molecule = Molecule.from_file(mol_file)
+        return cls(molecule=molecule, group=group)
 
-    def _validate_op(self, selected, group):
+    def _get_op(self, selected, group):
         """Valida se a operação inserida é valida
         """
-        if selected is None:
-            return
-        else:
-            try:
-                return group.get_operacoes()[selected - 1]
-            except IndexError:
-                print(f"Operação inválida: {selected}")
-                return None
+        try:
+            return group.operacoes[selected - 1]
+        except IndexError:
+            print(f"Operação inválida: {selected}")
+            return None
 
     def run(self, selected_op):
         """Caso tenha escolhido a operação esta é renderizada, 
         caso contrário é feita uma análise completa da simetria
         """
 
-        selected_op = self._validate_op(selected_op, self.group)
+        analises_selecionadas = [AnaliseTipo.TABELA_MULTIPLICACAO, AnaliseTipo.ABELIANO]
 
-        ms = MoleculeSymmetry(self.mol, self.group)
 
         if selected_op is None:
-            return ms.analize_symmetry_completely()
+            symmetry_analysis = SymmetryAnalyzer \
+                .de(self.grupo, self.molecule) \
+                .usar(RepresentationType.PERMUTATION) \
+                .render(RenderTipo.LATEX)
+                .configurar(analises=analises_selecionadas)
+                .get()
+
+            return symmetry_analysis
         else:
-            ms.render_symmetry_operation(selected_op)
+
+
+        # sym_analyzer = SymmetryAnalyser(self.mol, self.group)
+
+        # if selected_op is None:
+        #     return sym_analyzer.run_analysis()
+        # else:
+        #     selected_op = self._get_op(selected_op, self.group)
+        #     sym_visualizer = SymmetryVisualizer(self.mol, )
+        #     return sym_visualizer.render(selected_op)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -191,15 +200,18 @@ if __name__ == "__main__":
     op = args.op
 
     app = MoleculeSymmetryApp.from_files(xyz, grupo)
-    app.run(op)
+    
+    # Apenas para os testes de formatação latex esta sendo exibido no terminal
+    # if op is not None :
+    #     app.run(op)
+    # else:
+    #     conteudo_latex = app.run(op)
+    #     # Mostrar no terminal
+    #     print(conteudo_latex)
 
+    #     # Opcional: salvar localmente para inspeção
+    #     with open("analise_terminal.tex", "w") as f:
+    #         f.write(conteudo_latex)
 
-
-
-
-
-
-
-
-
+    #     print("Arquivo 'analise_terminal.tex' gerado com sucesso!")
 

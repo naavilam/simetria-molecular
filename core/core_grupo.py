@@ -16,36 +16,70 @@
 ====================================================================================================================================================
 """
 
+from enum import nonmember
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+from core.operation import Operation
 import json
 
-class GroupSymmetry:
+class Group:
 
     """Summary
     """
-    def __init__(self, dados):
+    def __init__(self, sistema, nome, ordem, operacoes, tolerancia):
         """Summary
         """
-        self.dados = dados
+        self.sistema = sistema
+        self.nome = nome
+        self.operacoes = operacoes
+        self.ordem = ordem
+        self.tolerancia = tolerancia
 
     @classmethod
     def from_file(cls, path_json):
-        path = path_json
-        dados = cls._carregar(path_json)
-        return cls(dados=dados)
+        return cls._carregar(path_json)
 
     @classmethod
     def _carregar(cls, path_json):
-        """Summary
-        """
-        with open(path_json, "r", encoding="utf-8") as f:
-            return json.load(f)
+        """Carrega grupo de simetria a partir de arquivo JSON, inferindo o sistema pelo caminho."""
+        import os
 
-    def get_operacoes(self):
-        """Summary
-        """
-        return self.dados.get("operacoes", [])
+        with open(path_json, "r", encoding="utf-8") as f:
+            dados = json.load(f)
+
+        nome = dados.get("nome")
+        ordem = dados.get("ordem")
+        operacoes_raw = dados.get("operacoes", [])
+        operacoes = [Operation.from_dict(op_dict) for op_dict in operacoes_raw]
+        tolerancia = dados.get("tolerancia")
+
+        # Tentar inferir sistema a partir do caminho
+        caminho = os.path.normpath(path_json)
+        partes = caminho.split(os.sep)
+
+        sistema = "Molecular"  # valor padrão se não for identificado
+        if "grupos" in partes:
+            try:
+                idx_grupo = partes.index("grupos")
+                # sistema_parts = partes[idx_grupo + 1:-1]  # subpastas após 'grupo' e antes do arquivo
+                sistema_parts = partes[idx_grupo + 1:]
+                if sistema_parts and sistema_parts[-1].endswith(".json"):
+                    sistema_parts = sistema_parts[:-1]
+                sistema_corrigido = []
+
+                for p in sistema_parts:
+                    if p.lower() == "cristalograficos":
+                        sistema_corrigido.append("Cristalográfico")
+                    else:
+                        sistema_corrigido.append(p.capitalize())
+
+                if sistema_corrigido:
+                    sistema = " ".join(sistema_corrigido)
+
+            except Exception:
+                pass  # mantemos sistema = "Molecular"
+
+        return cls(sistema, nome, ordem, operacoes, tolerancia)
 
     @staticmethod
     def detalhe_operacao(operacao):
