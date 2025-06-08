@@ -1,0 +1,96 @@
+#botaoAnaliseFinal:hover {
+  background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+  transform: scale(1.1);
+}
+.render-menu {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 0 4px #ccc;
+  justify-content: start;
+}
+
+.render-menu label {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.render-opcoes {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.analises-box {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border: 1px solid #ddd;
+}
+
+.analises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px 24px;
+  margin-top: 10px;
+}
+
+.analises-grid label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  font-size: 15px;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+.container {
+    margin-bottom: 20px;
+}
+label {
+    font-weight: bold;
+}
+select, input[type="text"], textarea, button {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+textarea {
+    height: 150px;
+    display: block;
+}
+button {
+    margin-top: 10px;
+}
+.acoes-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.acoes-container button,
+.acoes-container select {
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.acoes-container button:hover {
+  background-color: #f0f0f0;
+}
+
+#acoes-container select {
+  min-width: 200px;
+}
