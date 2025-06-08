@@ -23,10 +23,8 @@ from analysis.analise_classe_conjugacao import ClasseConjugacao
 from core.core_molecula import Molecule
 from render.render_latex import LatexReportGenerator
 from render.render_3D import PyvistaVisualizer
-from representation.representation_strategy_builder import RepresentationStrategyBuilder,RepresentationType 
-
-from representations.strategy_builder import RepresentationStrategyBuilder, RepresentationType
-from representations.representation import Representation
+from representation.builder import RepresentationBuilder, RepresentationType
+from representation.representation import Representation
 from core.core_grupo import Group
 
 

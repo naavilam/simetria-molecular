@@ -3,10 +3,10 @@ from fastapi.responses import FileResponse
 from core.core_molecula import Molecule
 from core.core_grupo import Group
 from engine.engine_symmetry_analyser import SymmetryAnalyzer
-from representation_strategy_builder import RepresentationType
+from representation.representation_type import RepresentationType
 from analysis.analise_tipo import AnaliseTipo
 from render.render_tipo import RenderTipo
-from .dto import AnaliseRequest
+from main_app.main_dto import AnaliseRequest
 
 class MoleculeSymmetryApp:
     def __init__(self, molecule, group):

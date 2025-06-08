@@ -19,7 +19,7 @@
 import json
 import re
 from pathlib import Path
-from representation.representation_interface import Representation
+from representation.representation import Representation
 
 class TabelaMultiplicacao:
     def __init__(self, representation: Representation):

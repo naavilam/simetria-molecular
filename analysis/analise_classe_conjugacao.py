@@ -20,7 +20,7 @@ import json
 import re
 import numpy as np
 from pathlib import Path
-from representation.representation_interface import Representation
+from representation.representation import Representation
 
 # conjugacy_class.py
 
