@@ -59,39 +59,39 @@ moleculaSelect.addEventListener('change', () => {
 const analiseBtn = document.getElementById("botaoAnalise");
 
 analiseBtn.addEventListener("click", async () => {
-  const formData = new FormData();
+
+    const renderGrafico = document.querySelector('input[name="renderizacaoGrafica"]:checked').value;
+    formData.append("render_grafico", renderGrafico);
+    const formData = new FormData();
 
       // Pegando os blobs dos campos de texto do grupo e da molécula
-  const moleculaBlob = new Blob([document.getElementById("moleculaOutput").value], { type: "text/plain" });
-  const grupoBlob = new Blob([document.getElementById("grupoOutput").value], { type: "application/json" });
+    const moleculaBlob = new Blob([document.getElementById("moleculaOutput").value], { type: "text/plain" });
+    const grupoBlob = new Blob([document.getElementById("grupoOutput").value], { type: "application/json" });
 
-  formData.append("molecula", moleculaBlob, "molecula.xyz");
-  formData.append("grupo", grupoBlob, "grupo.json");
+    formData.append("molecula", moleculaBlob, "molecula.xyz");
+    formData.append("grupo", grupoBlob, "grupo.json");
 
-  try {
-    const response = await fetch(baseUrlAnalise, {
-      method: "POST",
-      body: formData,
-  });
+    try {
+        const response = await fetch(baseUrlAnalise, {
+          method: "POST",
+          body: formData,
+      });
 
-    if (!response.ok) throw new Error("Erro ao processar a análise");
+        if (!response.ok) throw new Error("Erro ao processar a análise");
 
-    const blob = await response.blob();
+        const blob = await response.blob();
 
         // Cria um link temporário para baixar o ZIP
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "resultado.zip";
-    a.click();
-    window.URL.revokeObjectURL(url);
-} catch (err) {
-    alert("Erro na análise: " + err.message);
-}
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "resultado.zip";
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        alert("Erro na análise: " + err.message);
+    }
 });
-
-const renderGrafico = document.querySelector('input[name="renderizacaoGrafica"]:checked').value;
-formData.append("render_grafico", renderGrafico);
 
 function trocarRender() {
   const tipo = document.querySelector('input[name="renderTipo"]:checked').value;
@@ -101,35 +101,58 @@ function trocarRender() {
   if (tipo === "texto") {
     divTexto.style.display = "block";
     divGrafico.style.display = "none";
-  } else {
+} else {
     divTexto.style.display = "none";
     divGrafico.style.display = "block";
-
-    try {
-      const grupoJson = document.getElementById("grupoOutput").value;
-      const grupo = JSON.parse(grupoJson);
-
-      const select = document.createElement("select");
-      select.id = "select-operacao-unica";
-      grupo.operacoes.forEach(op => {
-        alert("here")
-        const option = document.createElement("option");
-        option.value = op.id;
-        option.textContent = op.comentario || op.nome || `Op ${op.id}`;
-        select.appendChild(option);
-      });
-
-      const containerSelect = document.getElementById("select-operacoes-container");
-      containerSelect.innerHTML = "<h3>Operação a ser Renderizada:</h3>";
-      containerSelect.appendChild(select);
-    } catch (err) {
-      console.warn("Erro ao carregar operações:", err);
-      document.getElementById("select-operacoes-container").innerHTML =
-        "<p style='color: red'>Erro ao carregar operações. Verifique o JSON do grupo.</p>";
-    }
-  }
+}
 }
 
+// Só executa quando o usuário altera o grupo
+document.addEventListener("DOMContentLoaded", () => {
+  const grupoSelect = document.getElementById("grupoSelect");
+  if (!grupoSelect) return;
+
+  grupoSelect.addEventListener("change", () => {
+    carregarOperacoesDoGrupo();
+});
+});
+
+function carregarOperacoesDoGrupo() {
+    const containerSelect = document.getElementById("select-operacoes-container");
+    const grupoOutput = document.getElementById("grupoOutput");
+  containerSelect.innerHTML = ""; // limpa antes
+
+  try {
+    const grupoJson = grupoOutput.value.trim();
+
+    if (!grupoJson) {
+      throw new Error("Campo JSON está vazio");
+  }
+
+  const grupo = JSON.parse(grupoJson);
+
+  if (!Array.isArray(grupo.operacoes)) {
+      throw new Error("JSON inválido: campo 'operacoes' ausente ou incorreto");
+  }
+
+  const select = document.createElement("select");
+  select.id = "select-operacao-unica";
+
+  grupo.operacoes.forEach(op => {
+      const option = document.createElement("option");
+      option.value = op.id ?? "";
+      option.textContent = op.comentario || op.nome || `Op ${op.id ?? "?"}`;
+      select.appendChild(option);
+  });
+
+  containerSelect.innerHTML = "<h3>Operação a ser Renderizada:</h3>";
+  containerSelect.appendChild(select);
+
+} catch (err) {
+    console.warn("Erro ao carregar operações:", err.message);
+    containerSelect.innerHTML = `<p style='color:red'>Erro ao carregar operações. Verifique o JSON do grupo.</p>`;
+}
+}
 
 // Executa na inicialização da página
 document.addEventListener("DOMContentLoaded", trocarRender);
@@ -137,11 +160,11 @@ document.addEventListener("DOMContentLoaded", trocarRender);
 // Excluir depois
 function injetarExemplo() {
 
-const grupoOutput = document.getElementById("grupoOutput");
-grupoOutput.readOnly = false;
-grupoOutput.value = JSON.stringify(exemplo, null, 2);
-grupoOutput.readOnly = true;
+    const grupoOutput = document.getElementById("grupoOutput");
+    grupoOutput.readOnly = false;
+    grupoOutput.value = JSON.stringify(exemplo, null, 2);
+    grupoOutput.readOnly = true;
 
-alert("Grupo D3h injetado com sucesso!");
+    alert("Grupo D3h injetado com sucesso!");
 }
 document.addEventListener("DOMContentLoaded", trocarRender);
