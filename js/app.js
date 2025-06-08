@@ -112,6 +112,7 @@ function trocarRender() {
       const select = document.createElement("select");
       select.id = "select-operacao-unica";
       grupo.operacoes.forEach(op => {
+        alert("here")
         const option = document.createElement("option");
         option.value = op.id;
         option.textContent = op.comentario || op.nome || `Op ${op.id}`;
@@ -135,106 +136,6 @@ document.addEventListener("DOMContentLoaded", trocarRender);
 
 // Excluir depois
 function injetarExemplo() {
-  const exemplo = {
-    "nome": "D3h",
-    "ordem": 12,
-    "descricao": "Grupo de simetria do etano eclipsado",
-    "operacoes": [
-      {
-        "id": 1,
-        "tipo": "identidade",
-        "comentario": "Identidade (E)",
-        "nome": "\\mathrm{E}"
-    },
-    {
-        "id": 2,
-        "tipo": "rotacao",
-        "eixo": [0,0,1],
-        "angulo": 120,
-        "comentario": "Rotação C3 em torno do eixo z (120°)",
-        "nome": "\\mathrm{C}_{3}"
-    },
-    {
-        "id": 3,
-        "tipo": "rotacao",
-        "eixo": [0,0,1],
-        "angulo": 240,
-        "comentario": "Rotação C3 em torno do eixo z (240°)",
-        "nome": "\\mathrm{C}_{3}^{2}"
-    },
-    {
-        "id": 4,
-        "tipo": "rotacao",
-        "eixo": [1,0,0],
-        "angulo": 180,
-        "comentario": "Rotação C2(a) em torno do eixo x (180°)",
-        "nome": "\\mathrm{C}_{2}^{(a)}"
-    },
-    {
-        "id": 5,
-        "tipo": "rotacao",
-        "eixo": [-0.5,0.86602540378,0],
-        "angulo": 180,
-        "comentario": "Rotação C2(b) em torno de eixo no plano xy (180°)",
-        "nome": "\\mathrm{C}_{2}^{(b)}"
-    },
-    {
-        "id": 6,
-        "tipo": "rotacao",
-        "eixo": [-0.5,-0.86602540378,0],
-        "angulo": 180,
-        "comentario": "Rotação C2(c) em torno de eixo no plano xy (180°)",
-        "nome": "\\mathrm{C}_{2}^{(c)}"
-    },
-    {
-        "id": 7,
-        "tipo": "reflexao",
-        "plano_normal": [0.0,1.0,0.0],
-        "comentario": "σv(a) – plano que contém o eixo C–C e H3–H5",
-        "nome": "\\sigma_{v1}"
-    },
-    {
-        "id": 8,
-        "tipo": "reflexao",
-        "plano_normal": [-0.866,-0.5,0.0],
-        "comentario": "σv(b) – plano que contém o eixo C–C e H4–H6",
-        "nome": "\\sigma_{v2}"
-    },
-    {
-        "id": 9,
-        "tipo": "reflexao",
-        "plano_normal": [0.866,-0.5,0.0],
-        "comentario": "σv(c) – plano que contém o eixo C–C e H5–H7",
-        "nome": "\\sigma_{v3}"
-    },
-    {
-        "id": 10,
-        "tipo": "reflexao",
-        "plano_normal": [0,0,1],
-        "comentario": "Reflexão σh no plano xy",
-        "nome": "\\sigma_{h}"
-    },
-    {
-        "id": 11,
-        "tipo": "impropria",
-        "eixo": [0,0,1],
-        "angulo": 120,
-        "comentario": "Rotação imprópria S3 de 120° (C3 + σh)",
-        "nome": "\\mathrm{S}_{3}",
-        "plano_normal": [0,0,1]
-    },
-    {
-        "id": 12,
-        "tipo": "impropria",
-        "eixo": [0,0,1],
-        "angulo": 240,
-        "comentario": "Rotação imprópria S3 de 240° (C3^2 + σh)",
-        "nome": "\\mathrm{S}_{3}^{5}",
-        "plano_normal": [0,0,1]
-    }
-],
-"tolerancia": 0.01
-};
 
 const grupoOutput = document.getElementById("grupoOutput");
 grupoOutput.readOnly = false;
