@@ -14,7 +14,6 @@ const baseUrlMoleculas = 'http://localhost:8000/api/molecula/';
 /* AÇÃO SELECT GROUP          */
 /******************************/
 grupoSelect.addEventListener('change', () => {
-    alert("here")
     const grupoSelecionado = grupoSelect.value;
     if (grupoSelecionado === 'outro') {
         grupoOutput.readOnly = false;
@@ -37,13 +36,11 @@ grupoSelect.addEventListener('change', () => {
 /* AÇÃO SELECT MOLECULE*/
 /******************************/
 moleculaSelect.addEventListener('change', () => {
-    alert("here")
     const moleculaSelecionada = moleculaSelect.value;
     if (moleculaSelecionada === 'outro') {
         moleculaOutput.readOnly = false;
         moleculaOutput.value = "";
     } else {
-        alert("here")
         if (moleculaSelecionada) {
             fetch(baseUrlMoleculas + moleculaSelecionada)
             .then(response => response.ok ? response.text() : Promise.reject('Erro ao carregar o XYZ'))
@@ -98,134 +95,38 @@ formData.append("render_grafico", renderGrafico);
 
 function trocarRender() {
   const tipo = document.querySelector('input[name="renderTipo"]:checked').value;
-  const container = document.getElementById("renderOpcoes");
+  const divTexto = document.getElementById("render-texto");
+  const divGrafico = document.getElementById("render-grafico");
 
   if (tipo === "texto") {
-    container.innerHTML = `
+    divTexto.style.display = "block";
+    divGrafico.style.display = "none";
+  } else {
+    divTexto.style.display = "none";
+    divGrafico.style.display = "block";
 
-      <h3>Análises Desejadas:</h3>
-      <label><input type="checkbox" name="analises" value="grupo" checked>Identificação do Grupo de Simetria</label><br>
-      <label><input type="checkbox" name="analises" value="permutacoes" checked> Permutações</label><br>
-      <label><input type="checkbox" name="analises" value="tabela_multiplicacao"> Tabela de multiplicação</label><br>
-      <label><input type="checkbox" name="analises" value="classes_conjugacao"> Classes de conjugação</label><br>
-      <label><input type="checkbox" name="analises" value="representacao_caracteres" disabled> Representação por caracteres (Em breve)</label><br>
-      <label><input type="checkbox" name="analises" value="autovalores" disabled> Autovalores das operações (Em breve)</label><br>
-      <label><input type="checkbox" name="analises" value="subgrupos" disabled> Subgrupos (Em breve)</label><br>
-      <label><input type="checkbox" name="analises" value="ciclico" disabled> Cíclico (Em breve)</label><br>
-      <label><input type="checkbox" name="analises" value="abeliano" disabled> Abeliano (Em breve)</label><br>
+    try {
+      const grupoJson = document.getElementById("grupoOutput").value;
+      const grupo = JSON.parse(grupoJson);
 
-      <h3>Formato de Saída:</h3>
-      <label><input type="radio" name="formatoTexto" value="latex" checked> LaTeX</label><br>
-      <label><input type="radio" name="formatoTexto" value="txt"> Texto Puro</label><br>
+      const select = document.createElement("select");
+      select.id = "select-operacao-unica";
+      grupo.operacoes.forEach(op => {
+        const option = document.createElement("option");
+        option.value = op.id;
+        option.textContent = op.comentario || op.nome || `Op ${op.id}`;
+        select.appendChild(option);
+      });
 
-        `;
-    } else {
-        container.innerHTML = `
-
-    <div class="container">
-        <label for="grupo">Escolha o Grupo de Simetria</label>
-        <select id="grupoSelect">
-            <option value="">Selecione um grupo ...</option>
-            <optgroup label="Cristalográficos (Hexagonal)">
-                <option value="cristalograficos/Hexagonal/C3h">C3h</option>
-                <option value="cristalograficos/Hexagonal/C6">C6</option>
-                <option value="cristalograficos/Hexagonal/C6h">C6h</option>
-                <option value="cristalograficos/Hexagonal/C6v">C6v</option>
-                <option value="cristalograficos/Hexagonal/D3h">D3h</option>
-                <option value="cristalograficos/Hexagonal/D6">D6</option>
-                <option value="cristalograficos/Hexagonal/D6h">D6h</option>
-            </optgroup>
-            <optgroup label="Cristalográficos (Monoclinico)">
-                <option value="cristalograficos/Monoclinico/C2">C2</option>
-                <option value="cristalograficos/Monoclinico/C2h">C2h</option>
-                <option value="cristalograficos/Monoclinico/Cs">Cs</option>
-            </optgroup>
-            <optgroup label="Cristalográficos (Ortorrombico)">
-                <option value="cristalograficos/Ortorrombico/C2v">C2v</option>
-                <option value="cristalograficos/Ortorrombico/D2">D2</option>
-                <option value="cristalograficos/Ortorrombico/D2h">D2h</option>
-            </optgroup>
-            <optgroup label="Cristalográficos (Tetragonal)">
-                <option value="cristalograficos/Tetragonal/C4">C4</option>
-                <option value="cristalograficos/Tetragonal/C4h">C4h</option>
-                <option value="cristalograficos/Tetragonal/C4v">C4v</option>
-                <option value="cristalograficos/Tetragonal/D2d">D2d</option>
-                <option value="cristalograficos/Tetragonal/D4">D4</option>
-                <option value="cristalograficos/Tetragonal/D4h">D4h</option>
-                <option value="cristalograficos/Tetragonal/S4">S4</option>
-            </optgroup>
-            <optgroup label="Cristalográficos (Triclinico)">
-                <option value="cristalograficos/Triclinico/C1">C1</option>
-                <option value="cristalograficos/Triclinico/Ci">Ci</option>
-            </optgroup>
-            <optgroup label="Cristalográficos (Trigonal)">
-                <option value="cristalograficos/Trigonal/C3">C3</option>
-                <option value="cristalograficos/Trigonal/C3v">C3v</option>
-                <option value="cristalograficos/Trigonal/D3">D3</option>
-                <option value="cristalograficos/Trigonal/D3d">D3d</option>
-                <option value="cristalograficos/Trigonal/S6">S6</option>
-            </optgroup>
-            <optgroup label="Moleculares">
-                <option value="moleculares/C3v">C3v</option>
-                <option value="moleculares/C4h">C4h</option>
-                <option value="moleculares/C5">C5</option>
-                <option value="moleculares/C5h">C5h</option>
-                <option value="moleculares/C5v">C5v</option>
-                <option value="moleculares/Cinfv">C∞v</option>
-                <option value="moleculares/Dinfh">D∞h</option>
-                <option value="moleculares/D3d">D3d</option>
-                <option value="moleculares/D5">D5</option>
-                <option value="moleculares/D5h">D5h</option>
-                <option value="moleculares/I">I</option>
-                <option value="moleculares/Ih">Ih</option>
-                <option value="moleculares/S8">S8</option>
-                <option value="outro">Outro (especifique)</option>
-            </optgroup>
-        </select>
-        <textarea id="grupoOutput" placeholder="Json do grupo ..."></textarea>
-        </div>
-
-         <div id="select-operacoes-container">
-            <h3>Operação a ser Renderizada:</h3>
-            <select id="select-operacao-unica">
-              <option>Carregando operações...</option>
-            </select>
-          </div>
-
-          <h3>Paleta de Cores:</h3>
-          <label><input type="radio" name="paletaCores" value="PASTEL" checked> 🎨 Pastel</label><br>
-          <label><input type="radio" name="paletaCores" value="VIBRANTE"> 🌈 Vibrante</label><br>
-          <label><input type="radio" name="paletaCores" value="MONOCROMATICA"> 🩶 Monocromática</label>
-
-          <h3>Formato Gráfico:</h3>
-          <label><input type="radio" name="formatoGrafico" value="gif" checked> GIF</label><br>
-          <label><input type="radio" name="formatoGrafico" value="3d"> 3D Interativo</label><br>
-
-        `
-        ;
-
-        try {
-          const grupoJson = document.getElementById("grupoOutput").value;
-          const grupo = JSON.parse(grupoJson);
-
-          const select = document.createElement("select");
-          select.id = "select-operacao-unica";
-          grupo.operacoes.forEach(op => {
-            const option = document.createElement("option");
-            option.value = op.id;
-            option.textContent = op.comentario || op.nome || `Op ${op.id}`;
-            select.appendChild(option);
-        });
-
-          const containerSelect = document.getElementById("select-operacoes-container");
-          containerSelect.innerHTML = "<h3>Operação a ser Renderizada:</h3>";
-          containerSelect.appendChild(select);
-        } catch (err) {
-          console.warn("Erro ao carregar operações:", err);
-          document.getElementById("select-operacoes-container").innerHTML =
-          "<p style='color: red'>Erro ao carregar operações. Verifique o JSON do grupo.</p>";
-        }
+      const containerSelect = document.getElementById("select-operacoes-container");
+      containerSelect.innerHTML = "<h3>Operação a ser Renderizada:</h3>";
+      containerSelect.appendChild(select);
+    } catch (err) {
+      console.warn("Erro ao carregar operações:", err);
+      document.getElementById("select-operacoes-container").innerHTML =
+        "<p style='color: red'>Erro ao carregar operações. Verifique o JSON do grupo.</p>";
     }
+  }
 }
 
 
