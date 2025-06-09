@@ -90,8 +90,8 @@ class LatexReportGenerator:
 
         \fancyfoot[L]{{\scriptsize {{\tiny \textcopyright}} naavilam.github.io/simetria-molecular
         \includegraphics[height=1.1ex]{{image2.jpg}} contact@chanah.dev}}
-
         \begin{{document}}
+        \vspace*{{2em}}
         {''.join(blocos)}
         \end{{document}}
         """
@@ -99,7 +99,7 @@ class LatexReportGenerator:
     def _formatar_permutacoes(self, permutacoes: dict) -> str:
         linhas = ["\\begin{array}{r@{\\,:\\ }l}"]
         for nome, lista in permutacoes.items():
-            linhas.append(f"{nome} & {lista} \\")
+            linhas.append(f"\\mathrm{{{nome}}} & {lista} \\\\")
         linhas.append("\\end{array}")
         return "\n".join(linhas)
 
@@ -132,100 +132,3 @@ class LatexReportGenerator:
                 blocos.append(f"  \item ${op}$")
             blocos.append("\\end{itemize}")
         return "\n".join(blocos)
-
-
-# def _formatar_latex(self, tabela):
-#         colunas = len(tabela[0])
-#         latex = ["\\begin{array}{" + "c" * colunas + "}"]
-#         for linha in tabela:
-#             latex.append(" & ".join(linha) + " \\")
-#         latex.append("\\end{array}")
-#         return "\n".join(latex)
-
-        # def _gerar_tabela_latex(self, nomes, tabela):
-        # """Description
-        
-        # Args:
-        #     nomes (TYPE): Description
-        #     tabela (TYPE): Description
-        
-        # Returns:
-        #     TYPE: Description
-        # """
-        # colunas = "c|" + "c" * len(nomes)
-        # linhas = ["\\begin{tabular}{" + colunas + "}", "\\toprule"]
-        # linhas.append(" & " + " & ".join(f"${n}$" for n in nomes) + " \\\\")
-        # linhas.append("\\midrule")
-        # for nome, linha in zip(nomes, tabela):
-        #     linhas.append(f"${nome}$ & " + " & ".join(f"${x}$" for x in linha) + " \\\\")
-        # linhas.append("\\bottomrule\n\\end{tabular}")
-        # return "\n".join(linhas)
-
-
-    #         @staticmethod
-    # def nome_para_latex(nome):
-    #     """Description
-        
-    #     Args:
-    #         nome (TYPE): Description
-        
-    #     Returns:
-    #         TYPE: Description
-    #     """
-    #     nome = nome.replace("'", "^{\\prime}")
-    #     nome = nome.replace("²", "^2")
-    #     nome = nome.replace("sigma_v", "sigma_{v}")
-    #     nome = nome.replace("sigma_d", "sigma_{d}")
-    #     nome = nome.replace("sigma_h", "sigma_{h}")
-    #     nome = re.sub(r"(C[2346])_\((\w)\)", r"\\mathrm{\1}^{(\2)}", nome)
-    #     nome = re.sub(r"(C[2346])", r"\\mathrm{\1}", nome)
-    #     nome = re.sub(r"(S[36])", r"\\mathrm{\1}", nome)
-    #     nome = re.sub(r"\bsigma_?(v\d+)", r"\\sigma_{\1}", nome)
-    #     nome = re.sub(r"\bsigma", r"\\sigma", nome)
-    #     return f"${nome}$"
-
-
-
-    #     @classmethod
-    # def gerar_operacoes_conjugacao_latex(cls, dicionario_perms,
-    #                                      destino_txt="analise/registro_classes.txt",
-    #                                      destino_tex="analise/registro_classes.tex"):
-        """Description
-        
-        Args:
-            dicionario_perms (TYPE): Description
-            destino_txt (str, optional): Description
-            destino_tex (str, optional): Description
-        
-        Returns:
-            TYPE: Description
-        """
-        # nome_por_perm = {tuple(v): k for k, v in dicionario_perms.items()}
-        # nomes = list(dicionario_perms.keys())
-        # perms = list(dicionario_perms.values())
-        # classes_idx = cls.detectar_classes_conjugacao(dicionario_perms)
-
-        # tex = ["\\begin{align*}"]
-        # txt = []
-
-        # for idx, classe in enumerate(classes_idx, 1):
-        #     tex.append(f"% Classe {idx}")
-        #     txt.append(f"Classe {idx}:")
-        #     for g_idx in classe:
-        #         g = nomes[g_idx]
-        #         pg = perms[g_idx]
-        #         for h_idx in range(len(perms)):
-        #             h = nomes[h_idx]
-        #             ph = perms[h_idx]
-        #             ph_inv = [ph.index(i) for i in range(len(ph))]
-        #             conjugado = [ph[pg[i]] for i in ph_inv]
-        #             g_conj = nome_por_perm.get(tuple(conjugado), "?")
-        #             txt.append(f"{h} * {g} * {h}⁻¹ = {g_conj}")
-        #             tex.append(f"& {h} {g} \\left({h}\\right)^{{-1}} = {g_conj} \\\\")
-
-        # tex.append("")
-        # tex.append("\\end{align*}")
-        # Path(destino_txt).write_text("\n".join(txt), encoding="utf-8")
-        # Path(destino_tex).write_text("\n".join(tex), encoding="utf-8")
-        # return destino_txt, destino_tex
-

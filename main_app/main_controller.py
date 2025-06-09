@@ -93,6 +93,8 @@ async def processar_analise(molecula, data: AnaliseRequest):
     app = MoleculeSymmetryApp.from_files(mol_path, grupo_path)
     output = app.run(selected_op=data.render.operacao_id, config=data, uuid=temp_id)
 
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(output)
     nome_base = molecula.filename.rsplit(".", 1)[0]
     nome_tex = "Analise_Simetria_Molecula_Personalizada.tex" if nome_base.lower() in ["outro", "outro.xyz", "personalizado"] else f"Analise_Simetria_Molecula_{nome_base}.tex"
     tex_path = os.path.join(workdir, nome_tex)
