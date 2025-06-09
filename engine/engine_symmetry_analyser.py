@@ -28,9 +28,8 @@ from render.render_tipo import RenderTipo
 from representation.builder import RepresentationBuilder, RepresentationType
 from representation.representation import Representation
 from core.core_grupo import Group
-
-
 from representation.builder import RepresentationBuilder, RepresentationType
+from datetime import datetime
 
 class SymmetryAnalyzer:
 
@@ -75,13 +74,27 @@ class SymmetryAnalyzer:
             "tempo_execucao": f"{tempo:.2f}s"
         }
 
-    def render(self, formato: RenderTipo = RenderTipo.TEX) -> str:
+    def render(self, formato: RenderTipo = RenderTipo.TEX, uuid=None) -> str:
         if formato == RenderTipo.TEX:
+            metadata = self._gerar_metadata(self.molecule, self.group, uuid)
             return LatexReportGenerator().render(self)
         elif formato == RenderTipo.PDF:
             return PdfReportGenerator().render(self)
         else:
             raise ValueError(f"Formato de saída não suportado: {formato}")
+
+    def _gerar_metadata(self, molecula, grupo, uuid) -> dict:
+        print(">>>>>>>>>>>>>>>")
+        print(grupo)
+        print(type(grupo))
+        return {
+            "molecula": molecula.nome,
+            "grupo": grupo.nome,
+            "ordem": len(grupo.operacoes),
+            "uuid": uuid,
+            "data": datetime.today().strftime("%Y-%m-%d %H:%M"),
+            "sistema": grupo.sistema
+        }
 
     def render_operation(self, selected_op):
         pyvis = PyvistaVisualizer()

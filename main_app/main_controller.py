@@ -19,7 +19,7 @@ class MoleculeSymmetryApp:
         molecule = Molecule.from_file(mol_file)
         return cls(molecule=molecule, group=group)
 
-    def run(self, selected_op, config: AnaliseRequest):
+    def run(self, selected_op, config: AnaliseRequest, uuid):
         if selected_op is None:
             analises = [
                 AnaliseTipo[nome.upper()]
@@ -30,7 +30,7 @@ class MoleculeSymmetryApp:
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \
                 .usar(RepresentationType.PERMUTATION) \
-                .render(RenderTipo.from_str(config.render.formato)) \
+                .render(RenderTipo.from_str(config.render.formato), uuid) \
                 .configurar(analises=analises) \
                 .get()
 
@@ -38,11 +38,11 @@ class MoleculeSymmetryApp:
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \
                 .usar(RepresentationType.PERMUTATION) \
-                .render(RenderTipo.from_str(config.render.formato)) \
+                .render(RenderTipo.from_str(config.render.formato), uuid) \
                 .renderizar_operacao(selected_op, paleta=config.render.paleta)
 
 
-from pymatgen.core.structure import Molecule
+from pymatgen.core.structure import Molecule as PymatgenMolecule
 from pymatgen.symmetry.analyzer import PointGroupAnalyzer
 
 def identificar_grupo_pontual(xyz_path: str) -> str:
@@ -54,7 +54,7 @@ def identificar_grupo_pontual(xyz_path: str) -> str:
             tokens = line.strip().split()
             especies.append(tokens[0])
             coords.append([float(x) for x in tokens[1:4]])
-    mol = Molecule(especies, coords)
+    mol = PymatgenMolecule(especies, coords)
     grupo = PointGroupAnalyzer(mol).sch_symbol  # Ex: "D3h"
     return grupo
 
@@ -93,10 +93,7 @@ async def processar_analise(molecula, data: AnaliseRequest):
     grupo_path = encontrar_json_grupo(grupo_identificado)
 
     app = MoleculeSymmetryApp.from_files(mol_path, grupo_path)
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print(data)
-    print(data.render.operacao_id)
-    output = app.run(selected_op=data.render.operacao_id, config=data)
+    output = app.run(selected_op=data.render.operacao_id, config=data, uuid=temp_id)
 
     nome_base = molecula.filename.rsplit(".", 1)[0]
     nome_tex = "Analise_Simetria_Molecula_Personalizada.tex" if nome_base.lower() in ["outro", "outro.xyz", "personalizado"] else f"Analise_Simetria_Molecula_{nome_base}.tex"

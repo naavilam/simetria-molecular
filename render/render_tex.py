@@ -23,57 +23,78 @@ class LatexReportGenerator:
         self.metadata = metadata
         self.resultado = resultado
 
-    def gerar_documento(self):
-        return fr"""\documentclass[a4paper,12pt]{{article}}
-        \usepackage{{datetime2}}
-        \usepackage{{graphicx}}
-        \usepackage[utf8]{{inputenc}}
-        \usepackage{{fancyhdr}}
-        \usepackage{{geometry}}
-        \usepackage{{amsmath}}
-        \usepackage{{longtable}}
-        \geometry{{left=1cm, right=1cm, top=2.5cm, bottom=2cm}}
-        \pagestyle{{fancy}}
-        \fancyhf{{}}
+def gerar_documento(self):
+    blocos = []
 
-        % Cabeçalho
-        \fancyhead[L]{{\textbf{{Análise de Simetria}} \\
-        \textbf{{Sistema {self.metadata['sistema']}}} \\
-        Tempo de Execução: \textbf{{{self.resultado['tempo_execucao']}}}}}
+    if "permutacoes" in self.resultado:
+        blocos.append(r"""
+            \section*{Permutações Básicas}
+            \[
+            %s
+            \]
+            """ % self._formatar_permutacoes(self.resultado['permutacoes']))
 
-        \fancyhead[C]{{Molécula: \textbf{{{self.metadata['molecula']}}} \\
-        Grupo: \textbf{{{self.metadata['grupo']}}} \\
-        Ordem: \textbf{{{self.metadata['ordem']}}}}}
+    if "tabela" in self.resultado:
+        blocos.append(r"""
+            \section*{Tabela de Multiplicação}
+            \[
+            %s
+            \]
+            """ % self._formatar_tabela_multiplicacao(self.resultado['tabela']))
 
-        \fancyhead[R]{{{self.metadata['data']} \\
-        Relatório: \textbf{{{self.metadata['uuid']}}} \\
-        Página \thepage\ de \pageref{{LastPage}}}}
+        blocos.append(r"""
+            \section*{Multiplicação de Operações}
+            \begin{longtable}{ll}
+            \textbf{Op1 * Op2} & \textbf{Resultado} \\
+            %s
+            \end{longtable}
+            """ % self._formatar_operacoes_multiplicacao(self.resultado['tabela']))
 
-        \fancyfoot[L]{{\scriptsize {{\tiny \textcopyright}} naavilam.github.io/simetria-molecular 
-        \includegraphics[height=1.1ex]{{image2.jpg}} contact@chanah.dev}}
+    if "classes" in self.resultado:
+        blocos.append(r"""
+            \section*{Classes de Conjugação}
+            \[
+            %s
+            \]
+            """ % self._formatar_classes(self.resultado['classes']))
 
-        \begin{{document}}
-        \section*{{Permutações Básicas}}
-        \[
-        {self._formatar_permutacoes(self.resultado['permutacoes'])}
-        \]
-        \section*{{Tabela de Multiplicação}}
-        \[
-        {self._formatar_tabela_multiplicacao(self.resultado['tabela'])}
-        \]
-        \section*{{Multiplicação de Operações}}
-        \begin{{longtable}}{{ll}}
-        \textbf{{Op1 * Op2}} & \textbf{{Resultado}} \\
-        {self._formatar_operacoes_multiplicacao(self.resultado['tabela'])}
-        \end{{longtable}}
-        \section*{{Classes de Conjugação}}
-        \[
-        {self._formatar_classes(self.resultado['classes'])}
-        \]
-        \section*{{Operações por Classe}}
-        {self._formatar_operacoes_por_classe(self.resultado['classes'])}
-        \end{{document}}
-        """
+        blocos.append(r"""
+            \section*{Operações por Classe}
+            %s
+            """ % self._formatar_operacoes_por_classe(self.resultado['classes']))
+
+    return fr"""\documentclass[a4paper,12pt]{{article}}
+    \usepackage{{datetime2}}
+    \usepackage{{graphicx}}
+    \usepackage[utf8]{{inputenc}}
+    \usepackage{{fancyhdr}}
+    \usepackage{{geometry}}
+    \usepackage{{amsmath}}
+    \usepackage{{longtable}}
+    \geometry{{left=1cm, right=1cm, top=2.5cm, bottom=2cm}}
+    \pagestyle{{fancy}}
+    \fancyhf{{}}
+
+    % Cabeçalho
+    \fancyhead[L]{{\textbf{{Análise de Simetria}} \\
+    \textbf{{Sistema {self.metadata['sistema']}}} \\
+    Tempo de Execução: \textbf{{{self.resultado['tempo_execucao']}}}}}
+
+    \fancyhead[C]{{Molécula: \textbf{{{self.metadata['molecula']}}} \\
+    Grupo: \textbf{{{self.metadata['grupo']}}} \\
+    Ordem: \textbf{{{self.metadata['ordem']}}}}}
+
+    \fancyhead[R]{{{self.metadata['data']} \\
+    Relatório: \textbf{{{self.metadata['uuid']}}} \\
+    Página \thepage\ de \pageref{{LastPage}}}}
+
+    \fancyfoot[L]{{\scriptsize {{\tiny \textcopyright}} naavilam.github.io/simetria-molecular 
+    \includegraphics[height=1.1ex]{{image2.jpg}} contact@chanah.dev}}
+
+    \begin{{document}}
+    {''.join(blocos)}
+    \end{{document}}
+    """
 
     def _formatar_permutacoes(self, permutacoes: dict) -> str:
         linhas = ["\\begin{array}{r@{\\,:\\ }l}"]
