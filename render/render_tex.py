@@ -23,78 +23,78 @@ class LatexReportGenerator:
         self.metadata = metadata
         self.resultado = resultado
 
-def gerar_documento(self):
-    blocos = []
+    def gerar_documento(self):
+        blocos = []
 
-    if "permutacoes" in self.resultado:
-        blocos.append(r"""
-            \section*{Permutações Básicas}
-            \[
-            %s
-            \]
-            """ % self._formatar_permutacoes(self.resultado['permutacoes']))
+        if "permutacoes" in self.resultado:
+            blocos.append(r"""
+                \section*{Permutações Básicas}
+                \[
+                %s
+                \]
+                """ % self._formatar_permutacoes(self.resultado['permutacoes']))
 
-    if "tabela" in self.resultado:
-        blocos.append(r"""
-            \section*{Tabela de Multiplicação}
-            \[
-            %s
-            \]
-            """ % self._formatar_tabela_multiplicacao(self.resultado['tabela']))
+        if "tabela" in self.resultado:
+            blocos.append(r"""
+                \section*{Tabela de Multiplicação}
+                \[
+                %s
+                \]
+                """ % self._formatar_tabela_multiplicacao(self.resultado['tabela']))
 
-        blocos.append(r"""
-            \section*{Multiplicação de Operações}
-            \begin{longtable}{ll}
-            \textbf{Op1 * Op2} & \textbf{Resultado} \\
-            %s
-            \end{longtable}
-            """ % self._formatar_operacoes_multiplicacao(self.resultado['tabela']))
+            blocos.append(r"""
+                \section*{Multiplicação de Operações}
+                \begin{longtable}{ll}
+                \textbf{Op1 * Op2} & \textbf{Resultado} \\
+                %s
+                \end{longtable}
+                """ % self._formatar_operacoes_multiplicacao(self.resultado['tabela']))
 
-    if "classes" in self.resultado:
-        blocos.append(r"""
-            \section*{Classes de Conjugação}
-            \[
-            %s
-            \]
-            """ % self._formatar_classes(self.resultado['classes']))
+        if "classes" in self.resultado:
+            blocos.append(r"""
+                \section*{Classes de Conjugação}
+                \[
+                %s
+                \]
+                """ % self._formatar_classes(self.resultado['classes']))
 
-        blocos.append(r"""
-            \section*{Operações por Classe}
-            %s
-            """ % self._formatar_operacoes_por_classe(self.resultado['classes']))
+            blocos.append(r"""
+                \section*{Operações por Classe}
+                %s
+                """ % self._formatar_operacoes_por_classe(self.resultado['classes']))
 
-    return fr"""\documentclass[a4paper,12pt]{{article}}
-    \usepackage{{datetime2}}
-    \usepackage{{graphicx}}
-    \usepackage[utf8]{{inputenc}}
-    \usepackage{{fancyhdr}}
-    \usepackage{{geometry}}
-    \usepackage{{amsmath}}
-    \usepackage{{longtable}}
-    \geometry{{left=1cm, right=1cm, top=2.5cm, bottom=2cm}}
-    \pagestyle{{fancy}}
-    \fancyhf{{}}
+        return fr"""\documentclass[a4paper,12pt]{{article}}
+        \usepackage{{datetime2}}
+        \usepackage{{graphicx}}
+        \usepackage[utf8]{{inputenc}}
+        \usepackage{{fancyhdr}}
+        \usepackage{{geometry}}
+        \usepackage{{amsmath}}
+        \usepackage{{longtable}}
+        \geometry{{left=1cm, right=1cm, top=2.5cm, bottom=2cm}}
+        \pagestyle{{fancy}}
+        \fancyhf{{}}
 
-    % Cabeçalho
-    \fancyhead[L]{{\textbf{{Análise de Simetria}} \\
-    \textbf{{Sistema {self.metadata['sistema']}}} \\
-    Tempo de Execução: \textbf{{{self.resultado['tempo_execucao']}}}}}
+        % Cabeçalho
+        \fancyhead[L]{{\textbf{{Análise de Simetria}} \\
+        \textbf{{Sistema {self.metadata['sistema']}}} \\
+        Tempo de Execução: \textbf{{{self.resultado['tempo_execucao']}}}}}
 
-    \fancyhead[C]{{Molécula: \textbf{{{self.metadata['molecula']}}} \\
-    Grupo: \textbf{{{self.metadata['grupo']}}} \\
-    Ordem: \textbf{{{self.metadata['ordem']}}}}}
+        \fancyhead[C]{{Molécula: \textbf{{{self.metadata['molecula']}}} \\
+        Grupo: \textbf{{{self.metadata['grupo']}}} \\
+        Ordem: \textbf{{{self.metadata['ordem']}}}}}
 
-    \fancyhead[R]{{{self.metadata['data']} \\
-    Relatório: \textbf{{{self.metadata['uuid']}}} \\
-    Página \thepage\ de \pageref{{LastPage}}}}
+        \fancyhead[R]{{{self.metadata['data']} \\
+        Relatório: \textbf{{{self.metadata['uuid']}}} \\
+        Página \thepage\ de \pageref{{LastPage}}}}
 
-    \fancyfoot[L]{{\scriptsize {{\tiny \textcopyright}} naavilam.github.io/simetria-molecular 
-    \includegraphics[height=1.1ex]{{image2.jpg}} contact@chanah.dev}}
+        \fancyfoot[L]{{\scriptsize {{\tiny \textcopyright}} naavilam.github.io/simetria-molecular
+        \includegraphics[height=1.1ex]{{image2.jpg}} contact@chanah.dev}}
 
-    \begin{{document}}
-    {''.join(blocos)}
-    \end{{document}}
-    """
+        \begin{{document}}
+        {''.join(blocos)}
+        \end{{document}}
+        """
 
     def _formatar_permutacoes(self, permutacoes: dict) -> str:
         linhas = ["\\begin{array}{r@{\\,:\\ }l}"]

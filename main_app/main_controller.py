@@ -26,14 +26,12 @@ class MoleculeSymmetryApp:
                 for nome, ativo in config.analises.items()
                 if ativo
             ]
-
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \
                 .usar(RepresentationType.PERMUTATION) \
-                .render(RenderTipo.from_str(config.render.formato), uuid) \
-                .configurar(analises=analises) \
-                .get()
-
+                .configurar(analises, uuid) \
+                .executar() \
+                .renderizar(RenderTipo.TEX)
         else:
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \

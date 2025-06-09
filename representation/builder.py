@@ -30,7 +30,8 @@ class RepresentationBuilder:
 
     def construir(self):
         if self._tipo == RepresentationType.PERMUTATION:
-            return PermutationRepresentation.from_group(self._group, self._molecule)
+            rep3d = Matrix3DRepresentation.from_group(self._group)
+            return PermutationRepresentation.from_matrix3d(rep3d, self._molecule)
         elif self._tipo == RepresentationType.MATRIX_3D:
             return Matrix3DRepresentation.from_group(self._group)
         else:

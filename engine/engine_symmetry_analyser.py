@@ -30,6 +30,9 @@ from representation.representation import Representation
 from core.core_grupo import Group
 from representation.builder import RepresentationBuilder, RepresentationType
 from datetime import datetime
+from analysis.analise_tipo import AnaliseTipo
+from representation.representation_matrix3d import Matrix3DRepresentation
+from representation.representation_permutation import PermutationRepresentation
 
 class SymmetryAnalyzer:
 
@@ -37,16 +40,34 @@ class SymmetryAnalyzer:
         self.molecule = molecule
         self.group = group
         self._tipo = RepresentationType.PERMUTATION  # padrão
+        self._analises = []
+        self._resultado = None
+        self._uuid = None
 
     @classmethod
     def de(cls, group: Group, molecule: Molecule) -> 'SymmetryAnalyzer':
         return cls(molecule, group)
 
-    def usar(self, tipo: RepresentationType) -> 'SymmetryAnalyzer':
+    def usar(self, tipo: RepresentationType)-> 'SymmetryAnalyzer':
+        if tipo == RepresentationType.MATRIX_3D:
+            self.rep = Matrix3DRepresentation.from_group(self.group)
+
+        elif tipo == RepresentationType.PERMUTATION:
+            rep3d = Matrix3DRepresentation.from_group(self.group)
+            self.rep = PermutationRepresentation.from_matrix3d(rep3d, self.molecule)
+
+        else:
+            raise ValueError(f"Tipo de representação não suportado: {tipo}")
+
         self._tipo = tipo
         return self
 
-    def get_representacao(self):
+    def configurar(self, analises: list, uuid: str) -> 'SymmetryAnalyzer':
+        self._analises = analises
+        self._uuid = uuid
+        return self
+
+    def get_representacao(self) -> Representation:
         return (
             RepresentationBuilder()
             .de(group=self.group, molecule=self.molecule)
@@ -54,48 +75,45 @@ class SymmetryAnalyzer:
             .construir()
         )
 
-    def run_analysis(self):
-        from time import perf_counter
+    def executar(self) -> 'SymmetryAnalyzer':
         inicio = perf_counter()
-
         representacao = self.get_representacao()
 
-        # Aqui você executa os blocos ativos com base na representação:
-        permutacoes = representacao.get_permutacoes()  # hipotético
-        tab_mult = TabelaMultiplicacao(permutacoes).gerar()
-        class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
+        resultado = {}
+        if AnaliseTipo.PERMUTACOES in self._analises:
+            resultado["permutacoes"] = representacao.get_permutacoes()
 
-        tempo = perf_counter() - inicio
+        if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises:
+            resultado["tabela"] = TabelaMultiplicacao(representacao).gerar()
 
-        return {
-            "permutacoes": permutacoes,
-            "tabela": tab_mult,
-            "classes": class_conj,
-            "tempo_execucao": f"{tempo:.2f}s"
-        }
+        if AnaliseTipo.CLASSES_CONJUGACAO in self._analises:
+            resultado["classes"] = ClasseConjugacao(representacao, resultado["tabela"]).gerar()
 
-    def render(self, formato: RenderTipo = RenderTipo.TEX, uuid=None) -> str:
+        resultado["tempo_execucao"] = f"{perf_counter() - inicio:.2f}s"
+        self._resultado = resultado
+        return self
+
+    def renderizar(self, formato: RenderTipo) -> str:
+        if self._resultado is None:
+            raise RuntimeError("Você precisa chamar `.executar()` antes de `.renderizar()`.")
+
+        metadata = self._gerar_metadata()
         if formato == RenderTipo.TEX:
-            metadata = self._gerar_metadata(self.molecule, self.group, uuid)
-            return LatexReportGenerator().render(self)
+            return LatexReportGenerator(metadata, self._resultado).gerar_documento()
         elif formato == RenderTipo.PDF:
-            return PdfReportGenerator().render(self)
+            return PdfReportGenerator(metadata, self._resultado).gerar_pdf()
         else:
             raise ValueError(f"Formato de saída não suportado: {formato}")
 
-    def _gerar_metadata(self, molecula, grupo, uuid) -> dict:
-        print(">>>>>>>>>>>>>>>")
-        print(grupo)
-        print(type(grupo))
+    def _gerar_metadata(self) -> dict:
         return {
-            "molecula": molecula.nome,
-            "grupo": grupo.nome,
-            "ordem": len(grupo.operacoes),
-            "uuid": uuid,
+            "molecula": self.molecule.nome,
+            "grupo": self.group.nome,
+            "ordem": len(self.group.operacoes),
+            "uuid": self._uuid,
             "data": datetime.today().strftime("%Y-%m-%d %H:%M"),
-            "sistema": grupo.sistema
+            "sistema": self.group.sistema
         }
 
-    def render_operation(self, selected_op):
-        pyvis = PyvistaVisualizer()
-        return pyvis.render(selected_op, self.molecule, self.group)
+    def renderizar_operacao(self, selected_op):
+        return PyvistaVisualizer().render(selected_op, self.molecule, self.group)

@@ -43,6 +43,11 @@ class Representation(ABC):
         pass
 
     @abstractmethod
+    def aplicar(self, nome: str, vetor: list[float]) -> list[float]:
+        """Aplica a operação de nome dado sobre um vetor."""
+        pass
+
+    @abstractmethod
     def __getitem__(self, nome: str) -> Any:
         """Permite acesso via representação[nome]."""
         pass
