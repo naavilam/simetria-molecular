@@ -114,14 +114,17 @@ try {
     if (!response.ok) throw new Error("Erro ao processar a análise");
 
     const blob = await response.blob();
+    const disposition = response.headers.get("Content-Disposition");
+    const match = /filename="?([^"]+)"?/.exec(disposition);
+    const filename = match?.[1] || "resultado.tex";
 
-        // Cria um link temporário para baixar o ZIP
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "resultado.zip";
+    a.download = filename;
     a.click();
     window.URL.revokeObjectURL(url);
+
 } catch (err) {
     alert("Erro na análise: " + err.message);
 }
