@@ -27,15 +27,12 @@ class TabelaMultiplicacao:
         self.tabela = {}
 
     def gerar(self) -> dict:
-        nomes = self.rep.nomes_operacoes()
+        nomes = self.rep.nomes()
         for a in nomes:
             for b in nomes:
                 r1 = self.rep[a]
                 r2 = self.rep[b]
-                if hasattr(r1, 'compose'):
-                    comp = r1.compose(r2)
-                else:
-                    comp = r1 @ r2
+                comp = self.rep.compor(r1, r2)
                 self.tabela[(a, b)] = comp
         return self.tabela
 

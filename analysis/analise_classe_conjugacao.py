@@ -24,6 +24,26 @@ from representation.representation import Representation
 
 # conjugacy_class.py
 
+# class ClasseConjugacao:
+#     def __init__(self, representation: Representation, mult_table: dict):
+#         self.rep = representation
+#         self.tab = mult_table
+
+#     def gerar(self) -> dict:
+#         conjugacy = {}
+#         nomes = self.rep.nomes_operacoes()
+#         for g in nomes:
+#             classe = set()
+#             for h in nomes:
+#                 inv_h = self.rep[h].inverse() if hasattr(self.rep[h], 'inverse') else np.linalg.inv(self.rep[h])
+#                 conj = self.rep[h] @ self.rep[g] @ inv_h
+#                 for nome_k, op_k in self.rep:
+#                     if np.allclose(conj, op_k):
+#                         classe.add(nome_k)
+#                         break
+#             conjugacy[g] = sorted(list(classe))
+#         return conjugacy
+
 class ClasseConjugacao:
     def __init__(self, representation: Representation, mult_table: dict):
         self.rep = representation
@@ -31,18 +51,21 @@ class ClasseConjugacao:
 
     def gerar(self) -> dict:
         conjugacy = {}
-        nomes = self.rep.nomes_operacoes()
+        nomes = self.rep.nomes()
+
         for g in nomes:
             classe = set()
+
             for h in nomes:
-                inv_h = self.rep[h].inverse() if hasattr(self.rep[h], 'inverse') else np.linalg.inv(self.rep[h])
-                conj = self.rep[h] @ self.rep[g] @ inv_h
-                for nome_k, op_k in self.rep:
-                    if np.allclose(conj, op_k):
+                conj = self.rep.conjugar(self.rep[g], self.rep[h])
+                for nome_k in nomes:
+                    if self.rep.compor(conj, self.rep[nome_k]) == self.rep[nome_k]:
                         classe.add(nome_k)
                         break
-            conjugacy[g] = sorted(list(classe))
+
+            conjugacy[g] = sorted(classe, key=nomes.index)
         return conjugacy
+
 
 # from permutation_tools import Permutation
 

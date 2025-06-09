@@ -8,3 +8,5 @@ class AnaliseTipo(Enum):
     ABELIANO = auto()
     CICLICO = auto()
     SUB_GRUPOS = auto()
+    GRUPO = auto()
+    PERMUTACOES = auto()

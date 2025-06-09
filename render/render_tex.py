@@ -23,11 +23,6 @@ class LatexReportGenerator:
         self.metadata = metadata
         self.resultado = resultado
 
-class LatexReportGenerator:
-    def __init__(self, metadata, resultado):
-        self.metadata = metadata
-        self.resultado = resultado
-
     def gerar_documento(self):
         return fr"""\documentclass[a4paper,12pt]{{article}}
         \usepackage{{datetime2}}

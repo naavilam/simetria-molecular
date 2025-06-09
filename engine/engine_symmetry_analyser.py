@@ -21,68 +21,68 @@ from time import perf_counter
 from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
 from analysis.analise_classe_conjugacao import ClasseConjugacao
 from core.core_molecula import Molecule
-from render.render_latex import LatexReportGenerator
+from render.render_tex import LatexReportGenerator
 from render.render_3D import PyvistaVisualizer
+from render.render_pdf import PdfReportGenerator 
+from render.render_tipo import RenderTipo
 from representation.builder import RepresentationBuilder, RepresentationType
 from representation.representation import Representation
 from core.core_grupo import Group
 
+
+from representation.builder import RepresentationBuilder, RepresentationType
 
 class SymmetryAnalyzer:
 
     def __init__(self, molecule, group):
         self.molecule = molecule
         self.group = group
-        self.transformacoes = ()
-        self.multiplication_table = ()
-        self.conjugacy_classes = ()
-        self.character_table = ()
+        self._tipo = RepresentationType.PERMUTATION  # padrão
 
     @classmethod
     def de(cls, group: Group, molecule: Molecule) -> 'SymmetryAnalyzer':
-        return cls(group, molecule)
+        return cls(molecule, group)
 
     def usar(self, tipo: RepresentationType) -> 'SymmetryAnalyzer':
-        self.strategy = RepresentationStrategyBuilder.get(tipo)
+        self._tipo = tipo
         return self
 
-    def get(self) -> Representation:
-        if not self.strategy:
-            raise ValueError("É preciso escolher uma estratégia de representação com `.usar()` antes de chamar `.get()`.")
-        return self.strategy.construir(self.group, self.molecule)
+    def get_representacao(self):
+        return (
+            RepresentationBuilder()
+            .de(group=self.group, molecule=self.molecule)
+            .usar(self._tipo)
+            .construir()
+        )
 
-    def run_analysis(self, molecule, group):
+    def run_analysis(self):
+        from time import perf_counter
         inicio = perf_counter()
 
-        strategy = RepresentationStrategyBuilder.get(RepresentationType.PERMUTATION)
-        representation = strategy.construir(group, molecule)
-        # suponha que você já criou a representação usando a estratégia
-        representation = strategy.construir(grupo, molecula)
+        representacao = self.get_representacao()
 
-        # # tabela de multiplicação
-        # tabela = MultiplicationTable(representation).gerar()
-
-        # # classes de conjugação
-        # classes = ConjugacyClass(representation, tabela).gerar()
-        # permutacoes = Permutations(self.molecule, self.group.operacoes, self.group.tolerancia).run_permutacoes()
-        # print(permutacoes)
-        # tab_mult = TabelaMultiplicacao(permutacoes).gerar()
-        # class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
+        # Aqui você executa os blocos ativos com base na representação:
+        permutacoes = representacao.get_permutacoes()  # hipotético
+        tab_mult = TabelaMultiplicacao(permutacoes).gerar()
+        class_conj = ClasseConjugacao(permutacoes, tab_mult).gerar_classe_conjugacao()
 
         tempo = perf_counter() - inicio
-        return 0
-        # return {
-        #     "permutacoes": permutacoes,
-        #     "tabela": tab_mult,
-        #     "classes": class_conj,
-        #     "tempo_execucao": f"{tempo:.2f}s"
-        # }
 
-    def render(self, formato="latex") -> str:
-        if formato == "latex":
-            return LatexRenderer().render(self)
-        elif formato == "text":
-            return TextRenderer().render(self)
-        ...
+        return {
+            "permutacoes": permutacoes,
+            "tabela": tab_mult,
+            "classes": class_conj,
+            "tempo_execucao": f"{tempo:.2f}s"
+        }
+
+    def render(self, formato: RenderTipo = RenderTipo.TEX) -> str:
+        if formato == RenderTipo.TEX:
+            return LatexReportGenerator().render(self)
+        elif formato == RenderTipo.PDF:
+            return PdfReportGenerator().render(self)
+        else:
+            raise ValueError(f"Formato de saída não suportado: {formato}")
+
     def render_operation(self, selected_op):
         pyvis = PyvistaVisualizer()
+        return pyvis.render(selected_op, self.molecule, self.group)

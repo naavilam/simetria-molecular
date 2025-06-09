@@ -1,5 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Form
 from fastapi.responses import FileResponse
+from typing import Optional
+from fastapi import UploadFile, File, Form
 from .main_controller import processar_analise
 from .main_dto import AnaliseRequest
 
@@ -29,6 +31,9 @@ async def get_molecula(nome: str):
     return {"detail": f"Molécula '{nome}' não encontrada"}
 
 @router.post("/api/analise")
-async def analise(molecula: UploadFile = File(...), grupo: UploadFile = File(...), payload: str = Form(...)):
+async def analise(
+    molecula: UploadFile = File(...),
+    payload: Optional[str] = Form(None)
+):   
     data = AnaliseRequest.parse_raw(payload)
-    return await processar_analise(molecula, grupo, data)
+    return await processar_analise(molecula, data)

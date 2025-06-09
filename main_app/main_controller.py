@@ -30,7 +30,7 @@ class MoleculeSymmetryApp:
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \
                 .usar(RepresentationType.PERMUTATION) \
-                .render(RenderTipo(config.render.formato.upper())) \
+                .render(RenderTipo.from_str(config.render.formato)) \
                 .configurar(analises=analises) \
                 .get()
 
@@ -38,24 +38,64 @@ class MoleculeSymmetryApp:
             return SymmetryAnalyzer \
                 .de(self.group, self.molecule) \
                 .usar(RepresentationType.PERMUTATION) \
-                .render(RenderTipo(config.render.formato.upper())) \
+                .render(RenderTipo.from_str(config.render.formato)) \
                 .renderizar_operacao(selected_op, paleta=config.render.paleta)
 
 
-async def processar_analise(molecula, grupo, data: AnaliseRequest):
-    temp_id = str(uuid.uuid4())
+from pymatgen.core.structure import Molecule
+from pymatgen.symmetry.analyzer import PointGroupAnalyzer
+
+def identificar_grupo_pontual(xyz_path: str) -> str:
+    with open(xyz_path) as f:
+        lines = f.readlines()[2:]
+        especies = []
+        coords = []
+        for line in lines:
+            tokens = line.strip().split()
+            especies.append(tokens[0])
+            coords.append([float(x) for x in tokens[1:4]])
+    mol = Molecule(especies, coords)
+    grupo = PointGroupAnalyzer(mol).sch_symbol  # Ex: "D3h"
+    return grupo
+
+import json
+
+import glob
+import os
+
+
+def encontrar_json_grupo(grupo: str) -> str:
+    """
+    Busca no disco o caminho do JSON correspondente ao nome do grupo.
+    Exemplo: grupo = "D3h" → retorna "grupos/.../D3h.json"
+    """
+    grupo_proc = grupo.strip().lower()
+    arquivos = glob.glob("static/grupos/**/*.json", recursive=True)
+
+    for path in arquivos:
+        nome_arquivo = os.path.splitext(os.path.basename(path))[0].lower()
+        if nome_arquivo == grupo_proc or nome_arquivo.startswith(grupo_proc):
+            return path
+
+    raise FileNotFoundError(f"Arquivo JSON para o grupo '{grupo}' não encontrado.")
+
+async def processar_analise(molecula, data: AnaliseRequest):
+    temp_id = f"SIM{uuid.uuid4().hex[:6].upper()}"  # SIM_97DC9F
     workdir = f"/tmp/analise_{temp_id}"
     os.makedirs(workdir, exist_ok=True)
 
     mol_path = os.path.join(workdir, molecula.filename)
-    grupo_path = os.path.join(workdir, grupo.filename)
 
     with open(mol_path, "wb") as f:
         f.write(await molecula.read())
-    with open(grupo_path, "wb") as f:
-        f.write(await grupo.read())
+
+    grupo_identificado = identificar_grupo_pontual(mol_path)
+    grupo_path = encontrar_json_grupo(grupo_identificado)
 
     app = MoleculeSymmetryApp.from_files(mol_path, grupo_path)
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(data)
+    print(data.render.operacao_id)
     output = app.run(selected_op=data.render.operacao_id, config=data)
 
     nome_base = molecula.filename.rsplit(".", 1)[0]
