@@ -60,37 +60,71 @@ const analiseBtn = document.getElementById("botaoAnalise");
 
 analiseBtn.addEventListener("click", async () => {
 
-    const renderGrafico = document.querySelector('input[name="renderizacaoGrafica"]:checked').value;
-    formData.append("render_grafico", renderGrafico);
-    const formData = new FormData();
+  const tipo = document.querySelector('input[name="renderTipo"]:checked')?.value;
 
-      // Pegando os blobs dos campos de texto do grupo e da molécula
-    const moleculaBlob = new Blob([document.getElementById("moleculaOutput").value], { type: "text/plain" });
-    const grupoBlob = new Blob([document.getElementById("grupoOutput").value], { type: "application/json" });
+  const formData = new FormData();
 
-    formData.append("molecula", moleculaBlob, "molecula.xyz");
+  // Captura da molécula (sempre necessária)
+  const moleculaText = document.getElementById("moleculaOutput")?.value ?? "";
+  const moleculaBlob = new Blob([moleculaText], { type: "text/plain" });
+  formData.append("molecula", moleculaBlob, "molecula.xyz");
+
+    let paleta = null;
+    let operacao_id = null;
+    const analises = {};
+    let formato = null;
+
+
+  // Apenas se renderização for gráfica
+  if (tipo === "grafico") {
+    const grupoText = document.getElementById("grupoOutput")?.value ?? "";
+    const grupoBlob = new Blob([grupoText], { type: "application/json" });
+    paleta = document.querySelector('input[name="paletaCores"]:checked')?.value ?? null;
+    operacao_id = document.getElementById("select-operacao-unica")?.value ?? null;
     formData.append("grupo", grupoBlob, "grupo.json");
 
-    try {
-        const response = await fetch(baseUrlAnalise, {
-          method: "POST",
-          body: formData,
-      });
+    const renderGrafico = document.querySelector('input[name="renderizacaoGrafica"]:checked')?.value ?? "";
+    formData.append("render_grafico", renderGrafico);
+    }
+  else {
+    formato = document.querySelector(`input[name="formatoTexto"]:checked`)?.value ?? "";
+    document.querySelectorAll('input[name="analises"]:checked').forEach(input => {
+      analises[input.value] = true;
+    });
+  }
 
-        if (!response.ok) throw new Error("Erro ao processar a análise");
+try {
+    const payload = {
+      render: {
+        tipo,
+        formato,
+        paleta,
+        operacao_id: operacao_id !== null ? parseInt(operacao_id) : null
+      },
+      analises
+    };
 
-        const blob = await response.blob();
+    formData.append("payload", JSON.stringify(payload));
+
+    const response = await fetch(baseUrlAnalise, {
+      method: "POST",
+      body: formData,
+  });
+
+    if (!response.ok) throw new Error("Erro ao processar a análise");
+
+    const blob = await response.blob();
 
         // Cria um link temporário para baixar o ZIP
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "resultado.zip";
-        a.click();
-        window.URL.revokeObjectURL(url);
-    } catch (err) {
-        alert("Erro na análise: " + err.message);
-    }
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "resultado.zip";
+    a.click();
+    window.URL.revokeObjectURL(url);
+} catch (err) {
+    alert("Erro na análise: " + err.message);
+}
 });
 
 function trocarRender() {
