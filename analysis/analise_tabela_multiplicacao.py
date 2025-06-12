@@ -40,12 +40,23 @@ class TabelaMultiplicacao:
             for b in self.operacoes:
                 rep_b = self.representacao[b]
                 comp = self.representacao.compor(rep_a, rep_b)
-                # Busca por nome c tal que rep_c == comp
+
+                # Buscar nome do resultado da permutação composta
+                nome_resultado = None
                 for c in self.operacoes:
                     if np.allclose(self.representacao[c], comp):
-                        linha[b] = c
+                        nome_resultado = c
                         break
-                else:
+
+                if nome_resultado is None:
                     raise ValueError(f"Composição {a} * {b} não encontrada.")
+
+                linha[b] = {
+                    "nome": nome_resultado,
+                    "permutacao_op1": rep_a,
+                    "permutacao_op2": rep_b,
+                    "permutacao_resultante": comp
+                }
+
             tabela[a] = linha
         return tabela

@@ -46,8 +46,7 @@ class LatexReportGenerator:
 
             blocos.append(r"""
                 \subsection{Operações de Multiplicação Detalhadas}
-                \begin{longtable}{ll}
-                \textbf{Op1 * Op2} & \textbf{Resultado} \\
+                \begin{longtable}{lll}
                 %s
                 \end{longtable}
                 """ % self._formatar_operacoes_multiplicacao(self.resultado['operacoes_multiplicacao']))
@@ -131,25 +130,27 @@ class LatexReportGenerator:
         chaves = list(tabela.keys())
         linhas = []
 
-        # Cabeçalho do array
         linhas.append("\\begin{array}{c|" + "c" * len(chaves) + "}")
         linhas.append(" & " + " & ".join(f"{op}" for op in chaves) + r" \\ \hline")
 
-        # Corpo da tabela
         for op1, linha in tabela.items():
-            valores = [linha[op2] for op2 in chaves]
+            valores = [linha[op2]["nome"] for op2 in chaves]
             linhas.append(f"{op1} & " + " & ".join(valores) + r" \\")
 
         linhas.append("\\end{array}")
         return "\n".join(linhas)
 
-    def _formatar_operacoes_multiplicacao(self, tabela: dict) -> str:
+    def _formatar_operacoes_multiplicacao(self, operacoes: dict) -> str:
         linhas = []
-        for op1, linha in tabela.items():
-            for op2, resultado in linha.items():
-                linhas.append(f"${op1} * {op2}$ & ${resultado}$ \\\\")
+        for op1, linha in operacoes.items():
+            for op2, info in linha.items():
+                perm2 = info["permutacao_op2"]
+                perm_result = info["permutacao_resultante"]
+                resultado = info["nome"]
+                linhas.append(
+                    rf"$\mathrm{{{op1}}} \circ \mathrm{{{op2}}} = \mathrm{{{op1}}} \circ {perm2} = {perm_result} = \mathrm{{{resultado}}}$ \\"
+                )
         return "\n".join(linhas)
-
 
     def _formatar_operacoes_conjugacao(self, operacoes: dict) -> str:
         linhas = []
