@@ -39,9 +39,11 @@ class LatexReportGenerator:
             blocos.append(r"""
                 \section{Operações de Multiplicação}
                 \subsection{Tabela de Multiplicação}
+                \begin{adjustbox}{max width=\linewidth, angle=90, center}
                 \[
                 %s
                 \]
+                \end{adjustbox}
                 """ % self._formatar_tabela_multiplicacao(self.resultado['operacoes_multiplicacao']))
 
             blocos.append(r"""
@@ -57,9 +59,11 @@ class LatexReportGenerator:
             blocos.append(r"""
                 \section{Operações de Conjugação}
                 \subsection{Tabela de Conjugação}
+                \begin{adjustbox}{max width=\linewidth, angle=90, center}
                 \[
                 %s
                 \]
+                \end{adjustbox}
                 """ % self._formatar_tabela_conjugacao(self.resultado["operacoes_conjugacao"]))
 
             blocos.append(r"""
