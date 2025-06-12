@@ -85,39 +85,6 @@ class PermutationRepresentation(Representation):
 
         return permutacao
 
-    # @staticmethod
-    # def _calcular_permutacao(molecule, matriz_3x3, tolerancia=1e-1):
-
-    #     coords_orig = np.array(molecule.coordenadas)
-    #     print(">>> Coordenadas antes:")
-    #     print(coords_orig)
-    #     elementos = molecule.elementos
-
-    #     # Aplica a transformação: vetor' = matriz @ vetor
-    #     coords_aplicadas = coords_orig @ matriz_3x3.T
-
-    #     print(">>> Coordenadas depois da operação:")
-    #     print(coords_aplicadas)
-    #     usados = set()
-    #     permutacao = []
-
-    #     for i, nova in enumerate(coords_aplicadas):
-    #         especie = elementos[i]
-
-    #         for j, antiga in enumerate(coords_orig):
-    #             if j in usados:
-    #                 continue
-    #             if elementos[j] != especie:
-    #                 continue
-    #             if np.allclose(nova, antiga, atol=tolerancia):
-    #                 permutacao.append(j)
-    #                 usados.add(j)
-    #                 break
-    #         else:
-    #             raise ValueError(f"Não foi possível mapear o átomo {i} ({especie}) após a operação.")
-
-    #     return permutacao
-
     @classmethod
     def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
         inst = cls(rep3d.nome_grupo)
@@ -156,7 +123,7 @@ class PermutationRepresentation(Representation):
 
     def conjugar(self, a, b):
         inv_b = self.inverso(b)
-        return self.compor(self.compor(inv_b, a), b)
+        return self.compor(self.compor(b, a), inv_b)
 
     def nomes(self):
         return list(self._dados.keys())

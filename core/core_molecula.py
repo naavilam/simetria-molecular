@@ -44,8 +44,8 @@ class Molecule:
         """
         natomos = int(linhas[0])
         nome = linhas[1]
-        print(">>>>>>>>>>>>>>>>>>>>")
-        print(nome)
+        # print(">>>>>>>>>>>>>>>>>>>>")
+        # print(nome)
         dados = linhas[2:2 + natomos]
 
         elementos = []

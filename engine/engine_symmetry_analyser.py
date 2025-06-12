@@ -78,24 +78,41 @@ class SymmetryAnalyzer:
     def executar(self) -> 'SymmetryAnalyzer':
         inicio = perf_counter()
         representacao = self.get_representacao()
-
         resultado = {}
         if AnaliseTipo.PERMUTACOES in self._analises:
             resultado["permutacoes"] = representacao.get_permutacoes()
 
         if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises:
             resultado["operacoes_multiplicacao"] = TabelaMultiplicacao(representacao).gerar()
-            print(">>>>>>>>>>>>>>>>>>>>")
-            print(resultado["operacoes_multiplicacao"])
+            # print(">>>>>>>>>>>>>>>>>>>>")
+            # print(resultado["operacoes_multiplicacao"])
 
         if AnaliseTipo.CLASSES_CONJUGACAO in self._analises:
             resultado["operacoes_conjugacao"] = ClasseConjugacao(representacao).gerar()
-            print(">>>>>>>>>>>>>>>>>>>>")
-            print(resultado["operacoes_conjugacao"])
+            # print(">>>>>>>>>>>>>>>>>>>>")
+            # print(resultado["operacoes_conjugacao"])
 
         resultado["tempo_execucao"] = f"{perf_counter() - inicio:.2f}s"
         self._resultado = resultado
         return self
+
+    # def _debug_conjugacoes(self, rep):
+    #     print("==== Testes de Conjugação (App) ====")
+    #     nomes = rep.nomes()
+    #     for g_nome in nomes:
+    #         g = rep[g_nome]
+    #         for h_nome in nomes:
+    #             h = rep[h_nome]
+    #             res = rep.conjugar(g, h)
+    #             res_nome = None
+    #             for nome_k in nomes:
+    #                 if rep[nome_k] == res:
+    #                     res_nome = nome_k
+    #                     break
+    #             if res_nome:
+    #                 print(f"{h_nome} ∘ {g_nome} ∘ {h_nome}⁻¹ = {res} ↪ Resultado conhecido: {res_nome}")
+    #             else:
+    #                 print(f"{h_nome} ∘ {g_nome} ∘ {h_nome}⁻¹ = {res} ↪ Resultado desconhecido")
 
     def renderizar(self, formato: RenderTipo) -> str:
         if self._resultado is None:
