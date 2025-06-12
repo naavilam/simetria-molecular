@@ -46,7 +46,7 @@ class LatexReportGenerator:
 
             blocos.append(r"""
                 \subsection{Operações de Multiplicação Detalhadas}
-                \begin{longtable}{lll}
+                \begin{longtable}{>{$}r<{$} >{$}l<{$} >{$}l<{$}}
                 %s
                 \end{longtable}
                 """ % self._formatar_operacoes_multiplicacao(self.resultado['operacoes_multiplicacao']))
@@ -87,6 +87,8 @@ class LatexReportGenerator:
         \usepackage{{longtable}}
         \usepackage{{lastpage}}
         \usepackage[hidelinks]{{hyperref}}
+        \usepackage{{adjustbox}}
+        \usepackage{{lscape}}  % ou rotfloat, caso queira controlar melhor
 
         \geometry{{left=1cm, right=1cm, top=2.5cm, bottom=2.5cm}}
         \pagestyle{{fancy}}
@@ -148,7 +150,10 @@ class LatexReportGenerator:
                 perm_result = info["permutacao_resultante"]
                 resultado = info["nome"]
                 linhas.append(
-                    rf"$\mathrm{{{op1}}} \circ \mathrm{{{op2}}} = \mathrm{{{op1}}} \circ {perm2} = {perm_result} = \mathrm{{{resultado}}}$ \\"
+                    rf"\makebox[3.3cm][r]{{$\mathrm{{{op1}}} \circ \mathrm{{{op2}}}$}} &="
+                    rf" $\mathrm{{{op1}}} \circ {perm2}$ &="
+                    rf" ${perm_result}$ &="
+                    rf" \makebox[2.3cm][l]{{$\mathrm{{{resultado}}}$}} \\"
                 )
         return "\n".join(linhas)
 
