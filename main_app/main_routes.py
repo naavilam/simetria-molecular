@@ -37,3 +37,6 @@ async def analise(
 ):   
     data = AnaliseRequest.parse_raw(payload)
     return await processar_analise(molecula, data)
+
+
+

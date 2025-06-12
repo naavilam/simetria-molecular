@@ -48,17 +48,17 @@ class SymmetryAnalyzer:
     def de(cls, group: Group, molecule: Molecule) -> 'SymmetryAnalyzer':
         return cls(molecule, group)
 
-    def usar(self, tipo: RepresentationType)-> 'SymmetryAnalyzer':
-        if tipo == RepresentationType.MATRIX_3D:
-            self.rep = Matrix3DRepresentation.from_group(self.group)
-
-        elif tipo == RepresentationType.PERMUTATION:
-            rep3d = Matrix3DRepresentation.from_group(self.group)
-            self.rep = PermutationRepresentation.from_matrix3d(rep3d, self.molecule)
-
-        else:
-            raise ValueError(f"Tipo de representação não suportado: {tipo}")
-
+    def usar(self, tipo: RepresentationType) -> 'SymmetryAnalyzer':
+        print(
+            f"\n\033[95m>>> Usando grupo: \033[1m{self.group.nome}\033[0m "
+            f"\033[94mcom molécula: \033[1m{getattr(self.molecule, 'nome', 'desconhecida')}\033[0m"
+        )
+        self.rep = (
+            RepresentationBuilder()
+            .de(self.group, self.molecule)
+            .usar(tipo)
+            .construir()
+        )
         self._tipo = tipo
         return self
 
@@ -84,10 +84,14 @@ class SymmetryAnalyzer:
             resultado["permutacoes"] = representacao.get_permutacoes()
 
         if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises:
-            resultado["tabela"] = TabelaMultiplicacao(representacao).gerar()
+            resultado["operacoes_multiplicacao"] = TabelaMultiplicacao(representacao).gerar()
+            print(">>>>>>>>>>>>>>>>>>>>")
+            print(resultado["operacoes_multiplicacao"])
 
         if AnaliseTipo.CLASSES_CONJUGACAO in self._analises:
-            resultado["classes"] = ClasseConjugacao(representacao, resultado["tabela"]).gerar()
+            resultado["operacoes_conjugacao"] = ClasseConjugacao(representacao).gerar()
+            print(">>>>>>>>>>>>>>>>>>>>")
+            print(resultado["operacoes_conjugacao"])
 
         resultado["tempo_execucao"] = f"{perf_counter() - inicio:.2f}s"
         self._resultado = resultado

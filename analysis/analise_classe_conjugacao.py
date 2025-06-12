@@ -21,218 +21,53 @@ import re
 import numpy as np
 from pathlib import Path
 from representation.representation import Representation
-
-# conjugacy_class.py
-
-# class ClasseConjugacao:
-#     def __init__(self, representation: Representation, mult_table: dict):
-#         self.rep = representation
-#         self.tab = mult_table
-
-#     def gerar(self) -> dict:
-#         conjugacy = {}
-#         nomes = self.rep.nomes_operacoes()
-#         for g in nomes:
-#             classe = set()
-#             for h in nomes:
-#                 inv_h = self.rep[h].inverse() if hasattr(self.rep[h], 'inverse') else np.linalg.inv(self.rep[h])
-#                 conj = self.rep[h] @ self.rep[g] @ inv_h
-#                 for nome_k, op_k in self.rep:
-#                     if np.allclose(conj, op_k):
-#                         classe.add(nome_k)
-#                         break
-#             conjugacy[g] = sorted(list(classe))
-#         return conjugacy
-
 class ClasseConjugacao:
-    def __init__(self, representation: Representation, mult_table: dict):
+    def __init__(self, representation: Representation):
         self.rep = representation
-        self.tab = mult_table
 
-    def gerar(self) -> dict:
-        conjugacy = {}
+    def gerar(self) -> tuple[dict, dict]:
+        """
+        Retorna uma tupla:
+        - classes: dict com 'Classe 1': [nomes]
+        - conjugacao_detalhada: dict com g -> h -> {resultado, detalhe}
+        """
         nomes = self.rep.nomes()
+        usados = set()
+        conjugacy = []
+        conjugacao_detalhada = {}
 
         for g in nomes:
+            if g in usados:
+                continue
+
             classe = set()
+            conjugacao_detalhada[g] = {}
 
             for h in nomes:
-                conj = self.rep.conjugar(self.rep[g], self.rep[h])
+                perm_g = self.rep[g]
+                perm_h = self.rep[h]
+                conj = self.rep.conjugar(perm_g, perm_h)
+
+                # Encontrar qual nome corresponde ao resultado da conjugação
                 for nome_k in nomes:
-                    if self.rep.compor(conj, self.rep[nome_k]) == self.rep[nome_k]:
+                    if self.rep[nome_k] == conj:
                         classe.add(nome_k)
+                        conjugacao_detalhada[g][h] = {
+                            "resultado": nome_k,
+                            "detalhe": {
+                                "g": perm_g,
+                                "h": perm_h,
+                                "hgh⁻¹": conj
+                            }
+                        }
                         break
 
-            conjugacy[g] = sorted(classe, key=nomes.index)
-        return conjugacy
+            conjugacy.append(sorted(classe, key=nomes.index))
+            usados.update(classe)
 
+        # Formatando em forma de "Classe 1", "Classe 2", etc.
+        classes_formatadas = {
+            f"Classe {i+1}": classe for i, classe in enumerate(conjugacy)
+        }
 
-# from permutation_tools import Permutation
-
-# class ClasseConjugacao:
-#     def __init__(self, permutacoes, tabela_multiplicacao):
-#         self.permutacoes = permutacoes  # instancia de Permutations
-#         self.tab_mult = tabela_multiplicacao  # opcional
-
-#     def gerar_classe_conjugacao(self):
-#         nomes = self.permutacoes.nomes()
-#         classes = []
-#         vistos = set()
-
-#         for nome in nomes:
-#             if nome in vistos:
-#                 continue
-#             classe = set()
-#             p = self.permutacoes[nome]
-#             for nome2 in nomes:
-#                 p2 = self.permutacoes[nome2]
-#                 conj = p2.inverse().compose(p).compose(p2)
-#                 for nome_ref, p_ref in self.permutacoes.itens():
-#                     if conj == p_ref:
-#                         classe.add(nome_ref)
-#                         break
-#             classes.append(sorted(classe))
-#             vistos.update(classe)
-
-#         return self._formatar_latex(classes)
-
-#     def _formatar_latex(self, classes):
-#         latex = ["\\begin{array}{l}"]
-#         for i, classe in enumerate(classes):
-#             latex.append(f"\\mathcal{{C}}_{{{i+1}}} = \\{{ " + ", ".join(classe) + " \\}} \\\\")
-#         latex.append("\\end{array}")
-#         return "\n".join(latex)
-
-# class ClasseConjugacao:
-
-#     """Summary
-#     """
-    
-#     def __init__(self, permutacoes, tabela_mult):
-#         """Summary
-#         """
-#         self.permutacoes = permutacoes
-#         self.tabela_mult = tabela_mult
-
-
-#     def gerar_classe_conjugacao(self):
-
-#         nomes = list(self.permutacoes.keys())
-#         perms = list(self.permutacoes.values())
-#         nome_por_perm = {tuple(p): nome for nome, p in self.permutacoes.items()}
-
-#         classes = {}
-#         for i, nome_i in enumerate(nomes):
-#             pi = perms[i]
-#             conj_class = set()
-#             for j, nome_j in enumerate(nomes):
-#                 pj = perms[j]
-#                 pj_inv = [pj.index(k+1) for k in range(len(pj))]
-#                 comp1 = self._compor(pj, pi)
-#                 conj = self._compor(comp1, pj_inv)
-#                 nome_conjugado = nome_por_perm.get(tuple(conj))
-#                 if nome_conjugado:
-#                     conj_class.add(nome_conjugado)
-#             classes[nome_i] = conj_class
-
-#         self.salvar_classes_conjugacao(classes)
-#         self.gerar_operacoes_conjugacao_expandido_v2(self.permutacoes, self.tabela_mult)
-
-#     @staticmethod
-#     def gerar_operacoes_conjugacao_expandido_v2(dicionario_perms, tabela_mult, destino_tex="analise/registro_classes_expandido.tex"):
-
-#         nome_por_perm = {tuple(v): k for k, v in dicionario_perms.items()}
-#         nomes = list(dicionario_perms.keys())
-#         perms = list(dicionario_perms.values())
-#         linhas = ["\\begin{align*}"]
-
-#         id_idx = nomes.index("\\mathrm{E}")
-
-#         for h_idx, h in enumerate(nomes):
-#             for g_idx, g in enumerate(nomes):
-#                 for k_idx, k_nome in enumerate(nomes):
-#                     if tabela_mult[h_idx][k_idx] == "\\mathrm{E}":
-#                         h_inv = nomes[k_idx]
-#                         break
-#                 else:
-#                     h_inv = "?"
-
-#                 ph = dicionario_perms[h]
-#                 pg = dicionario_perms[g]
-#                 ph_inv = dicionario_perms[h_inv] if h_inv in dicionario_perms else []
-
-#                 hgh = [ph[i] for i in pg]
-#                 conj = [hgh[i] for i in ph_inv] if ph_inv else []
-
-#                 g_conj = nome_por_perm.get(tuple(conj), "?")
-
-#                 linhas.append(
-#                     f"& {h} {g} {h}^{{-1}} = {g_conj} \\quad "
-#                     f"\\text{{perm: }}({', '.join(map(str, ph))})"
-#                     f"({', '.join(map(str, pg))})"
-#                     f"({', '.join(map(str, ph_inv))})"
-#                     f" = ({', '.join(map(str, conj))}) \\\\"
-#                 )
-
-#         linhas.append("\\end{align*}")
-#         Path(destino_tex).write_text("\n".join(linhas), encoding="utf-8")
-#         return destino_tex
-
-#     @staticmethod
-#     def detectar_classes_conjugacao(dicionario_perms):
-#         """Description
-        
-#         Args:
-#             dicionario_perms (TYPE): Description
-        
-#         Returns:
-#             TYPE: Description
-#         """
-#         nome_por_perm = {tuple(v): k for k, v in dicionario_perms.items()}
-#         nomes = list(dicionario_perms.keys())
-#         permutacoes = list(dicionario_perms.values())
-
-#         classes = []
-#         visitados = set()
-
-#         for i, g in enumerate(permutacoes):
-#             if i in visitados:
-#                 continue
-#             classe = set()
-#             for h in permutacoes:
-#                 h_inv = [h.index(j) for j in range(len(h))]
-#                 conjugado = [h[g[i]] for i in h_inv]
-#                 classe.add(tuple(conjugado))
-#             indices_classe = [j for j, p in enumerate(permutacoes) if tuple(p) in classe]
-#             visitados.update(indices_classe)
-#             classes.append(indices_classe)
-
-#         return classes
-
-
-
-
-#     @classmethod
-#     def salvar_classes_conjugacao(cls, classes, path_txt="analise/classes.txt", path_tex="analise/classes.tex"):
-#         """Description
-        
-#         Args:
-#             classes (TYPE): Description
-#             path_txt (str, optional): Description
-#             path_tex (str, optional): Description
-#         """
-#         unicas = list({frozenset(v) for v in classes.values()})
-#         unicas.sort(key=lambda s: sorted(list(s))[0])
-
-#         Path("analise").mkdir(exist_ok=True)
-
-#         with open(path_txt, "w", encoding="utf-8") as f_txt:
-#             for idx, classe in enumerate(unicas, 1):
-#                 f_txt.write(f"Classe {idx}: " + ", ".join(sorted(classe)) + "\n")
-
-#         with open(path_tex, "w", encoding="utf-8") as f_tex:
-#             f_tex.write("\\begin{itemize}\n")
-#             for idx, classe in enumerate(unicas, 1):
-#                 itens = ", ".join(cls.nome_para_latex(n) for n in sorted(classe))
-#                 f_tex.write(f"  \\item Classe {idx}: {itens}\n")
-#             f_tex.write("\\end{itemize}\n")
+        return conjugacao_detalhada

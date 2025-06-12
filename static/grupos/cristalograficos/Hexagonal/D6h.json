@@ -5,164 +5,189 @@
     {
       "tipo": "identidade",
       "comentario": "Identidade (E)",
-      "nome": "\\mathrm{E}"
+      "nome": "\\mathrm{E}",
+      "id": 1
     },
     {
       "tipo": "rotacao",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 60,
       "comentario": "Rotação C6 (60°)",
-      "nome": "\\mathrm{C}_{6}"
+      "nome": "\\mathrm{C}_{6}",
+      "id": 2
     },
     {
       "tipo": "rotacao",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 120,
       "comentario": "Rotação C3 (120°)",
-      "nome": "\\mathrm{C}_{3}"
+      "nome": "\\mathrm{C}_{3}",
+      "id": 3
     },
     {
       "tipo": "rotacao",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 180,
       "comentario": "Rotação C2 (180°)",
-      "nome": "\\mathrm{C}_{2}"
+      "nome": "\\mathrm{C}_{2}",
+      "id": 4
     },
     {
       "tipo": "rotacao",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 240,
       "comentario": "Rotação C3^2 (240°)",
-      "nome": "\\mathrm{C}_{3}^{2}"
+      "nome": "\\mathrm{C}_{3}^{2}",
+      "id": 5
     },
     {
       "tipo": "rotacao",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 300,
       "comentario": "Rotação C6^5 (300°)",
-      "nome": "\\mathrm{C}_{6}^{5}"
+      "nome": "\\mathrm{C}_{6}^{5}",
+      "id": 6
     },
     {
       "tipo": "rotacao",
       "eixo": [1.0,0.0,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(a)}",
-      "nome": "\\mathrm{C}_{2}^{(a)}"
+      "nome": "\\mathrm{C}_{2}^{(a)}",
+      "id": 7
     },
     {
       "tipo": "rotacao",
-      "eixo": [-0.5,0.866,0.0],
+      "eixo": [-0.5000110004,0.8660190526,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(b)}",
-      "nome": "\\mathrm{C}_{2}^{(b)}"
+      "nome": "\\mathrm{C}_{2}^{(b)}",
+      "id": 8
     },
     {
       "tipo": "rotacao",
-      "eixo": [-0.5,-0.866,0.0],
+      "eixo": [-0.5000110004,-0.8660190526,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(c)}",
-      "nome": "\\mathrm{C}_{2}^{(c)}"
+      "nome": "\\mathrm{C}_{2}^{(c)}",
+      "id": 9
     },
     {
       "tipo": "rotacao",
-      "eixo": [0.866,0.5,0.0],
+      "eixo": [0.8660190526,0.5000110004,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(d)}",
-      "nome": "\\mathrm{C}_{2}^{(d)}"
+      "nome": "\\mathrm{C}_{2}^{(d)}",
+      "id": 10
     },
     {
       "tipo": "rotacao",
-      "eixo": [-0.866,0.5,0.0],
+      "eixo": [-0.8660190526,0.5000110004,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(e)}",
-      "nome": "\\mathrm{C}_{2}^{(e)}"
+      "nome": "\\mathrm{C}_{2}^{(e)}",
+      "id": 11
     },
     {
       "tipo": "rotacao",
       "eixo": [0.0,-1.0,0.0],
       "angulo": 180,
       "comentario": "Rotação C2^{(f)}",
-      "nome": "\\mathrm{C}_{2}^{(f)}"
+      "nome": "\\mathrm{C}_{2}^{(f)}",
+      "id": 12
     },
     {
       "tipo": "reflexao",
       "plano_normal": [1.0,0.0,0.0],
       "comentario": "Reflexão σv (x=0)",
-      "nome": "\\sigma_{v1}"
+      "nome": "\\sigma_{v1}",
+      "id": 13
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.5,0.866,0.0],
+      "plano_normal": [-0.5000110004,0.8660190526,0.0],
       "comentario": "Reflexão σv (120°)",
-      "nome": "\\sigma_{v2}"
+      "nome": "\\sigma_{v2}",
+      "id": 14
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.5,-0.866,0.0],
+      "plano_normal": [-0.5000110004,-0.8660190526,0.0],
       "comentario": "Reflexão σv (240°)",
-      "nome": "\\sigma_{v3}"
+      "nome": "\\sigma_{v3}",
+      "id": 15
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [0.866,0.5,0.0],
+      "plano_normal": [0.8660190526,0.5000110004,0.0],
       "comentario": "Reflexão σd (30°)",
-      "nome": "\\sigma_{d1}"
+      "nome": "\\sigma_{d1}",
+      "id": 16
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.866,0.5,0.0],
+      "plano_normal": [-0.8660190526,0.5000110004,0.0],
       "comentario": "Reflexão σd (150°)",
-      "nome": "\\sigma_{d2}"
+      "nome": "\\sigma_{d2}",
+      "id": 17
     },
     {
       "tipo": "reflexao",
       "plano_normal": [0.0,-1.0,0.0],
       "comentario": "Reflexão σd (270°)",
-      "nome": "\\sigma_{d3}"
+      "nome": "\\sigma_{d3}",
+      "id": 18
     },
     {
       "tipo": "reflexao",
       "plano_normal": [0.0,0.0,1.0],
       "comentario": "Reflexão σh (plano xy)",
-      "nome": "\\sigma_{h}"
+      "nome": "\\sigma_{h}",
+      "id": 19
     },
     {
       "tipo": "inversao",
       "comentario": "Inversão (i)",
-      "nome": "\\mathrm{i}"
+      "nome": "\\mathrm{i}",
+      "id": 20
     },
     {
       "tipo": "impropria",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 60,
-      "plano_normal": [0,0,1],
+      "plano_normal": [0.0,0.0,1.0],
       "comentario": "S6 (C6 + σh)",
-      "nome": "\\mathrm{S}_{6}"
+      "nome": "\\mathrm{S}_{6}",
+      "id": 21
     },
     {
       "tipo": "impropria",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 300,
-      "plano_normal": [0,0,1],
+      "plano_normal": [0.0,0.0,1.0],
       "comentario": "S6^5 (C6^5 + σh)",
-      "nome": "\\mathrm{S}_{6}^{5}"
+      "nome": "\\mathrm{S}_{6}^{5}",
+      "id": 22
     },
     {
       "tipo": "impropria",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 120,
-      "plano_normal": [0,0,1],
+      "plano_normal": [0.0,0.0,1.0],
       "comentario": "S3 (C3 + σh)",
-      "nome": "\\mathrm{S}_{3}"
+      "nome": "\\mathrm{S}_{3}",
+      "id": 23
     },
     {
       "tipo": "impropria",
-      "eixo": [0,0,1],
+      "eixo": [0.0,0.0,1.0],
       "angulo": 240,
-      "plano_normal": [0,0,1],
+      "plano_normal": [0.0,0.0,1.0],
       "comentario": "S3^2 (C3^2 + σh)",
-      "nome": "\\mathrm{S}_{3}^{2}"
+      "nome": "\\mathrm{S}_{3}^{2}",
+      "id": 24
     }
   ],
-  "tolerancia": 0.01
+  "tolerancia": 0.01,
+  "ordem": 24
 }

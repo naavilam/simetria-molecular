@@ -1,82 +1,100 @@
 {
   "nome": "D3d",
-  "descricao": "Grupo D3d: rotações C3, três C2 perpendiculares e três planos diédricos equivalentes a S6.",
-  "ordem": 12,
+  "descricao": "Grupo diédrico com operação C₃, 3 operações C₂ e 3 planos de reflexão diagonal (σᵈ)",
   "operacoes": [
     {
       "tipo": "identidade",
       "comentario": "Identidade (E)",
-      "nome": "\\mathrm{E}"
+      "nome": "\\mathrm{E}",
+      "id": 1
     },
     {
       "tipo": "rotacao",
       "eixo": [0,0,1],
       "angulo": 120,
-      "comentario": "Rotação C3 (120°)",
-      "nome": "\\mathrm{C}_{3}"
+      "comentario": "Rotação C₃ (120°)",
+      "nome": "\\mathrm{C}_{3}",
+      "id": 2
     },
     {
       "tipo": "rotacao",
       "eixo": [0,0,1],
       "angulo": 240,
-      "comentario": "Rotação C3^2 (240°)",
-      "nome": "\\mathrm{C}_{3}^{2}"
+      "comentario": "Rotação C₃² (240°)",
+      "nome": "\\mathrm{C}_{3}^{2}",
+      "id": 3
     },
     {
       "tipo": "rotacao",
-      "eixo": [1,0,0],
+      "eixo": [1.0,0.0,0.0],
       "angulo": 180,
-      "comentario": "Rotação C2^{(a)}",
-      "nome": "\\mathrm{C}_{2}^{(a)}"
+      "comentario": "Rotação C₂ perpendicular ao eixo principal",
+      "nome": "\\mathrm{C}_{2}^{(a)}",
+      "id": 4
     },
     {
       "tipo": "rotacao",
-      "eixo": [-0.5,0.866,0],
+      "eixo": [-0.5,0.866025,0.0],
       "angulo": 180,
-      "comentario": "Rotação C2^{(b)}",
-      "nome": "\\mathrm{C}_{2}^{(b)}"
+      "comentario": "Rotação C₂ em 120° ao redor de eixo perpendicular",
+      "nome": "\\mathrm{C}_{2}^{(b)}",
+      "id": 5
     },
     {
       "tipo": "rotacao",
-      "eixo": [-0.5,-0.866,0],
+      "eixo": [-0.5,-0.866025,0.0],
       "angulo": 180,
-      "comentario": "Rotação C2^{(c)}",
-      "nome": "\\mathrm{C}_{2}^{(c)}"
+      "comentario": "Rotação C₂ em 240° ao redor de eixo perpendicular",
+      "nome": "\\mathrm{C}_{2}^{(c)}",
+      "id": 6
     },
     {
       "tipo": "impropria",
       "eixo": [0,0,1],
       "angulo": 60,
       "plano_normal": [0,0,1],
-      "comentario": "Rot. imprópria S6 (60°)",
-      "nome": "\\mathrm{S}_{6}"
+      "comentario": "Rotação imprópria S₆⁺ (60°)",
+      "nome": "\\mathrm{S}_{6}",
+      "id": 7
     },
     {
       "tipo": "impropria",
       "eixo": [0,0,1],
       "angulo": 300,
       "plano_normal": [0,0,1],
-      "comentario": "Rot. imprópria S6^5 (300°)",
-      "nome": "\\mathrm{S}_{6}^{5}"
+      "comentario": "Rotação imprópria S₆⁻ (300°)",
+      "nome": "\\mathrm{S}_{6}^{5}",
+      "id": 8
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [0.866,0.5,0],
-      "comentario": "Reflexão d1",
-      "nome": "\\sigma_{d1}"
+      "plano_normal": [0.866025,0.5,0.0],
+      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
+      "nome": "\\sigma_{d1}",
+      "id": 9
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [-0.866,0.5,0],
-      "comentario": "Reflexão d2",
-      "nome": "\\sigma_{d2}"
+      "plano_normal": [-0.866025,0.5,0.0],
+      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
+      "nome": "\\sigma_{d2}",
+      "id": 10
     },
     {
       "tipo": "reflexao",
-      "plano_normal": [0,-1,0],
-      "comentario": "Reflexão d3",
-      "nome": "\\sigma_{d3}"
+      "plano_normal": [0.0,-1.0,0.0],
+      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
+      "nome": "\\sigma_{d3}",
+      "id": 11
+    },
+    {
+      "tipo": "reflexao",
+      "plano_normal": [0,0,1],
+      "comentario": "Reflexão horizontal σₕ perpendicular ao eixo C₃",
+      "nome": "\\sigma_{h}",
+      "id": 12
     }
   ],
-  "tolerancia": 0.01
+  "tolerancia": 0.02,
+  "ordem": 12
 }

@@ -45,6 +45,18 @@ class Matrix3DRepresentation(Representation):
         else:
             raise ValueError(f"Tipo de operação desconhecido: {op['tipo']}")
 
+    # @staticmethod
+    # def _matriz_rotacao(eixo, angulo):
+    #     eixo = eixo / np.linalg.norm(eixo)
+    #     x, y, z = eixo
+    #     c = np.cos(angulo)
+    #     s = np.sin(angulo)
+    #     C = 1 - c
+    #     return np.array([
+    #         [x*x*C + c,   x*y*C - z*s, x*z*C + y*s],
+    #         [y*x*C + z*s, y*y*C + c,   y*z*C - x*s],
+    #         [z*x*C - y*s, z*y*C + x*s, z*z*C + c  ]
+    #     ])
     @staticmethod
     def _matriz_rotacao(eixo, angulo):
         eixo = eixo / np.linalg.norm(eixo)
@@ -52,11 +64,12 @@ class Matrix3DRepresentation(Representation):
         c = np.cos(angulo)
         s = np.sin(angulo)
         C = 1 - c
-        return np.array([
+        matriz = np.array([
             [x*x*C + c,   x*y*C - z*s, x*z*C + y*s],
             [y*x*C + z*s, y*y*C + c,   y*z*C - x*s],
             [z*x*C - y*s, z*y*C + x*s, z*z*C + c  ]
         ])
+        return np.round(matriz, decimals=10)  # <- ESSENCIAL
 
     @staticmethod
     def _matriz_reflexao(normal):

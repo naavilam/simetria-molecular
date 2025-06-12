@@ -2,6 +2,7 @@ import numpy as np
 from .representation import Representation
 from.representation_matrix3d import Matrix3DRepresentation
 from core.core_molecula import Molecule
+from scipy.spatial.distance import cdist
 
 class PermutationRepresentation(Representation):
 
@@ -13,38 +14,115 @@ class PermutationRepresentation(Representation):
     #         inst.adicionar(op["nome"], perm)
     #     return inst
 
-    @staticmethod
-    def _calcular_permutacao(molecule, matriz_3x3, tolerancia=1e-3):
-        coords_orig = np.array(molecule.coordenadas)
-        elementos = molecule.elementos
 
-        # Aplica a transformação: vetor' = matriz @ vetor
-        coords_aplicadas = coords_orig @ matriz_3x3.T
-
+    def calcular_permutacao_consistente(originais, transformadas, tolerancia=1e-2):
+        """
+        Retorna uma permutação consistente que associa cada coordenada transformada
+        a uma coordenada original, sem repetições, com base em distância mínima dentro da tolerância.
+        """
+        n = len(originais)
         usados = set()
         permutacao = []
 
-        for i, nova in enumerate(coords_aplicadas):
-            especie = elementos[i]
+        for i, r_t in enumerate(transformadas):
+            melhor_indice = None
+            melhor_dist = None
 
-            for j, antiga in enumerate(coords_orig):
+            for j, r_o in enumerate(originais):
                 if j in usados:
                     continue
-                if elementos[j] != especie:
-                    continue
-                if np.allclose(nova, antiga, atol=tolerancia):
-                    permutacao.append(j)
-                    usados.add(j)
-                    break
-            else:
-                raise ValueError(f"Não foi possível mapear o átomo {i} ({especie}) após a operação.")
+                dist = np.linalg.norm(np.array(r_t) - np.array(r_o))
+                if dist <= tolerancia:
+                    if melhor_dist is None or dist < melhor_dist or (np.isclose(dist, melhor_dist) and j < melhor_indice):
+                        melhor_dist = dist
+                        melhor_indice = j
+
+            if melhor_indice is None:
+                raise ValueError(f"Não foi possível associar a coordenada transformada {i} a nenhuma original dentro da tolerância.")
+
+            usados.add(melhor_indice)
+            permutacao.append(melhor_indice)
 
         return permutacao
+
+    @staticmethod
+    def _calcular_permutacao(molecule, matriz, tolerancia=1e-2):
+        coords_orig = np.array(molecule.coordenadas)
+        coords_transf = np.dot(matriz, coords_orig.T).T
+
+        dist = cdist(coords_transf, coords_orig)
+
+        permutacao = [-1] * len(coords_orig)
+        usados = set()
+
+        for i in range(len(coords_transf)):
+            # print(f"\n>>> Átomo {i} ({molecule.elementos[i]}) coordenada transformada: ")
+
+            candidatos = []
+            for j in range(len(coords_orig)):
+                if j in usados:
+                    continue
+                if molecule.elementos[i] != molecule.elementos[j]:
+                    continue
+                dist_ij = dist[i, j]
+                candidatos.append((j, dist_ij))
+                # print(f"  - Distância até átomo {j} ({molecule.elementos[j]}): {dist_ij:.6f}")
+
+            if not candidatos:
+                raise ValueError(f"Não há mais candidatos válidos para mapeamento do átomo {i} ({molecule.elementos[i]}).")
+
+            j_min, d_min = min(candidatos, key=lambda x: x[1])
+
+            if d_min > tolerancia:
+                # print(">>> Matriz aplicada:")
+                # print(matriz)
+                # print(">>> Candidatos válidos:")
+                # print(candidatos)
+                raise ValueError(f"Não foi possível mapear o átomo {i} ({molecule.elementos[i]}) após a operação.")
+
+            permutacao[i] = j_min
+            usados.add(j_min)
+
+        return permutacao
+
+    # @staticmethod
+    # def _calcular_permutacao(molecule, matriz_3x3, tolerancia=1e-1):
+
+    #     coords_orig = np.array(molecule.coordenadas)
+    #     print(">>> Coordenadas antes:")
+    #     print(coords_orig)
+    #     elementos = molecule.elementos
+
+    #     # Aplica a transformação: vetor' = matriz @ vetor
+    #     coords_aplicadas = coords_orig @ matriz_3x3.T
+
+    #     print(">>> Coordenadas depois da operação:")
+    #     print(coords_aplicadas)
+    #     usados = set()
+    #     permutacao = []
+
+    #     for i, nova in enumerate(coords_aplicadas):
+    #         especie = elementos[i]
+
+    #         for j, antiga in enumerate(coords_orig):
+    #             if j in usados:
+    #                 continue
+    #             if elementos[j] != especie:
+    #                 continue
+    #             if np.allclose(nova, antiga, atol=tolerancia):
+    #                 permutacao.append(j)
+    #                 usados.add(j)
+    #                 break
+    #         else:
+    #             raise ValueError(f"Não foi possível mapear o átomo {i} ({especie}) após a operação.")
+
+    #     return permutacao
 
     @classmethod
     def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
         inst = cls(rep3d.nome_grupo)
         for nome, matriz in rep3d:
+            print(f"\n>>> Aplicando operação: {nome}")
             perm = cls._calcular_permutacao(molecule, matriz)
             inst.adicionar(nome, perm)
         return inst

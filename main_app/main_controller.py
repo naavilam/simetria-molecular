@@ -54,6 +54,8 @@ def identificar_grupo_pontual(xyz_path: str) -> str:
             coords.append([float(x) for x in tokens[1:4]])
     mol = PymatgenMolecule(especies, coords)
     grupo = PointGroupAnalyzer(mol).sch_symbol  # Ex: "D3h"
+    print(">>> Grupo identificado:")
+    print(grupo)
     return grupo
 
 import json
@@ -73,6 +75,8 @@ def encontrar_json_grupo(grupo: str) -> str:
     for path in arquivos:
         nome_arquivo = os.path.splitext(os.path.basename(path))[0].lower()
         if nome_arquivo == grupo_proc or nome_arquivo.startswith(grupo_proc):
+            print(">>> Caminho do grupo identificado:")
+            print(path)
             return path
 
     raise FileNotFoundError(f"Arquivo JSON para o grupo '{grupo}' não encontrado.")
@@ -93,8 +97,8 @@ async def processar_analise(molecula, data: AnaliseRequest):
     app = MoleculeSymmetryApp.from_files(mol_path, grupo_path)
     output = app.run(selected_op=data.render.operacao_id, config=data, uuid=temp_id)
 
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print(output)
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # print(output)
     nome_base = molecula.filename.rsplit(".", 1)[0]
     nome_tex = "Analise_Simetria_Molecula_Personalizada.tex" if nome_base.lower() in ["outro", "outro.xyz", "personalizado"] else f"Analise_Simetria_Molecula_{nome_base}.tex"
     tex_path = os.path.join(workdir, nome_tex)
@@ -103,3 +107,11 @@ async def processar_analise(molecula, data: AnaliseRequest):
         f.write(output)
 
     return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
+
+
+
+
+
+
+
+
