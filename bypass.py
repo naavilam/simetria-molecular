@@ -64,6 +64,8 @@ class OperacaoPyVistaRenderer:
             plano = np.array(self.operacao["plano_normal"])
             plano = plano / np.linalg.norm(plano)
             coords = coords - 2 * np.outer(np.dot(coords, plano), plano)
+        elif tipo == "inversao":
+            coords = -coords
         return list(zip(self.molecula.elementos, coords.tolist()))
 
     def renderizar(self):
@@ -196,12 +198,12 @@ class OperacaoPyVistaRenderer:
         destaques = []
 
         # Eixo (rotacao ou impropria)
-        if "eixo" in op and isinstance(op["eixo"], list):
-            destaques.append({
-                "tipo": "eixo",
-                "direcao": op["eixo"],
-                "origem": op.get("origem", [0.0, 0.0, 0.0])
-            })
+        # if "eixo" in op and isinstance(op["eixo"], list):
+        #     destaques.append({
+        #         "tipo": "eixo",
+        #         "direcao": op["eixo"],
+        #         "origem": op.get("origem", [0.0, 0.0, 0.0])
+        #     })
 
         # Plano (reflexao ou impropria)
         if "plano_normal" in op and isinstance(op["plano_normal"], list):
@@ -211,22 +213,30 @@ class OperacaoPyVistaRenderer:
                 "origem": op.get("origem", [0.0, 0.0, 0.0])
             })
 
-        # Ponto (se não houver nem eixo nem plano, mas houver origem)
-        if "origem" in op and "eixo" not in op and "plano_normal" not in op:
+        if op["tipo"] == "inversao":
             destaques.append({
                 "tipo": "ponto",
-                "origem": op["origem"]
+                "origem": [0, 0, 0]
             })
+        # # Ponto (se não houver nem eixo nem plano, mas houver origem)
+        # if "origem" in op and "eixo" not in op and "plano_normal" not in op:
+        #     destaques.append({
+        #         "tipo": "ponto",
+        #         "origem": op["origem"]
+        #     })
 
         return destaques
 
 def main():
     grupo_path = "static/grupos/moleculares/D3d.json"
     molecula_path = "static/moleculas/etano_estrelado.xyz"
-    operacao_id = "5"  # Altere para a operação desejada
 
-    visualizador = OperacaoPyVistaRenderer(grupo_path, molecula_path, operacao_id)
-    visualizador.renderizar()
+
+    for operacao_id in range(11, 12):
+        print(f"\n>>> Renderizando operação {operacao_id}...\n")
+        visualizador = OperacaoPyVistaRenderer(grupo_path, molecula_path, operacao_id)
+        visualizador.renderizar()
+        input("Pressione Enter para continuar para a próxima operação...")
 
 
 if __name__ == "__main__":
