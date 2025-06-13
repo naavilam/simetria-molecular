@@ -6,14 +6,9 @@ from scipy.spatial.distance import cdist
 
 class PermutationRepresentation(Representation):
 
-    # @classmethod
-    # def from_group(cls, group, molecule):
-    #     inst = cls(group.nome)
-    #     for op in group.operacoes:
-    #         perm = cls._calcular_permutacao(molecule, op)
-    #         inst.adicionar(op["nome"], perm)
-    #     return inst
-
+    def __init__(self, nome_grupo: str):
+        super().__init__(nome_grupo)
+        self._dados = {}
 
     def calcular_permutacao_consistente(originais, transformadas, tolerancia=1e-2):
         """
@@ -89,7 +84,7 @@ class PermutationRepresentation(Representation):
     def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
         inst = cls(rep3d.nome_grupo)
         for nome, matriz in rep3d:
-            print(f"\n>>> Aplicando operação: {nome}")
+            # print(f"\n>>> Aplicando operação: {nome}")
             perm = cls._calcular_permutacao(molecule, matriz)
             inst.adicionar(nome, perm)
         return inst
@@ -100,10 +95,6 @@ class PermutationRepresentation(Representation):
         Cada entrada corresponde a uma operação e sua permutação associada.
         """
         return self._dados
-
-    def __init__(self, nome_grupo: str):
-        super().__init__(nome_grupo)
-        self._dados = {}  # nome → permutação
 
     def adicionar(self, nome: str, dados: list[int]):
         self._dados[nome] = dados

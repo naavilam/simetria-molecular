@@ -60,9 +60,9 @@ class LatexReportGenerator:
                 \section{Operações de Conjugação}
                 \subsection{Tabela de Conjugação}
                 \begin{adjustbox}{max width=\linewidth, angle=90, center}
-                \[
+                \begin{longtable}{l}
                 %s
-                \]
+                \end{longtable}
                 \end{adjustbox}
                 """ % self._formatar_tabela_conjugacao(self.resultado["operacoes_conjugacao"]))
 
@@ -163,19 +163,16 @@ class LatexReportGenerator:
 
     def _formatar_operacoes_conjugacao(self, operacoes: dict) -> str:
         linhas = []
-
         for g, conjugacoes in operacoes.items():
             linhas.append(f"\\subsection*{{Conjugações de ${g}$}}")
             for h, info in conjugacoes.items():
-                res = info['resultado']
                 g_perm = info['detalhe']['g']
                 h_perm = info['detalhe']['h']
                 hgh_inv = info['detalhe']['hgh⁻¹']
-
+                res = info['resultado']
                 linhas.append(
-                    f"$ {h} \\circ {g} \\circ ({h})^{{-1}} = {hgh_inv} = {res}$ \\\\[1em]"
+                    rf"$\mathrm{{{h}}} \circ \mathrm{{{g}}} \circ \mathrm{{{h}}}^{{-1}} = {hgh_inv} = \mathrm{{{res}}}$ \\"
                 )
-
         return "\n".join(linhas)
 
     @staticmethod
