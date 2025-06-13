@@ -77,6 +77,9 @@ class OperacaoPyVistaRenderer:
         plotter.subplot(0, 1)
         self._desenhar_molecula(transformada, plotter, "Depois da simetria")
         plotter.link_views()
+        plotter.camera.azimuth -= 25
+        plotter.camera.elevation -= 20
+        plotter.camera.roll += 1
         plotter.show()
 
     def _desenhar_ligacoes(self, molecula, plotter):
@@ -232,7 +235,7 @@ def main():
     molecula_path = "static/moleculas/etano_estrelado.xyz"
 
 
-    for operacao_id in range(11, 12):
+    for operacao_id in range(10, 11):
         print(f"\n>>> Renderizando operação {operacao_id}...\n")
         visualizador = OperacaoPyVistaRenderer(grupo_path, molecula_path, operacao_id)
         visualizador.renderizar()
