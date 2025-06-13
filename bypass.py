@@ -70,42 +70,78 @@ class OperacaoPyVistaRenderer:
         transformada = self._transformar()
         plotter = pv.Plotter(shape=(1, 2), window_size=(1600, 800))
         plotter.subplot(0, 0)
-        self._desenhar_molecula(self.molecula.coordenadas, plotter, "Antes da simetria", self.operacao)
+        destaques = self._gerar_destaques_da_operacao(self.operacao)
+        self._desenhar_molecula(list(zip(self.molecula.elementos, self.molecula.coordenadas)), plotter, "Antes da simetria", destaques)
         plotter.subplot(0, 1)
         self._desenhar_molecula(transformada, plotter, "Depois da simetria")
         plotter.link_views()
         plotter.show()
 
-    def _desenhar_ligacoes(self, molecula):
-        coords = molecula.coordenadas
+    def _desenhar_ligacoes(self, molecula, plotter):
+        coords = molecula
         for i, (_, c1) in enumerate(coords):
             for j, (_, c2) in enumerate(coords):
                 if i < j:
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     if dist < 1.2:
-                        self.plotter.add_mesh(pv.Line(c1, c2), color="gray", line_width=3)
+                        plotter.add_mesh(pv.Line(c1, c2), color="gray", line_width=3)
 
         for i, (el1, c1) in enumerate(coords):
             for j, (el2, c2) in enumerate(coords):
                 if i < j and el1 == 'C' and el2 == 'C':
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     if dist < 1.6:
-                        self.plotter.add_mesh(pv.Line(c1, c2), color='black', line_width=4)
+                        plotter.add_mesh(pv.Line(c1, c2), color='black', line_width=4)
 
     def _desenhar_molecula(self, molecula, plotter, titulo, destaque=None):
         cores = self._gerar_cores(len(molecula))
+
+        # Identificar carbonos
+        carbonos = [(i, coord) for i, (el, coord) in enumerate(molecula) if el == "C"]
+        c1_idx = min(carbonos, key=lambda x: x[1][2])[0]  # menor z
+        c2_idx = max(carbonos, key=lambda x: x[1][2])[0]  # maior z
+        c1_coord = molecula[c1_idx][1]
+        c2_coord = molecula[c2_idx][1]
+
+        # Inicializar dicionário de rótulos
+        rotulos = {c1_idx: 1, c2_idx: 2}
+        h_proximos_c1 = []
+        h_proximos_c2 = []
+
+        for i, (el, coord) in enumerate(molecula):
+            if i in (c1_idx, c2_idx):
+                continue
+            dist_c1 = np.linalg.norm(np.array(coord) - np.array(c1_coord))
+            dist_c2 = np.linalg.norm(np.array(coord) - np.array(c2_coord))
+            if dist_c1 < dist_c2:
+                h_proximos_c1.append((i, dist_c1))
+            else:
+                h_proximos_c2.append((i, dist_c2))
+
+        # Ordenar para manter consistência visual
+        h_proximos_c1.sort(key=lambda x: x[1])
+        h_proximos_c2.sort(key=lambda x: x[1])
+
+        for offset, (i, _) in enumerate(h_proximos_c1):
+            rotulos[i] = 3 + offset
+        for offset, (i, _) in enumerate(h_proximos_c2):
+            rotulos[i] = 6 + offset
+
+        # Desenhar átomos e rótulos
         for i, (el, coord) in enumerate(molecula):
             cor = cores[i % len(cores)]
             raio = self.tamanho.get(el, 0.2)
             esfera = pv.Sphere(radius=raio, center=coord)
             plotter.add_mesh(esfera, color=cor, smooth_shading=True)
-            plotter.add_point_labels([coord], [str(i+1)], font_size=14, text_color='white',
+            plotter.add_point_labels([coord], [str(rotulos[i])], font_size=14, text_color='white',
                                      point_size=0, shape_opacity=0, always_visible=True)
-        self._desenhar_ligacoes(molecula)
-        if destaque:
-            self._destacar(destaque)
 
-    def _destacar(self, destaque):
+        self._desenhar_ligacoes(molecula, plotter)
+        if destaque:
+            self._destacar(destaque, plotter)
+
+    def _destacar(self, destaque, plotter):
+        print(destaque)
         destaques = destaque if isinstance(destaque, list) else [destaque]
         for d in destaques:
             tipo = d["tipo"]
@@ -113,15 +149,15 @@ class OperacaoPyVistaRenderer:
 
             if tipo == "eixo":
                 mesh = self._gerar_eixo(d, centro)
-                self.plotter.add_mesh(mesh, color="gray", line_width=3)
+                plotter.add_mesh(mesh, color="gray", line_width=3)
 
             elif tipo == "plano":
                 mesh = self._gerar_plano(d, centro)
-                self.plotter.add_mesh(mesh, color="gray", opacity=0.3, show_edges=False)
+                plotter.add_mesh(mesh, color="gray", opacity=0.3, show_edges=False)
 
             elif tipo == "ponto":
                 mesh = self._gerar_ponto(centro)
-                self.plotter.add_mesh(mesh, color="gray", opacity=0.5)
+                plotter.add_mesh(mesh, color="gray", opacity=0.5)
 
             else:
                 print(f"[AVISO] Tipo de destaque desconhecido: {tipo}")
@@ -156,6 +192,30 @@ class OperacaoPyVistaRenderer:
     def _gerar_ponto(self, centro):
         return pv.Sphere(radius=0.1, center=centro)
 
+    def _gerar_destaques_da_operacao(self, op):
+        destaques = []
+
+        if "eixo" in op:
+            destaques.append({
+                "tipo": "eixo",
+                "direcao": op["eixo"],
+                "origem": op.get("origem", [0, 0, 0])
+            })
+
+        if "plano_normal" in op:
+            destaques.append({
+                "tipo": "plano",
+                "normal": op["plano_normal"],
+                "origem": op.get("origem", [0, 0, 0])
+            })
+
+        if "origem" in op and "eixo" not in op and "plano_normal" not in op:
+            destaques.append({
+                "tipo": "ponto",
+                "origem": op["origem"]
+            })
+
+        return destaques
 
 def main():
     grupo_path = "static/grupos/moleculares/D3d.json"
