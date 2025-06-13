@@ -18,9 +18,6 @@ class Molecula:
             coordenadas.append(list(map(float, partes[1:4])))
         return elementos, coordenadas
 
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
-
 
 class OperacaoPyVistaRenderer:
     def __init__(self, caminho_grupo, caminho_molecula, id_operacao):
@@ -73,13 +70,29 @@ class OperacaoPyVistaRenderer:
         transformada = self._transformar()
         plotter = pv.Plotter(shape=(1, 2), window_size=(1600, 800))
         plotter.subplot(0, 0)
-        self._desenhar_molecula(self.molecula.como_tuplas(), plotter, "Antes da simetria")
+        self._desenhar_molecula(self.molecula.coordenadas, plotter, "Antes da simetria", self.operacao)
         plotter.subplot(0, 1)
         self._desenhar_molecula(transformada, plotter, "Depois da simetria")
         plotter.link_views()
         plotter.show()
 
-    def _desenhar_molecula(self, molecula, plotter, titulo):
+    def _desenhar_ligacoes(self, molecula):
+        coords = molecula.coordenadas
+        for i, (_, c1) in enumerate(coords):
+            for j, (_, c2) in enumerate(coords):
+                if i < j:
+                    dist = np.linalg.norm(np.array(c1) - np.array(c2))
+                    if dist < 1.2:
+                        self.plotter.add_mesh(pv.Line(c1, c2), color="gray", line_width=3)
+
+        for i, (el1, c1) in enumerate(coords):
+            for j, (el2, c2) in enumerate(coords):
+                if i < j and el1 == 'C' and el2 == 'C':
+                    dist = np.linalg.norm(np.array(c1) - np.array(c2))
+                    if dist < 1.6:
+                        self.plotter.add_mesh(pv.Line(c1, c2), color='black', line_width=4)
+
+    def _desenhar_molecula(self, molecula, plotter, titulo, destaque=None):
         cores = self._gerar_cores(len(molecula))
         for i, (el, coord) in enumerate(molecula):
             cor = cores[i % len(cores)]
@@ -88,6 +101,30 @@ class OperacaoPyVistaRenderer:
             plotter.add_mesh(esfera, color=cor, smooth_shading=True)
             plotter.add_point_labels([coord], [str(i+1)], font_size=14, text_color='white',
                                      point_size=0, shape_opacity=0, always_visible=True)
+        self._desenhar_ligacoes(molecula)
+        if destaque:
+            self._destacar(destaque)
+
+    def _destacar(self, destaque):
+        destaques = destaque if isinstance(destaque, list) else [destaque]
+        for d in destaques:
+            tipo = d["tipo"]
+            centro = np.array(d.get("origem", [0.0, 0.0, 0.0]))
+
+            if tipo == "eixo":
+                mesh = self._gerar_eixo(d, centro)
+                self.plotter.add_mesh(mesh, color="gray", line_width=3)
+
+            elif tipo == "plano":
+                mesh = self._gerar_plano(d, centro)
+                self.plotter.add_mesh(mesh, color="gray", opacity=0.3, show_edges=False)
+
+            elif tipo == "ponto":
+                mesh = self._gerar_ponto(centro)
+                self.plotter.add_mesh(mesh, color="gray", opacity=0.5)
+
+            else:
+                print(f"[AVISO] Tipo de destaque desconhecido: {tipo}")
 
     def _gerar_cores(self, n):
         base = [
@@ -98,12 +135,32 @@ class OperacaoPyVistaRenderer:
         ]
         return base[:n]
 
+    def _gerar_eixo(self, d, centro):
+        vetor = np.array(d["direcao"])
+        vetor /= np.linalg.norm(vetor)
+        return pv.Line(
+            pointa=centro - 3.0 * vetor,
+            pointb=centro + 3.0 * vetor,
+            resolution=1
+        )
+
+    def _gerar_plano(self, d, centro):
+        normal = np.array(d["normal"])
+        return pv.Plane(
+            center=centro,
+            direction=normal / np.linalg.norm(normal),
+            i_size=4.0,
+            j_size=4.0
+        )
+
+    def _gerar_ponto(self, centro):
+        return pv.Sphere(radius=0.1, center=centro)
 
 
 def main():
     grupo_path = "static/grupos/moleculares/D3d.json"
     molecula_path = "static/moleculas/etano_estrelado.xyz"
-    operacao_id = "1"  # Altere para a operação desejada
+    operacao_id = "2"  # Altere para a operação desejada
 
     visualizador = OperacaoPyVistaRenderer(grupo_path, molecula_path, operacao_id)
     visualizador.renderizar()
