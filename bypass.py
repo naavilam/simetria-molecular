@@ -172,7 +172,7 @@ class OperacaoPyVistaRenderer:
         return base[:n]
 
     def _gerar_eixo(self, d, centro):
-        vetor = np.array(d["direcao"])
+        vetor = np.array(d["direcao"], dtype=float)
         vetor /= np.linalg.norm(vetor)
         return pv.Line(
             pointa=centro - 3.0 * vetor,
@@ -195,20 +195,23 @@ class OperacaoPyVistaRenderer:
     def _gerar_destaques_da_operacao(self, op):
         destaques = []
 
-        if "eixo" in op:
+        # Eixo (rotacao ou impropria)
+        if "eixo" in op and isinstance(op["eixo"], list):
             destaques.append({
                 "tipo": "eixo",
                 "direcao": op["eixo"],
-                "origem": op.get("origem", [0, 0, 0])
+                "origem": op.get("origem", [0.0, 0.0, 0.0])
             })
 
-        if "plano_normal" in op:
+        # Plano (reflexao ou impropria)
+        if "plano_normal" in op and isinstance(op["plano_normal"], list):
             destaques.append({
                 "tipo": "plano",
                 "normal": op["plano_normal"],
-                "origem": op.get("origem", [0, 0, 0])
+                "origem": op.get("origem", [0.0, 0.0, 0.0])
             })
 
+        # Ponto (se não houver nem eixo nem plano, mas houver origem)
         if "origem" in op and "eixo" not in op and "plano_normal" not in op:
             destaques.append({
                 "tipo": "ponto",
@@ -220,7 +223,7 @@ class OperacaoPyVistaRenderer:
 def main():
     grupo_path = "static/grupos/moleculares/D3d.json"
     molecula_path = "static/moleculas/etano_estrelado.xyz"
-    operacao_id = "2"  # Altere para a operação desejada
+    operacao_id = "5"  # Altere para a operação desejada
 
     visualizador = OperacaoPyVistaRenderer(grupo_path, molecula_path, operacao_id)
     visualizador.renderizar()
