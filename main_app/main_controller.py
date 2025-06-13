@@ -54,8 +54,8 @@ def identificar_grupo_pontual(xyz_path: str) -> str:
             coords.append([float(x) for x in tokens[1:4]])
     mol = PymatgenMolecule(especies, coords)
     grupo = PointGroupAnalyzer(mol).sch_symbol  # Ex: "D3h"
-    # print(">>> Grupo identificado:")
-    # print(grupo)
+    print(">>> Grupo identificado:")
+    print(grupo)
     return grupo
 
 import json
@@ -75,8 +75,8 @@ def encontrar_json_grupo(grupo: str) -> str:
     for path in arquivos:
         nome_arquivo = os.path.splitext(os.path.basename(path))[0].lower()
         if nome_arquivo == grupo_proc or nome_arquivo.startswith(grupo_proc):
-            # print(">>> Caminho do grupo identificado:")
-            # print(path)
+            print(">>> Caminho do grupo identificado:")
+            print(path)
             return path
 
     raise FileNotFoundError(f"Arquivo JSON para o grupo '{grupo}' não encontrado.")

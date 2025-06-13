@@ -15,7 +15,7 @@ class Matrix3DRepresentation(Representation):
         for op in grupo.operacoes:
             matriz = cls._matriz_da_operacao(op)
             inst.adicionar(op["nome"], matriz)
-        return inst  # <<<<<< GARANTA que isso existe!
+        return inst
 
     @staticmethod
     def _matriz_da_operacao(op):
@@ -45,18 +45,6 @@ class Matrix3DRepresentation(Representation):
         else:
             raise ValueError(f"Tipo de operação desconhecido: {op['tipo']}")
 
-    # @staticmethod
-    # def _matriz_rotacao(eixo, angulo):
-    #     eixo = eixo / np.linalg.norm(eixo)
-    #     x, y, z = eixo
-    #     c = np.cos(angulo)
-    #     s = np.sin(angulo)
-    #     C = 1 - c
-    #     return np.array([
-    #         [x*x*C + c,   x*y*C - z*s, x*z*C + y*s],
-    #         [y*x*C + z*s, y*y*C + c,   y*z*C - x*s],
-    #         [z*x*C - y*s, z*y*C + x*s, z*z*C + c  ]
-    #     ])
     @staticmethod
     def _matriz_rotacao(eixo, angulo):
         eixo = eixo / np.linalg.norm(eixo)

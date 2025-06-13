@@ -1,6 +1,6 @@
 import numpy as np
 from .representation import Representation
-from.representation_matrix3d import Matrix3DRepresentation
+from .representation_matrix3d import Matrix3DRepresentation
 from core.core_molecula import Molecule
 from scipy.spatial.distance import cdist
 
@@ -10,9 +10,10 @@ class PermutationRepresentation(Representation):
         super().__init__(nome_grupo)
         self._dados = {}
 
+    @staticmethod
     def calcular_permutacao_consistente(originais, transformadas, tolerancia=1e-2):
         """
-        Retorna uma permutação consistente que associa cada coordenada transformada
+        Retorna uma permutação (base-1) que associa cada coordenada transformada
         a uma coordenada original, sem repetições, com base em distância mínima dentro da tolerância.
         """
         n = len(originais)
@@ -36,7 +37,7 @@ class PermutationRepresentation(Representation):
                 raise ValueError(f"Não foi possível associar a coordenada transformada {i} a nenhuma original dentro da tolerância.")
 
             usados.add(melhor_indice)
-            permutacao.append(melhor_indice)
+            permutacao.append(melhor_indice + 1)  # ⬅️ Corrigido para base-1
 
         return permutacao
 
@@ -51,8 +52,6 @@ class PermutationRepresentation(Representation):
         usados = set()
 
         for i in range(len(coords_transf)):
-            # print(f"\n>>> Átomo {i} ({molecule.elementos[i]}) coordenada transformada: ")
-
             candidatos = []
             for j in range(len(coords_orig)):
                 if j in usados:
@@ -61,21 +60,16 @@ class PermutationRepresentation(Representation):
                     continue
                 dist_ij = dist[i, j]
                 candidatos.append((j, dist_ij))
-                # print(f"  - Distância até átomo {j} ({molecule.elementos[j]}): {dist_ij:.6f}")
 
             if not candidatos:
-                raise ValueError(f"Não há mais candidatos válidos para mapeamento do átomo {i} ({molecule.elementos[i]}).")
+                raise ValueError(f"Não há mais candidatos válidos para o átomo {i} ({molecule.elementos[i]}).")
 
             j_min, d_min = min(candidatos, key=lambda x: x[1])
 
             if d_min > tolerancia:
-                # print(">>> Matriz aplicada:")
-                # print(matriz)
-                # print(">>> Candidatos válidos:")
-                # print(candidatos)
                 raise ValueError(f"Não foi possível mapear o átomo {i} ({molecule.elementos[i]}) após a operação.")
 
-            permutacao[i] = j_min
+            permutacao[i] = j_min + 1  # ⬅️ Corrigido para base-1
             usados.add(j_min)
 
         return permutacao
@@ -84,33 +78,32 @@ class PermutationRepresentation(Representation):
     def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
         inst = cls(rep3d.nome_grupo)
         for nome, matriz in rep3d:
-            # print(f"\n>>> Aplicando operação: {nome}")
             perm = cls._calcular_permutacao(molecule, matriz)
             inst.adicionar(nome, perm)
         return inst
 
     def get_permutacoes(self) -> dict:
-        """
-        Retorna o dicionário de permutações da representação.
-        Cada entrada corresponde a uma operação e sua permutação associada.
-        """
         return self._dados
 
     def adicionar(self, nome: str, dados: list[int]):
+        print(f">>> Operação: {nome}")
+        print(f"Permutação: {dados}")
         self._dados[nome] = dados
 
     def compor(self, a, b):
-        return [b[a[i]] for i in range(len(a))]
+        # a, b estão em base-1
+        return [b[a[i] - 1] for i in range(len(a))]
 
     def inverso(self, a):
+        # a está em base-1
         inv = [0] * len(a)
         for i, val in enumerate(a):
-            inv[val] = i
+            inv[val - 1] = i + 1
         return inv
 
     def aplicar(self, nome, vetor):
         perm = self._dados[nome]
-        return [vetor[i] for i in perm]
+        return [vetor[i - 1] for i in perm]
 
     def conjugar(self, a, b):
         inv_b = self.inverso(b)
