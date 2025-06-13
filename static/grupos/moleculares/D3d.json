@@ -1,100 +1,99 @@
 {
   "nome": "D3d",
-  "descricao": "Grupo diédrico com operação C₃, 3 operações C₂ e 3 planos de reflexão diagonal (σᵈ)",
+  "descricao": "Grupo diédrico com operações C₃, 3 C₂ perpendiculares e 3 planos σᵈ",
+  "ordem": 12,
   "operacoes": [
     {
+      "id": 1,
       "tipo": "identidade",
-      "comentario": "Identidade (E)",
       "nome": "\\mathrm{E}",
-      "id": 1
+      "comentario": "Identidade"
     },
     {
+      "id": 2,
       "tipo": "rotacao",
       "eixo": [0,0,1],
       "angulo": 120,
-      "comentario": "Rotação C₃ (120°)",
       "nome": "\\mathrm{C}_{3}",
-      "id": 2
+      "comentario": "Rotação de 120° no eixo z"
     },
     {
+      "id": 3,
       "tipo": "rotacao",
       "eixo": [0,0,1],
       "angulo": 240,
-      "comentario": "Rotação C₃² (240°)",
       "nome": "\\mathrm{C}_{3}^{2}",
-      "id": 3
+      "comentario": "Rotação de 240° no eixo z"
     },
     {
+      "id": 4,
       "tipo": "rotacao",
-      "eixo": [1.0,0.0,0.0],
+      "eixo": [0.0,1.0,0.0],
       "angulo": 180,
-      "comentario": "Rotação C₂ perpendicular ao eixo principal",
-      "nome": "\\mathrm{C}_{2}^{(a)}",
-      "id": 4
+      "comentario": "Rotação C₂(a) no plano xy (entre os Hs em y)",
+      "nome": "\\mathrm{C}_{2}^{(a)}"
     },
     {
+      "id": 5,
       "tipo": "rotacao",
-      "eixo": [-0.5,0.866025,0.0],
+      "eixo": [0.866025,-0.5,0.0],
       "angulo": 180,
-      "comentario": "Rotação C₂ em 120° ao redor de eixo perpendicular",
-      "nome": "\\mathrm{C}_{2}^{(b)}",
-      "id": 5
+      "comentario": "Rotação C₂(b) no plano xy (entre os Hs a 120°)",
+      "nome": "\\mathrm{C}_{2}^{(b)}"
     },
     {
+      "id": 6,
       "tipo": "rotacao",
-      "eixo": [-0.5,-0.866025,0.0],
+      "eixo": [-0.866025,-0.5,0.0],
       "angulo": 180,
-      "comentario": "Rotação C₂ em 240° ao redor de eixo perpendicular",
-      "nome": "\\mathrm{C}_{2}^{(c)}",
-      "id": 6
+      "comentario": "Rotação C₂(c) no plano xy (entre os Hs a 240°)",
+      "nome": "\\mathrm{C}_{2}^{(c)}"
     },
     {
+      "id": 7,
+      "tipo": "reflexao",
+      "plano_normal": [0.866025,0.5,0],
+      "nome": "\\sigma_{d1}",
+      "comentario": "Plano diagonal σᵈ entre C₂(a) e C₂(b)"
+    },
+    {
+      "id": 8,
+      "tipo": "reflexao",
+      "plano_normal": [-0.866025,0.5,0],
+      "nome": "\\sigma_{d2}",
+      "comentario": "Plano diagonal σᵈ entre C₂(b) e C₂(c)"
+    },
+    {
+      "id": 9,
+      "tipo": "reflexao",
+      "plano_normal": [0,-1,0],
+      "nome": "\\sigma_{d3}",
+      "comentario": "Plano diagonal σᵈ entre C₂(c) e C₂(a)"
+    },
+    {
+      "id": 10,
       "tipo": "impropria",
       "eixo": [0,0,1],
       "angulo": 60,
       "plano_normal": [0,0,1],
-      "comentario": "Rotação imprópria S₆⁺ (60°)",
       "nome": "\\mathrm{S}_{6}",
-      "id": 7
+      "comentario": "Rotação imprópria S₆⁺ = C₆ + σₕ"
     },
     {
+      "id": 11,
       "tipo": "impropria",
       "eixo": [0,0,1],
       "angulo": 300,
       "plano_normal": [0,0,1],
-      "comentario": "Rotação imprópria S₆⁻ (300°)",
       "nome": "\\mathrm{S}_{6}^{5}",
-      "id": 8
+      "comentario": "Rotação imprópria S₆⁻ = C₆⁵ + σₕ"
     },
     {
-      "tipo": "reflexao",
-      "plano_normal": [0.866025,0.5,0.0],
-      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
-      "nome": "\\sigma_{d1}",
-      "id": 9
-    },
-    {
-      "tipo": "reflexao",
-      "plano_normal": [-0.866025,0.5,0.0],
-      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
-      "nome": "\\sigma_{d2}",
-      "id": 10
-    },
-    {
-      "tipo": "reflexao",
-      "plano_normal": [0.0,-1.0,0.0],
-      "comentario": "Reflexão σᵈ (diagonal) entre dois eixos C₂",
-      "nome": "\\sigma_{d3}",
-      "id": 11
-    },
-    {
-      "tipo": "reflexao",
-      "plano_normal": [0,0,1],
-      "comentario": "Reflexão horizontal σₕ perpendicular ao eixo C₃",
-      "nome": "\\sigma_{h}",
-      "id": 12
+      "id": 12,
+      "tipo": "inversao",
+      "nome": "\\mathrm{i}",
+      "comentario": "Inversão central pelo ponto (0,0,0)"
     }
   ],
-  "tolerancia": 0.02,
-  "ordem": 12
+  "tolerancia": 0.02
 }
