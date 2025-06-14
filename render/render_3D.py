@@ -1,61 +1,42 @@
-"""=================================================================================================================================================
-**                                                   Copyright © 2025 Chanah Yocheved Bat Sarah                                                   **
-**                                                                                                                                                **
-**                                                       Author: Chanah Yocheved Bat Sarah                                                        **
-**                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
-**                                                      License: Custom Attribution License                                                       **
-**                                                                                                                                                **
-**    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
-**                                                       Aplicada para Sólidos e Moléculas.                                                       **
-**                                                                                                                                                **
-**   Permission is granted to use, copy, modify, and distribute this file, provided that this notice is retained in full and that the origin of   **
-**    the software is clearly and explicitly attributed to the original author. Such attribution must be preserved not only within the source     **
-**       code, but also in any accompanying documentation, public display, distribution, or derived work, in both digital or printed form.        **
-**                                                  For licensing inquiries: contact@chanah.dev                                                   **
-====================================================================================================================================================
-"""
-
+from .render import Renderer
 import pyvista as pv
 import numpy as np
 
-class PyvistaVisualizer:
-    
-    def __init__(self, original, transformada, titulo="Simetria aplicada", destaque=None, cores=None):
-        self.original = original
-        self.transformada = transformada
+class MoleculeExplorer(Renderer):
+
+    def __init__(self, molecula, grupo, titulo="Visualizador de Simetria 3D"):
+        self.molecula = molecula
+        self.grupo = grupo
         self.titulo = titulo
-        self.destaque = destaque
         self.tamanho = {"C": 0.3, "H": 0.2}
-        self.cores_personalizadas = cores
-        self.plotter = pv.Plotter(shape=(1, 2), window_size=(1600, 800))
+        self.plotter = pv.Plotter(window_size=(1200, 800))
+        self.operacoes = {op["id"]: op for op in grupo.operacoes}  # Mapa id -> operação
 
-    def renderizar(self):
-        self.plotter.subplot(0, 0)
-        self._desenhar_molecula(self.original, "Antes da simetria", self.destaque)
-
-        self.plotter.subplot(0, 1)
-        self._desenhar_molecula(self.transformada, "Depois da simetria")
-
+    def render(self) -> str:
+        self._desenhar_molecula(self.molecula)
         self.plotter.add_text(self.titulo, position="upper_edge", font_size=14, color="black")
-        self.plotter.link_views()
-        self.plotter.camera.azimuth -= 25
-        self.plotter.camera.elevation -= 20
-        self.plotter.camera.roll += 1
-        self.plotter.show()
 
-    def _desenhar_molecula(self, molecula, title, destaque=None):
-        # self.plotter.add_text(title, font_size=12) # e novo?
+        # Criar um botão para cada operação do grupo
+        for op_id, operacao in self.operacoes.items():
+            label = operacao.get("comentario") or operacao.get("nome") or f"Op {op_id}"
+            self.plotter.add_button_widget(
+                lambda op_id=op_id: self._aplicar_operacao(op_id),
+                label=label,
+                position=None,
+                color_on='white',
+                font_size=12
+            )
+
+        self.plotter.show()
+        return "Renderização exibida no servidor (local)"
+
+    def _desenhar_molecula(self, molecula):
         cores = self._gerar_cores(len(molecula))
         self._desenhar_atomicos(molecula, cores)
         self._numerar_atomicos(molecula)
         self._desenhar_ligacoes(molecula)
-        if destaque:
-            self._destacar(destaque)
 
     def _gerar_cores(self, n):
-        if self.cores_personalizadas:
-            return self.cores_personalizadas[:n]
         base = [
             (174, 198, 207), (255, 179, 71), (179, 158, 181),
             (119, 221, 119), (255, 105, 97), (253, 253, 150),
@@ -87,52 +68,16 @@ class PyvistaVisualizer:
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     if dist < 1.2:
                         self.plotter.add_mesh(pv.Line(c1, c2), color="gray", line_width=3)
-
-        for i, (el1, c1) in enumerate(coords):
-            for j, (el2, c2) in enumerate(coords):
-                if i < j and el1 == 'C' and el2 == 'C':
+                if i < j and coords[i][0] == 'C' and coords[j][0] == 'C':
                     dist = np.linalg.norm(np.array(c1) - np.array(c2))
                     if dist < 1.6:
                         self.plotter.add_mesh(pv.Line(c1, c2), color='black', line_width=4)
-    
-    def _destacar(self, destaque):
-        destaques = destaque if isinstance(destaque, list) else [destaque]
-        for d in destaques:
-            tipo = d["tipo"]
-            centro = np.array(d.get("origem", [0.0, 0.0, 0.0]))
 
-            if tipo == "eixo":
-                mesh = self._gerar_eixo(d, centro)
-                self.plotter.add_mesh(mesh, color="gray", line_width=3)
+    def _aplicar_operacao(self, op_id):
+        operacao = self.operacoes[op_id]
+        print(f"Aplicando operação: {operacao.get('nome')}")
 
-            elif tipo == "plano":
-                mesh = self._gerar_plano(d, centro)
-                self.plotter.add_mesh(mesh, color="gray", opacity=0.3, show_edges=False)
-
-            elif tipo == "ponto":
-                mesh = self._gerar_ponto(centro)
-                self.plotter.add_mesh(mesh, color="gray", opacity=0.5)
-
-            else:
-                print(f"[AVISO] Tipo de destaque desconhecido: {tipo}")
-
-    def _gerar_eixo(self, d, centro):
-        vetor = np.array(d["direcao"])
-        vetor /= np.linalg.norm(vetor)
-        return pv.Line(
-            pointa=centro - 3.0 * vetor,
-            pointb=centro + 3.0 * vetor,
-            resolution=1
-        )
-
-    def _gerar_plano(self, d, centro):
-        normal = np.array(d["normal"])
-        return pv.Plane(
-            center=centro,
-            direction=normal / np.linalg.norm(normal),
-            i_size=4.0,
-            j_size=4.0
-        )
-
-    def _gerar_ponto(self, centro):
-        return pv.Sphere(radius=0.1, center=centro)
+        # Aqui você pode implementar a aplicação real da operação sobre self.molecula
+        # Exemplo: aplicar uma rotação, reflexão, etc, conforme o conteúdo do JSON do grupo.
+        # Por enquanto só exemplo de print para teste:
+        # TODO: implementar transformação geométrica real

@@ -22,7 +22,7 @@ from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
 from analysis.analise_classe_conjugacao import ClasseConjugacao
 from core.core_molecula import Molecule
 from render.render_tex import LatexReportGenerator
-from render.render_3D import PyvistaVisualizer
+from render.render_3D import MoleculeExplorer
 from render.render_pdf import PdfReportGenerator 
 from render.render_tipo import RenderTipo
 from representation.builder import RepresentationBuilder, RepresentationType
@@ -43,6 +43,7 @@ class SymmetryAnalyzer:
         self._analises = []
         self._resultado = None
         self._uuid = None
+        self._metadata = self._gerar_metadata()
 
     @classmethod
     def de(cls, group: Group, molecule: Molecule) -> 'SymmetryAnalyzer':
@@ -96,35 +97,10 @@ class SymmetryAnalyzer:
         self._resultado = resultado
         return self
 
-    # def _debug_conjugacoes(self, rep):
-    #     print("==== Testes de Conjugação (App) ====")
-    #     nomes = rep.nomes()
-    #     for g_nome in nomes:
-    #         g = rep[g_nome]
-    #         for h_nome in nomes:
-    #             h = rep[h_nome]
-    #             res = rep.conjugar(g, h)
-    #             res_nome = None
-    #             for nome_k in nomes:
-    #                 if rep[nome_k] == res:
-    #                     res_nome = nome_k
-    #                     break
-    #             if res_nome:
-    #                 print(f"{h_nome} ∘ {g_nome} ∘ {h_nome}⁻¹ = {res} ↪ Resultado conhecido: {res_nome}")
-    #             else:
-    #                 print(f"{h_nome} ∘ {g_nome} ∘ {h_nome}⁻¹ = {res} ↪ Resultado desconhecido")
-
     def renderizar(self, formato: RenderTipo) -> str:
         if self._resultado is None:
             raise RuntimeError("Você precisa chamar `.executar()` antes de `.renderizar()`.")
-
-        metadata = self._gerar_metadata()
-        if formato == RenderTipo.TEX:
-            return LatexReportGenerator(metadata, self._resultado).gerar_documento()
-        elif formato == RenderTipo.PDF:
-            return PdfReportGenerator(metadata, self._resultado).gerar_pdf()
-        else:
-            raise ValueError(f"Formato de saída não suportado: {formato}")
+        return get_renderer(formato, self.metadata, self._resultado, self.molecule, self.group)
 
     def _gerar_metadata(self) -> dict:
         return {
@@ -135,6 +111,3 @@ class SymmetryAnalyzer:
             "data": datetime.today().strftime("%Y-%m-%d %H:%M"),
             "sistema": self.group.sistema
         }
-
-    def renderizar_operacao(self, selected_op):
-        return PyvistaVisualizer().render(selected_op, self.molecule, self.group)

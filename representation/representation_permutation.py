@@ -76,30 +76,12 @@ class PermutationRepresentation(Representation):
 
     @classmethod
     def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
-        # inst = cls(rep3d.nome_grupo)
-        # for nome, matriz in rep3d:
-        #     perm = cls._calcular_permutacao(molecule, matriz)
-        #     inst.adicionar(nome, perm)
+        inst = cls(rep3d.nome_grupo)
+        for nome, matriz in rep3d:
+            perm = cls._calcular_permutacao(molecule, matriz)
+            inst.adicionar(nome, perm)
 
-        perm = {
-            "\\mathrm{E}":         [1, 2, 3, 4, 5, 6, 7, 8],
-            "\\mathrm{C}_{3}":     [1, 2, 4, 5, 3, 7, 8, 6],
-            "\\mathrm{C}_{3}^{2}": [1, 2, 5, 3, 4, 8, 6, 7],
-            "\\mathrm{C}_{2}^{(a)}": [2, 1, 6, 7, 8, 3, 4, 5],
-            "\\mathrm{C}_{2}^{(b)}": [2, 1, 7, 8, 6, 4, 5, 3],
-            "\\mathrm{C}_{2}^{(c)}": [2, 1, 8, 6, 7, 5, 3, 4],
-            "\\sigma_{d1}":        [1, 2, 4, 5, 3, 7, 8, 6],
-            "\\sigma_{d2}":        [1, 2, 5, 3, 4, 8, 6, 7],
-            "\\sigma_{d3}":        [1, 2, 3, 4, 5, 6, 7, 8],
-            "\\mathrm{S}_{6}":     [2, 1, 7, 8, 6, 4, 5, 3],
-            "\\mathrm{S}_{6}^{5}": [2, 1, 8, 6, 7, 5, 3, 4],
-            "\\mathrm{i}":         [2, 1, 6, 7, 8, 3, 4, 5],
-        }
-
-        rep = PermutationRepresentation("D3d")
-        for nome, p in perm.items():
-            rep.adicionar(nome, p)
-        return rep
+        return inst
 
     def get_permutacoes(self) -> dict:
         return self._dados

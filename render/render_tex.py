@@ -15,16 +15,16 @@
 ====================================================================================================================================================
 """
 
-# latex_generator.py
+from .render import Renderer
 from datetime import datetime
 import re
 
-class LatexReportGenerator:
+class LatexReportGenerator(Renderer):
     def __init__(self, metadata, resultado):
         self.metadata = metadata
         self.resultado = resultado
 
-    def gerar_documento(self):
+    def render(self) -> str:
         blocos = []
 
         if "permutacoes" in self.resultado:
