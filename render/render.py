@@ -28,4 +28,6 @@ class Renderer(ABC):
 
     @abstractmethod
     def render(self, resultados: dict) -> str:
+        """Summary
+        """
         pass

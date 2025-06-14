@@ -24,10 +24,6 @@ from scipy.spatial.distance import cdist
 
 class PermutationRepresentation(Representation):
 
-    def __init__(self, nome_grupo: str):
-        super().__init__(nome_grupo)
-        self._dados = {}
-
     @staticmethod
     def calcular_permutacao_consistente(originais, transformadas, tolerancia=1e-2):
         """
@@ -61,6 +57,11 @@ class PermutationRepresentation(Representation):
 
     @staticmethod
     def _calcular_permutacao(molecule, matriz, tolerancia=1e-2):
+        """Summary
+
+        Raises:
+            ValueError: Description
+        """
         coords_orig = np.array(molecule.coordenadas)
         coords_transf = np.dot(matriz, coords_orig.T).T
 
@@ -92,47 +93,19 @@ class PermutationRepresentation(Representation):
 
         return permutacao
 
-    @classmethod
-    def from_matrix3d(cls, rep3d: Matrix3DRepresentation, molecule: Molecule):
-        inst = cls(rep3d.nome_grupo)
-        for nome, matriz in rep3d:
-            perm = cls._calcular_permutacao(molecule, matriz)
-            inst.adicionar(nome, perm)
-
-        return inst
-
-    def get_permutacoes(self) -> dict:
-        return self._dados
-
-    def adicionar(self, nome: str, dados: list[int]):
-        print(f">>> Operação: {nome}")
-        print(f"Permutação: {dados}")
-        self._dados[nome] = dados
-
     def compor(self, a, b):
         # a, b estão em base-1
         return [b[a[i] - 1] for i in range(len(a))]
 
     def inverso(self, a):
+        """Summary
+        """
         # a está em base-1
         inv = [0] * len(a)
         for i, val in enumerate(a):
             inv[val - 1] = i + 1
         return inv
 
-    def aplicar(self, nome, vetor):
-        perm = self._dados[nome]
-        return [vetor[i - 1] for i in perm]
-
     def conjugar(self, a, b):
         inv_b = self.inverso(b)
         return self.compor(self.compor(b, a), inv_b)
-
-    def nomes(self):
-        return list(self._dados.keys())
-
-    def valores(self):
-        return list(self._dados.values())
-
-    def __getitem__(self, nome):
-        return self._dados[nome]

@@ -50,6 +50,11 @@ class RendererBuilder:
         return self
 
     def build(self) -> Renderer:
+        """Summary
+
+        Raises:
+            ValueError: Description
+        """
         if self._metadata is None or self._molecule is None or self._group is None:
             raise ValueError("RendererBuilder: Todos os campos (metadata, molecule, group) precisam estar preenchidos antes de chamar build().")
 

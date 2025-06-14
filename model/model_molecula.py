@@ -32,9 +32,17 @@ class Molecule:
         self.coordenadas = coordenadas
 
     @classmethod
-    def from_file(cls, path_file):
+    def from_file(cls, path_file) -> Molecule:
         with open(path_file, 'r') as f:
             linhas = f.readlines()
+        nome, elementos, coordenadas = cls._carregar(linhas)
+        return cls(nome, elementos, coordenadas)
+
+    @classmethod
+    def from_data(cls, data: str) -> Molecule:
+        """Summary
+        """
+        linhas = data.splitlines()
         nome, elementos, coordenadas = cls._carregar(linhas)
         return cls(nome, elementos, coordenadas)
 

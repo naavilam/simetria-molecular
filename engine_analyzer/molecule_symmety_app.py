@@ -15,29 +15,46 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
-
-from model.model_grupo import Group
+from typing import overload, Union
 from model.model_molecula import Molecule
 from engine.engine_symmetry_analyser import SymmetryAnalyzer
+from analysis.analise_tipo import AnaliseTipo
+from render.builder import RendererBuilder
+from engine_analyser.symmetry_analyzer import SymmetryAnalyzer
+from main_app.main_dto import RenderConfig
 
 class MoleculeSymmetryApp:
-    def __init__(self, molecule, group):
-        self.molecule = molecule
-        self.group = group
+    """Main application for molecular symmetry analysis.
+    """
 
-    @classmethod
-    def from_files(cls, mol_file, group_file):
-        group = Group.from_file(group_file)
-        molecule = Molecule.from_file(mol_file)
-        return cls(molecule=molecule, group=group)
+    def __init__(self, molecule: str):
+        self.molecule = Molecule.from_data(molecule)
+        self.analyser = SymmetryAnalyzer(self.molecule)
+        self.renderer = None
+        self._uuid = None
 
-    def run(self, render, analises, uuid):
+    def config(self, param: Union[list, RenderConfig, str]) -> 'MoleculeSymmetryApp':
+        """Summary
+
+        Raises:
+            TypeError: Description
+        """
+        if isinstance(param, list):
+            self.analyser.set(param)
+
+        elif isinstance(param, RenderConfig):
+            self.renderer = RendererBuilder.getRenderer(param)
+
+        elif isinstance(param, str):
+            self._uuid = param
+
+        else:
+            raise TypeError(f"Tipo de configuração inválido: {type(param)}")
+
+        return self
+
+    def run(self) -> str:
         """Summary
         """
-        return (
-            SymmetryAnalyzer
-            .de(self.group, self.molecule)
-            .configurar(analises, render.formato, uuid)
-            .analisar()
-            .renderizar()
-        )
+        results = self.analyser.execute()
+        return self.renderer.render(results)

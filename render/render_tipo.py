@@ -26,6 +26,11 @@ class RenderTipo(Enum):
 
     @classmethod
     def from_str(cls, valor: str) -> 'RenderTipo':
+        """Summary
+
+        Raises:
+            ValueError: Description
+        """
         mapa = {
             "3d": cls.D3,
             "gif": cls.GIF,

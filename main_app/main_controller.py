@@ -16,73 +16,68 @@
 ====================================================================================================================================================
 """
 
-import os, uuid
-import glob
-import os
+from fastapi import UploadFile
 from fastapi.responses import FileResponse
+import os
+import uuid
 from model.model_molecula import Molecule
-from model.model_grupo import Group
-from engine.engine_symmetry_analyser import SymmetryAnalyzer
-from representation.representation_type import RepresentationType
-from analysis.analise_tipo import AnaliseTipo
-from render.render_tipo import RenderTipo
 from main_app.main_dto import AnaliseRequest
-from main_app.app_symmetry import MoleculeSymmetryApp
-from pymatgen.core.structure import Molecule as PymatgenMolecule
-from pymatgen.symmetry.analyzer import PointGroupAnalyzer
+from engine.molecule_symmetry_app import MoleculeSymmetryApp
+from render.render_tipo import RenderTipo
 
-def identificar_grupo_pontual(xyz_path: str) -> str:
-    with open(xyz_path) as f:
-        lines = f.readlines()[2:]
-        especies = []
-        coords = []
-        for line in lines:
-            tokens = line.strip().split()
-            especies.append(tokens[0])
-            coords.append([float(x) for x in tokens[1:4]])
-    mol = PymatgenMolecule(especies, coords)
-    grupo = PointGroupAnalyzer(mol).sch_symbol  # Ex: "D3h"
-    print(">>> Grupo identificado:")
-    print(grupo)
-    return grupo
+async def processar_analise(molecula: UploadFile, data: AnaliseRequest):
+    """Processa a análise de simetria molecular, gera e entrega o resultado no formato desejado.
+    """
 
-def encontrar_json_grupo(grupo: str) -> str:
-    grupo_proc = grupo.strip().lower()
-    arquivos = glob.glob("static/grupos/**/*.json", recursive=True)
+    temp_id = gerar_uuid_temporario()
+    workdir = criar_diretorio_temporario(temp_id)
+    mol_str = await ler_molecula_uploadfile(molecula)
 
-    for path in arquivos:
-        nome_arquivo = os.path.splitext(os.path.basename(path))[0].lower()
-        if nome_arquivo == grupo_proc or nome_arquivo.startswith(grupo_proc):
-            return path
+    app = (
+        MoleculeSymmetryApp(mol_str)
+        .config(data.analises)
+        .config(data.render)
+        .config(temp_id)
+    )
 
-    raise FileNotFoundError(f"Arquivo JSON para o grupo '{grupo}' não encontrado.")
+    output = app.run()
 
-async def processar_analise(molecula, data: AnaliseRequest):
-    temp_id = f"SIM{uuid.uuid4().hex[:6].upper()}"  # SIM_97DC9F
+    return salvar_e_retornar_saida(output, workdir, temp_id, data.render.formato)
+
+def gerar_uuid_temporario() -> str:
+    return f"SIM{uuid.uuid4().hex[:6].upper()}"
+
+def criar_diretorio_temporario(temp_id: str) -> str:
     workdir = f"/tmp/analise_{temp_id}"
     os.makedirs(workdir, exist_ok=True)
+    return workdir
 
-    mol_path = os.path.join(workdir, molecula.filename)
+async def ler_molecula_uploadfile(molecula) -> str:
+    return (await molecula.read()).decode('utf-8')
 
-    with open(mol_path, "wb") as f:
-        f.write(await molecula.read())
+def salvar_e_retornar_saida(output, workdir, temp_id, formato: RenderTipo):
+    if formato == RenderTipo.TEX:
+        return salvar_arquivo_texto(output, workdir, temp_id, ".tex", "application/x-tex")
 
-    grupo_identificado = identificar_grupo_pontual(mol_path)
-    grupo_path = encontrar_json_grupo(grupo_identificado)
+    elif formato == RenderTipo.PDF:
+        return salvar_arquivo_binario(output, workdir, temp_id, ".pdf", "application/pdf")
 
-    app = MoleculeSymmetryApp.from_files(mol_path, grupo_path)
-    output = app.run(render=data.render, analises=data.analises, uuid=temp_id)
+    elif formato in [RenderTipo.D3, RenderTipo.GIF]:
+        return PlainTextResponse(output)
 
-    nome_base = molecula.filename.rsplit(".", 1)[0]
-    nome_tex = "Analise_Simetria_Molecula_Personalizada.tex" if nome_base.lower() in ["outro", "outro.xyz", "personalizado"] else f"Analise_Simetria_Molecula_{nome_base}.tex"
-    tex_path = os.path.join(workdir, nome_tex)
+    else:
+        return PlainTextResponse(f"[ERRO] Formato de saída desconhecido: {formato}")
 
-    with open(tex_path, "w") as f:
+def salvar_arquivo_texto(output: str, workdir: str, temp_id: str, extensao: str, media_type: str):
+    nome_saida = f"{temp_id}{extensao}"
+    saida_path = os.path.join(workdir, nome_saida)
+    with open(saida_path, "w") as f:
         f.write(output)
+    return FileResponse(saida_path, media_type=media_type, filename=nome_saida)
 
-    return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
-
-
-
-
-
+def salvar_arquivo_binario(output: bytes, workdir: str, temp_id: str, extensao: str, media_type: str):
+    nome_saida = f"{temp_id}{extensao}"
+    saida_path = os.path.join(workdir, nome_saida)
+    with open(saida_path, "wb") as f:
+        f.write(output)
+    return FileResponse(saida_path, media_type=media_type, filename=nome_saida)
