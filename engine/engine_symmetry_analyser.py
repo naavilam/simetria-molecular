@@ -33,74 +33,54 @@ from datetime import datetime
 from analysis.analise_tipo import AnaliseTipo
 from representation.representation_matrix3d import Matrix3DRepresentation
 from representation.representation_permutation import PermutationRepresentation
+from render.render import Renderer
+from analysis.analise import analise
 
 class SymmetryAnalyzer:
 
-    def __init__(self, molecule, group):
+    def __init__(self, molecule, group, rep):
         self.molecule = molecule
         self.group = group
-        self._tipo = RepresentationType.PERMUTATION  # padrão
+        self.rep = rep
+        self._render = None
         self._analises = []
-        self._resultado = None
         self._uuid = None
-        self._metadata = self._gerar_metadata()
+        self._metadata = {}
+        self._resultados = {}
 
     @classmethod
     def de(cls, group: Group, molecule: Molecule) -> 'SymmetryAnalyzer':
-        return cls(molecule, group)
-
-    def usar(self, tipo: RepresentationType) -> 'SymmetryAnalyzer':
-        print(
-            f"\n\033[95m>>> Usando grupo: \033[1m{self.group.nome}\033[0m "
-            f"\033[94mcom molécula: \033[1m{getattr(self.molecule, 'nome', 'desconhecida')}\033[0m"
-        )
-        self.rep = (
+        rep = (
             RepresentationBuilder()
-            .de(self.group, self.molecule)
-            .usar(tipo)
+            .de(group, molecule)
+            .usar(RepresentationType.PERMUTATION)
             .construir()
         )
-        self._tipo = tipo
-        return self
+        return cls(molecule, group, rep)
 
-    def configurar(self, analises: list, uuid: str) -> 'SymmetryAnalyzer':
-        self._analises = analises
+    def configurar(self, analises: list, render: RenderTipo, uuid: str) -> 'SymmetryAnalyzer':
         self._uuid = uuid
+        self._metadata = self._gerar_metadata()
+        self._analises = []
+
+        for nome in analises:
+            self._analises.append(analise(nome).from_rep(self.rep))
+
+        self._render = get_renderer(render).set(self._metadata).to(self.molecule, self.group)
         return self
 
-    def get_representacao(self) -> Representation:
-        return (
-            RepresentationBuilder()
-            .de(group=self.group, molecule=self.molecule)
-            .usar(self._tipo)
-            .construir()
-        )
-
-    def executar(self) -> 'SymmetryAnalyzer':
+    def analisar(self) -> 'SymmetryAnalyzer':
         inicio = perf_counter()
-        representacao = self.get_representacao()
-        resultado = {}
-        if AnaliseTipo.PERMUTACOES in self._analises:
-            resultado["permutacoes"] = representacao.get_permutacoes()
 
-        if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises:
-            resultado["operacoes_multiplicacao"] = TabelaMultiplicacao(representacao).gerar()
-            # print(">>>>>>>>>>>>>>>>>>>>")
-            # print(resultado["operacoes_multiplicacao"])
+        for analise in self._analises:
+            self._resultados.update(analise.executar())
 
-        if AnaliseTipo.CLASSES_CONJUGACAO in self._analises:
-            resultado["operacoes_conjugacao"] = ClasseConjugacao(representacao).gerar()
-            # print(">>>>>>>>>>>>>>>>>>>>")
-            # print(resultado["operacoes_conjugacao"])
-
-        resultado["tempo_execucao"] = f"{perf_counter() - inicio:.2f}s"
-        self._resultado = resultado
+        self._resultados["tempo_execucao"] = f"{perf_counter() - inicio:.2f}s"
         return self
 
-    def renderizar(self, formato: RenderTipo) -> str:
-        if self._resultado is None:
-            raise RuntimeError("Você precisa chamar `.executar()` antes de `.renderizar()`.")
-        return get_renderer(formato, self.metadata, self._resultado, self.molecule, self.group)
+    def renderizar(self) -> str:
+
+        return self._render.render(self._resultados)
 
     def _gerar_metadata(self) -> dict:
         return {

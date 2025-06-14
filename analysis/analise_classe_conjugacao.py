@@ -21,7 +21,9 @@ import re
 import numpy as np
 from pathlib import Path
 from representation.representation import Representation
-class ClasseConjugacao:
+from analysis.analise import Analise
+
+class ClasseConjugacao(Analise):
     def __init__(self, representation: Representation):
         self.rep = representation
 
