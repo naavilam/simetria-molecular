@@ -25,3 +25,13 @@ class SubGrupos(Analise):
         """
         self.rep = representation
 		
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'SubGrupos':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

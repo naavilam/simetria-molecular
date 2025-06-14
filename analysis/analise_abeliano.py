@@ -26,3 +26,14 @@ class Abeliano(Analise):
         """
         self.rep = representation
         self.tabela = {}
+
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'Abeliano':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

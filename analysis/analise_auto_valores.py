@@ -26,3 +26,14 @@ class AutoValores(Analise):
         """
         self.rep = representation
         self.tabela = {}
+
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'AutoValores':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

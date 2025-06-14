@@ -16,6 +16,7 @@
 ====================================================================================================================================================
 """
 
+from typing import Optional
 from types import ClassMethodDescriptorType
 from representation.representation_type import RepresentationType
 from representation.representation_permutation import PermutationRepresentation
@@ -31,22 +32,29 @@ class RepresentationBuilder:
     Permite selecionar o tipo e construir com simplicidade.
     """
 
-    def __init__(self, molecule: Molecule, group: Group):
-        """Summary
-        """
-        self._group: = molecule
-        self._molecule: = group
-        self._tipo: RepresentationType = RepresentationType.PERMUTATION
+    def __init__(self):
+        self._group: Optional[Group] = None
+        self._molecule: Optional[Molecule] = None
+        self._tipo: RepresentationType = RepresentationType.PERMUTATION  # Default
 
-    @classmethod
-    def de(cls, molecule: Molecule, group: Group):
-        return cls(molecule, group)
+    def de(self, group: Group, molecule: Molecule) -> 'RepresentationBuilder':
+        self._group = group
+        self._molecule = molecule
+        return self
 
-    def usar(self, tipo: RepresentationType):
+    def usar(self, tipo: RepresentationType) -> 'RepresentationBuilder':
         self._tipo = tipo
         return self
 
     def construir(self):
+        """Summary
+
+        Raises:
+            ValueError: Description
+        """
+        if self._group is None or self._molecule is None:
+            raise ValueError("RepresentationBuilder: 'group' e 'molecule' devem ser definidos antes de construir.")
+
         if self._tipo == RepresentationType.PERMUTATION:
             rep3d = Matrix3DRepresentation.from_group(self._group)
             return PermutationRepresentation.from_matrix3d(rep3d, self._molecule)

@@ -16,51 +16,56 @@
 ====================================================================================================================================================
 """
 
-from .render_tipo import RenderTipo
-from .render_tex import LatexReportGenerator
-from .render_pdf import PdfReportGenerator
-from .render_3D import MoleculeExplorer
-from .render_gif import SimetriaAnimada
-from model.model_molecula import Molecule
-from model.model_grupo import Group
-from .render import Renderer
+from analysis.analise_tipo import AnaliseTipo
+from representation.representation import Representation
+from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
+from analysis.analise_classe_conjugacao import ClasseConjugacao
+from analysis.analise_tabela_caracteres import TabelaCaracteres
+from analysis.analise_abeliano import Abeliano
+from analysis.analise_ciclico import Ciclico
+from analysis.analise_auto_valores import AutoValores
+from analysis.analise_sub_grupos import SubGrupos
+from analysis.analise_permutacao import Permutacao
+from analysis.analise import Analise
 
-from typing import Optional
-from .render_tipo import RenderTipo
-from .render_tex import LatexReportGenerator
-from .render_pdf import PdfReportGenerator
-from .render_3D import MoleculeExplorer
-from .render_gif import SimetriaAnimada
-from .render import Renderer
+class AnaliseBuilder:
+    """
+    Builder para instanciar a análise correta com base no tipo.
+    """
 
-class RendererBuilder:
-    def __init__(self, formato: RenderTipo):
-        self.formato = formato
-        self._metadata: Optional[dict] = None
-        self._molecule: Optional[Molecule] = None
-        self._group: Optional[Group] = None
+    def __init__(self, tipo: AnaliseTipo, representacao: Representation):
+        self.tipo = tipo
+        self.representacao = representacao
 
-    def set(self, metadata: dict):
-        self._metadata = metadata
-        return self
+    def build(self) -> Analise:
+        """Summary
 
-    def to(self, molecule: Molecule, group: Group):
-        self._molecule = molecule
-        self._group = group
-        return self
+        Raises:
+            ValueError: Description
+        """
+        if self.tipo == AnaliseTipo.TABELA_MULTIPLICACAO:
+            return TabelaMultiplicacao(self.representacao)
 
-    def build(self) -> Renderer:
-        if self._metadata is None or self._molecule is None or self._group is None:
-            raise ValueError("RendererBuilder: Todos os campos (metadata, molecule, group) precisam estar preenchidos antes de chamar build().")
+        elif self.tipo == AnaliseTipo.CLASSES_CONJUGACAO:
+            return ClasseConjugacao(self.representacao)
 
-        print(self.formato)
-        if self.formato == RenderTipo.TEX:
-            return LatexReportGenerator(self._metadata, self._molecule, self._group)
-        elif self.formato == RenderTipo.PDF:
-            return PdfReportGenerator(self._metadata, self._molecule, self._group)
-        elif self.formato == RenderTipo.D3:
-            return MoleculeExplorer(self._metadata, self._molecule, self._group)
-        elif self.formato == RenderTipo.GIF:
-            return SimetriaAnimada(self._metadata, self._molecule, self._group)
+        elif self.tipo == AnaliseTipo.TABELA_CARACTERES:
+            return TabelaCaracteres(self.representacao)
+
+        elif self.tipo == AnaliseTipo.ABELIANO:
+            return Abeliano(self.representacao)
+
+        elif self.tipo == AnaliseTipo.CICLICO:
+            return Ciclico(self.representacao)
+
+        elif self.tipo == AnaliseTipo.AUTO_VALORES:
+            return AutoValores(self.representacao)
+
+        elif self.tipo == AnaliseTipo.SUB_GRUPOS:
+            return SubGrupos(self.representacao)
+
+        elif self.tipo == AnaliseTipo.PERMUTACOES:
+            return Permutacao(self.representacao)
+
         else:
-            raise ValueError(f"Formato de renderização não suportado: {self.formato}")
+            raise ValueError(f"[AnaliseBuilder] Tipo de análise não suportado: {self.tipo}")

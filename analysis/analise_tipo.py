@@ -18,13 +18,27 @@
 
 from enum import Enum, auto
 
+from enum import Enum
+
 class AnaliseTipo(Enum):
-    TABELA_MULTIPLICACAO = auto()
-    CLASSES_CONJUGACAO = auto()
-    AUTO_VALORES = auto()
-    TABELA_CARACTERES = auto()
-    ABELIANO = auto()
-    CICLICO = auto()
-    SUB_GRUPOS = auto()
-    GRUPO = auto()
-    PERMUTACOES = auto()
+
+    """Summary
+    """
+
+    PERMUTACOES = "permutacoes"
+    TABELA_MULTIPLICACAO = "tabela_multiplicacao"
+    CLASSES_CONJUGACAO = "classes_conjugacao"
+    SUB_GRUPOS = "sub_grupos"
+    AUTO_VALORES = "auto_valores"
+    ABELIANO = "abeliano"
+    CICLICO = "ciclico"
+    TABELA_CARACTERES = "tabela_caracteres"
+    GRUPO = "grupo"
+
+    @classmethod
+    def from_str(cls, valor: str) -> 'AnaliseTipo':
+        mapa = {item.value.lower(): item for item in cls}
+        try:
+            return mapa[valor.lower()]
+        except KeyError:
+            raise ValueError(f"Tipo de análise inválido: '{valor}'. Opções válidas: {list(mapa.keys())}")

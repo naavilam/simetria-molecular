@@ -33,6 +33,8 @@ from representation.representation_matrix3d import Matrix3DRepresentation
 from representation.representation_permutation import PermutationRepresentation
 from render.render import Renderer
 from analysis.analise import Analise
+from analysis.builder import AnaliseBuilder
+from render.builder import RendererBuilder
 
 class SymmetryAnalyzer:
 
@@ -56,18 +58,36 @@ class SymmetryAnalyzer:
         )
         return cls(molecule, group, rep)
 
-    def configurar(self, analises: list, render: RenderTipo, uuid: str) -> 'SymmetryAnalyzer':
+    def configurar(self, analises: list[AnaliseTipo], render: RenderTipo, uuid: str) -> 'SymmetryAnalyzer':
+        """Summary
+        """
         self._uuid = uuid
         self._metadata = self._gerar_metadata()
         self._analises = []
 
-        for nome in analises:
-            self._analises.append(analise(nome).from_rep(self.rep))
+        for tipo in analises:
+            analysis = AnaliseBuilder(tipo, self.rep).build()
+            self._analises.append(analysis)
 
-        self._render = get_renderer(render).set(self._metadata).to(self.molecule, self.group)
+        self._render = (
+            RendererBuilder(render)
+            .set(self._metadata)
+            .to(self.molecule, self.group)
+            .build()
+        )
+
+        if render in [RenderTipo.D3, RenderTipo.GIF]:
+            perm_analysis = AnaliseBuilder(AnaliseTipo.PERMUTACOES, self.rep).build()
+            self._analises.append(perm_analysis)
+
+        print(">>>>>>>>>>>>>>>Analises:>>>>>>>>>>>>>>>>>>")
+        for analise in self._analises:
+            print(analise)
         return self
 
     def analisar(self) -> 'SymmetryAnalyzer':
+        """Summary
+        """
         inicio = perf_counter()
 
         for analise in self._analises:
@@ -77,7 +97,8 @@ class SymmetryAnalyzer:
         return self
 
     def renderizar(self) -> str:
-
+        """Summary
+        """
         return self._render.render(self._resultados)
 
     def _gerar_metadata(self) -> dict:

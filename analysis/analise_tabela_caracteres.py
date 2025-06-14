@@ -24,4 +24,14 @@ class TabelaCaracteres(Analise):
         """Summary
         """
         self.rep = representation
-		
+
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'TabelaCaracteres':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

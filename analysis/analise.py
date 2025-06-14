@@ -17,6 +17,7 @@
 """
 
 from abc import ABC, abstractmethod
+from representation.representation import Representation
 
 class Analise(object):
     """docstring for Analise"""
@@ -25,7 +26,13 @@ class Analise(object):
         self.arg = arg
 
     @abstractmethod
-    def executar(self) -> str:
+    def executar(self) -> dict:
         """Summary
         """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def from_rep(cls, rep: Representation) -> 'Analise':
+        """Factory Method: constrói a análise a partir da representação"""
         pass

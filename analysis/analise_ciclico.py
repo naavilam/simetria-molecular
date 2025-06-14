@@ -23,4 +23,17 @@ class Ciclico(Analise):
     """docstring for Ciclico
     """
     def __init__(self, representation: Representation):
+        """Summary
+        """
         self.representation = representation
+
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'Ciclico':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

@@ -30,10 +30,19 @@ class TabelaMultiplicacao(Analise):
         self.operacoes = representacao.nomes()
         self.dados = self.gerar()
 
-    def gerar(self) -> dict:
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'TabelaMultiplicacao':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
         """
         Gera a tabela de multiplicação: para cada par (A, B), calcula C = A * B
         tal que a operação composta tenha a mesma matriz (ou permutação) que C.
+
+        Raises:
+            ValueError: Description
         """
         tabela = {}
         for a in self.operacoes:

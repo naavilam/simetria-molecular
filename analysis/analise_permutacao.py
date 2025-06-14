@@ -25,3 +25,14 @@ class Permutacao(Analise):
         """Summary
         """
         self.rep = representation
+
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'Permutacao':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
+        """Summary
+        """
+        return {}

@@ -16,13 +16,16 @@
 ====================================================================================================================================================
 """
 
+from model.model_molecula import Molecule
+from model.model_grupo import Group
 from .render import Renderer
-import subprocess
 import os
 
 class PdfReportGenerator(Renderer):
 
     def __init__(self, metadata: dict, molecule: Molecule, group: Group):
+        """Summary
+        """
         self.metadata = metadata
         self.molecule = molecule
         self.group = group

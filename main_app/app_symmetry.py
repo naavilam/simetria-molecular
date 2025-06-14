@@ -37,7 +37,7 @@ class MoleculeSymmetryApp:
         return (
             SymmetryAnalyzer
             .de(self.group, self.molecule)
-            .configurar(analises, render, uuid)
+            .configurar(analises, render.formato, uuid)
             .analisar()
             .renderizar()
         )

@@ -27,11 +27,17 @@ class ClasseConjugacao(Analise):
     def __init__(self, representation: Representation):
         self.rep = representation
 
-    def gerar(self):
+    @classmethod
+    def from_rep(cls, rep: Representation) -> 'ClasseConjugacao':
+        """Summary
+        """
+        return cls(rep)
+
+    def executar(self) -> dict:
         """
         Retorna uma tupla:
-        - classes: dict com 'Classe 1': [nomes]
-        - conjugacao_detalhada: dict com g -> h -> {resultado, detalhe}
+            - classes: dict com 'Classe 1': [nomes]
+            - conjugacao_detalhada: dict com g -> h -> {resultado, detalhe}
         """
         nomes = self.rep.nomes()
         usados = set()

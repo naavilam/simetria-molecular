@@ -15,17 +15,38 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
-
-from pydantic import BaseModel
+from render.render_tipo import RenderTipo
+from pydantic import BaseModel, field_validator
 from typing import Optional, Dict
+from analysis.analise_tipo import AnaliseTipo
 
 class RenderConfig(BaseModel):
+    formato: RenderTipo
+    paleta: Optional[str] = None
+
+    @field_validator('formato', mode='before')
+    @classmethod
+    def parse_formato(cls, v):
+        if isinstance(v, str):
+            return RenderTipo.from_str(v)
+        return v
+
+class AnaliseRequest(BaseModel):
 
     """Summary
     """
-    formato: str      # tex, pdf, gif, d3
-    paleta: Optional[str] = None
 
-class AnaliseRequest(BaseModel):
     render: RenderConfig
     analises: Dict[str, bool]
+
+    @field_validator('analises', mode='before')
+    @classmethod
+    def parse_analises(cls, value):
+        resultado = {}
+        for nome, ativo in value.items():
+            try:
+                tipo = AnaliseTipo.from_str(nome)
+                resultado[tipo] = ativo
+            except ValueError:
+                raise ValueError(f"Tipo de análise inválido: {nome}")
+        return resultado

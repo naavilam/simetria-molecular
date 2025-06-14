@@ -25,12 +25,12 @@ class RenderTipo(Enum):
     PDF = auto()
 
     @classmethod
-    def from_str(cls, valor: str):
+    def from_str(cls, valor: str) -> 'RenderTipo':
         mapa = {
             "3d": cls.D3,
             "gif": cls.GIF,
             "tex": cls.TEX,
-            "pdf": cls.PDF
+            "pdf": cls.PDF,
         }
         try:
             return mapa[valor.lower()]
