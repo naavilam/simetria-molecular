@@ -1,15 +1,33 @@
+"""=================================================================================================================================================
+**                                                   Copyright © 2025 Chanah Yocheved Bat Sarah                                                   **
+**                                                                                                                                                **
+**                                                       Author: Chanah Yocheved Bat Sarah                                                        **
+**                                                          Contact: contact@chanah.dev                                                           **
+**                                                                Date: 2025-06-14                                                                **
+**                                                      License: Custom Attribution License                                                       **
+**                                                                                                                                                **
+**    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
+**                                                       Aplicada para Sólidos e Moléculas.                                                       **
+**                                                                                                                                                **
+**   Permission is granted to use, copy, modify, and distribute this file, provided that this notice is retained in full and that the origin of   **
+**    the software is clearly and explicitly attributed to the original author. Such attribution must be preserved not only within the source     **
+**       code, but also in any accompanying documentation, public display, distribution, or derived work, in both digital or printed form.        **
+**                                                  For licensing inquiries: contact@chanah.dev                                                   **
+====================================================================================================================================================
+"""
+
 import os, uuid
+import glob
+import os
 from fastapi.responses import FileResponse
-from core.core_molecula import Molecule
-from core.core_grupo import Group
+from model.model_molecula import Molecule
+from model.model_grupo import Group
 from engine.engine_symmetry_analyser import SymmetryAnalyzer
 from representation.representation_type import RepresentationType
 from analysis.analise_tipo import AnaliseTipo
 from render.render_tipo import RenderTipo
 from main_app.main_dto import AnaliseRequest
-import json
-import glob
-import os
+from main_app.app_symmetry import MoleculeSymmetryApp
 from pymatgen.core.structure import Molecule as PymatgenMolecule
 from pymatgen.symmetry.analyzer import PointGroupAnalyzer
 
@@ -64,24 +82,7 @@ async def processar_analise(molecula, data: AnaliseRequest):
 
     return FileResponse(tex_path, media_type="application/x-tex", filename=nome_tex)
 
-class MoleculeSymmetryApp:
-    def __init__(self, molecule, group):
-        self.molecule = molecule
-        self.group = group
 
-    @classmethod
-    def from_files(cls, mol_file, group_file):
-        group = Group.from_file(group_file)
-        molecule = Molecule.from_file(mol_file)
-        return cls(molecule=molecule, group=group)
-
-    def run(self, render, analises, uuid):
-        return SymmetryAnalyzer \
-            .de(self.group, self.molecule) \
-            .usar(RepresentationType.PERMUTATION) \
-            .configurar(analises, uuid) \
-            .executar() \
-            .renderizar(render)
 
 
 

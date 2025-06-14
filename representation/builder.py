@@ -16,23 +16,41 @@
 ====================================================================================================================================================
 """
 
-from enum import Enum, auto
+from types import ClassMethodDescriptorType
+from representation.representation_type import RepresentationType
+from representation.representation_permutation import PermutationRepresentation
+from representation.representation_matrix3d import Matrix3DRepresentation
 
-class RenderTipo(Enum):
-    D3 = auto()
-    GIF = auto()
-    TEX = auto()
-    PDF = auto()
+from model.model_grupo import Group
+from model.model_molecula import Molecule
+
+
+class RepresentationBuilder:
+    """
+    Builder fluido para construção de representações a partir de um grupo e uma molécula.
+    Permite selecionar o tipo e construir com simplicidade.
+    """
+
+    def __init__(self, molecule: Molecule, group: Group):
+        """Summary
+        """
+        self._group: = molecule
+        self._molecule: = group
+        self._tipo: RepresentationType = RepresentationType.PERMUTATION
 
     @classmethod
-    def from_str(cls, valor: str):
-        mapa = {
-            "3d": cls.D3,
-            "gif": cls.GIF,
-            "tex": cls.TEX,
-            "pdf": cls.PDF
-        }
-        try:
-            return mapa[valor.lower()]
-        except KeyError:
-            raise ValueError(f"Tipo de renderização inválido: {valor}")
+    def de(cls, molecule: Molecule, group: Group):
+        return cls(molecule, group)
+
+    def usar(self, tipo: RepresentationType):
+        self._tipo = tipo
+        return self
+
+    def construir(self):
+        if self._tipo == RepresentationType.PERMUTATION:
+            rep3d = Matrix3DRepresentation.from_group(self._group)
+            return PermutationRepresentation.from_matrix3d(rep3d, self._molecule)
+        elif self._tipo == RepresentationType.MATRIX_3D:
+            return Matrix3DRepresentation.from_group(self._group)
+        else:
+            raise ValueError(f"Tipo de representação não suportado: {self._tipo}")

@@ -15,26 +15,24 @@
 ====================================================================================================================================================
 """
 
-# symmetry_analyzer.py
-import numpy as np
 from time import perf_counter
 from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
 from analysis.analise_classe_conjugacao import ClasseConjugacao
-from core.core_molecula import Molecule
+from model.model_molecula import Molecule
 from render.render_tex import LatexReportGenerator
 from render.render_3D import MoleculeExplorer
 from render.render_pdf import PdfReportGenerator 
 from render.render_tipo import RenderTipo
-from representation.builder import RepresentationBuilder, RepresentationType
 from representation.representation import Representation
-from core.core_grupo import Group
-from representation.builder import RepresentationBuilder, RepresentationType
+from model.model_grupo import Group
+from representation.builder import RepresentationBuilder
+from representation.representation_type import RepresentationType
 from datetime import datetime
 from analysis.analise_tipo import AnaliseTipo
 from representation.representation_matrix3d import Matrix3DRepresentation
 from representation.representation_permutation import PermutationRepresentation
 from render.render import Renderer
-from analysis.analise import analise
+from analysis.analise import Analise
 
 class SymmetryAnalyzer:
 

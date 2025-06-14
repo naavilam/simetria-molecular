@@ -16,16 +16,24 @@
 ====================================================================================================================================================
 """
 
+from .render import Renderer
 import numpy as np
 import json
 import os
 from pathlib import Path
+from model.model_grupo import Group
+from model.model_molecula import Molecule
 
-class SimetriaAnimada:
+class SimetriaAnimada(Renderer):
 
-    def __init__(self, metadata, resultado):
+    def __init__(self, metadata: dict, molecule: Molecule, group: Group):
+        """Summary
+        """
         self.metadata = metadata
-        self.resultado = resultado
+        self.molecule = molecule
+        self.group = group
 
-    def gerar_pdf(self) -> str:
+    def render(self, resultados: dict) -> str:
+        """Summary
+        """
         return "0"

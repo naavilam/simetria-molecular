@@ -17,13 +17,15 @@
 """
 
 import json
-import re
 from pathlib import Path
 from representation.representation import Representation
 import numpy as np
+from analysis.analise import Analise
 
-class TabelaMultiplicacao:
+class TabelaMultiplicacao(Analise):
     def __init__(self, representacao: Representation):
+        """Summary
+        """
         self.representacao = representacao
         self.operacoes = representacao.nomes()
         self.dados = self.gerar()

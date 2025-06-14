@@ -16,7 +16,6 @@
 ====================================================================================================================================================
 """
 
-from enum import nonmember
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 # from core.operation import Operation
@@ -24,11 +23,7 @@ import json
 
 class Group:
 
-    """Summary
-    """
     def __init__(self, sistema, nome, ordem, operacoes, tolerancia):
-        """Summary
-        """
         self.sistema = sistema
         self.nome = nome
         self.operacoes = operacoes
@@ -82,17 +77,6 @@ class Group:
 
     @staticmethod
     def detalhe_operacao(operacao):
-        """Retorna a operacao e o eixo/plano de simetria da operacao
-        
-        Args:
-            operacao (TYPE): Description
-        
-        Returns:
-            TYPE: Description
-        
-        Raises:
-            ValueError: Description
-        """
         tipo = operacao["tipo"]
 
         if tipo == "identidade":

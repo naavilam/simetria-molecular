@@ -16,23 +16,28 @@
 ====================================================================================================================================================
 """
 
-from enum import Enum, auto
+from model.model_grupo import Group
+from model.model_molecula import Molecule
+from engine.engine_symmetry_analyser import SymmetryAnalyzer
 
-class RenderTipo(Enum):
-    D3 = auto()
-    GIF = auto()
-    TEX = auto()
-    PDF = auto()
+class MoleculeSymmetryApp:
+    def __init__(self, molecule, group):
+        self.molecule = molecule
+        self.group = group
 
     @classmethod
-    def from_str(cls, valor: str):
-        mapa = {
-            "3d": cls.D3,
-            "gif": cls.GIF,
-            "tex": cls.TEX,
-            "pdf": cls.PDF
-        }
-        try:
-            return mapa[valor.lower()]
-        except KeyError:
-            raise ValueError(f"Tipo de renderização inválido: {valor}")
+    def from_files(cls, mol_file, group_file):
+        group = Group.from_file(group_file)
+        molecule = Molecule.from_file(mol_file)
+        return cls(molecule=molecule, group=group)
+
+    def run(self, render, analises, uuid):
+        """Summary
+        """
+        return (
+            SymmetryAnalyzer
+            .de(self.group, self.molecule)
+            .configurar(analises, render, uuid)
+            .analisar()
+            .renderizar()
+        )

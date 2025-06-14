@@ -16,23 +16,37 @@
 ====================================================================================================================================================
 """
 
-from enum import Enum, auto
+from .render_tipo import RenderTipo
+from .render_tex import LatexReportGenerator
+from .render_pdf import PdfReportGenerator
+from .render_3D import MoleculeExplorer
+from .render_gif import SimetriaAnimada
+from .render import Renderer
 
-class RenderTipo(Enum):
-    D3 = auto()
-    GIF = auto()
-    TEX = auto()
-    PDF = auto()
+class RendererBuilder:
+    def __init__(self, formato: RenderTipo):
+        self.formato = formato
+        self._metadata = None
+        self._molecule = None
+        self._group = None
 
-    @classmethod
-    def from_str(cls, valor: str):
-        mapa = {
-            "3d": cls.D3,
-            "gif": cls.GIF,
-            "tex": cls.TEX,
-            "pdf": cls.PDF
-        }
-        try:
-            return mapa[valor.lower()]
-        except KeyError:
-            raise ValueError(f"Tipo de renderização inválido: {valor}")
+    def set(self, metadata: dict):
+        self._metadata = metadata
+        return self
+
+    def to(self, molecule, group):
+        self._molecule = molecule
+        self._group = group
+        return self
+
+    def build(self) -> Renderer:
+        if self.formato == RenderTipo.TEX:
+            return LatexReportGenerator(self._metadata, self._molecule, self._group)
+        elif self.formato == RenderTipo.PDF:
+            return PdfReportGenerator(self._metadata, self._molecule, self._group)
+        elif self.formato == RenderTipo.D3:
+            return MoleculeExplorer(self._metadata, self._molecule, self._group)
+        elif self.formato == RenderTipo.GIF:
+            return SimetriaAnimada(self._metadata, self._molecule, self._group)
+        else:
+            raise ValueError(f"Formato de renderização não suportado: {self.formato}")

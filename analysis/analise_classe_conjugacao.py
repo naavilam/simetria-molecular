@@ -80,6 +80,8 @@ class ClasseConjugacao(Analise):
 
     @staticmethod
     def _nome_da_permutacao(rep, perm_resultado, nomes, g):
+        """Summary
+        """
         # Etapa 0: Priorizar o próprio g
         if rep[g] == perm_resultado:
             return g
@@ -96,50 +98,3 @@ class ClasseConjugacao(Analise):
 
         # Falha de segurança
         return "??"
-
-    # def gerar(self) -> tuple[dict, dict]:
-    #     """
-    #     Retorna uma tupla:
-    #     - classes: dict com 'Classe 1': [nomes]
-    #     - conjugacao_detalhada: dict com g -> h -> {resultado, detalhe}
-    #     """
-    #     nomes = self.rep.nomes()
-    #     usados = set()
-    #     conjugacy = []
-    #     conjugacao_detalhada = {}
-
-    #     for g in nomes:
-    #         if g in usados:
-    #             continue
-
-    #         classe = set()
-    #         conjugacao_detalhada[g] = {}
-
-    #         for h in nomes:
-    #             perm_g = self.rep[g]
-    #             perm_h = self.rep[h]
-    #             conj = self.rep.conjugar(perm_g, perm_h)
-
-    #             # Encontrar qual nome corresponde ao resultado da conjugação
-    #             for nome_k in nomes:
-    #                 if self.rep[nome_k] == conj:
-    #                     classe.add(nome_k)
-    #                     conjugacao_detalhada[g][h] = {
-    #                         "resultado": nome_k,
-    #                         "detalhe": {
-    #                             "g": perm_g,
-    #                             "h": perm_h,
-    #                             "hgh⁻¹": conj
-    #                         }
-    #                     }
-    #                     break
-
-    #         conjugacy.append(sorted(classe, key=nomes.index))
-    #         usados.update(classe)
-
-    #     # Formatando em forma de "Classe 1", "Classe 2", etc.
-    #     classes_formatadas = {
-    #         f"Classe {i+1}": classe for i, classe in enumerate(conjugacy)
-    #     }
-
-    #     return conjugacao_detalhada

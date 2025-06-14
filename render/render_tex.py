@@ -18,24 +18,31 @@
 from .render import Renderer
 from datetime import datetime
 import re
+from model.model_molecula import Molecule
+from model.model_grupo import Group
 
 class LatexReportGenerator(Renderer):
-    def __init__(self, metadata, resultado):
+    def __init__(self, metadata: dict, molecule: Molecule, group: Group):
+        """Summary
+        """
         self.metadata = metadata
-        self.resultado = resultado
+        self.molecule = molecule
+        self.group = group
 
-    def render(self) -> str:
+    def render(self, resultados: dict) -> str:
+        """Summary
+        """
         blocos = []
 
-        if "permutacoes" in self.resultado:
+        if "permutacoes" in resultados:
             blocos.append(r"""
                 \section{Permutações Básicas}
                 \[
                 %s
                 \]
-                """ % self._formatar_permutacoes(self.resultado['permutacoes']))
+                """ % self._formatar_permutacoes(resultados['permutacoes']))
 
-        if "operacoes_multiplicacao" in self.resultado:
+        if "operacoes_multiplicacao" in resultados:
             blocos.append(r"""
                 \section{Operações de Multiplicação}
                 \subsection{Tabela de Multiplicação}
@@ -44,17 +51,17 @@ class LatexReportGenerator(Renderer):
                 %s
                 \]
                 \end{adjustbox}
-                """ % self._formatar_tabela_multiplicacao(self.resultado['operacoes_multiplicacao']))
+                """ % self._formatar_tabela_multiplicacao(resultados['operacoes_multiplicacao']))
 
             blocos.append(r"""
                 \subsection{Operações de Multiplicação Detalhadas}
                 \begin{longtable}{>{$}r<{$} >{$}l<{$} >{$}l<{$}}
                 %s
                 \end{longtable}
-                """ % self._formatar_operacoes_multiplicacao(self.resultado['operacoes_multiplicacao']))
+                """ % self._formatar_operacoes_multiplicacao(resultados['operacoes_multiplicacao']))
 
-        if "operacoes_conjugacao" in self.resultado:
-            classes = self._extrair_classes_de_operacoes(self.resultado["operacoes_conjugacao"])
+        if "operacoes_conjugacao" in resultados:
+            classes = self._extrair_classes_de_operacoes(resultados["operacoes_conjugacao"])
 
             blocos.append(r"""
                 \section{Operações de Conjugação}
@@ -64,12 +71,12 @@ class LatexReportGenerator(Renderer):
                 %s
                 \end{longtable}
                 \end{adjustbox}
-                """ % self._formatar_tabela_conjugacao(self.resultado["operacoes_conjugacao"]))
+                """ % self._formatar_tabela_conjugacao(resultados["operacoes_conjugacao"]))
 
             blocos.append(r"""
                 \subsection{Operações de Conjugação Detalhadas}
                 %s
-                """ % self._formatar_operacoes_conjugacao(self.resultado["operacoes_conjugacao"]))
+                """ % self._formatar_operacoes_conjugacao(resultados["operacoes_conjugacao"]))
 
             blocos.append(r"""
                 \subsection{Agrupamento em Classes de Conjugação}
@@ -104,7 +111,7 @@ class LatexReportGenerator(Renderer):
         % Cabeçalho
         \fancyhead[L]{{\textbf{{Análise de Simetria}} \\
         \textbf{{Sistema {self.metadata['sistema']}}} \\
-        Tempo de Execução: \textbf{{{self.resultado['tempo_execucao']}}}}}
+        Tempo de Execução: \textbf{{{resultados['tempo_execucao']}}}}}
 
         \fancyhead[C]{{Molécula: \textbf{{{self.metadata['molecula']}}} \\
         Grupo: \textbf{{{self.metadata['grupo']}}} \\
