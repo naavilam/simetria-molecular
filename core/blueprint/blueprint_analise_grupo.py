@@ -16,6 +16,7 @@
 ====================================================================================================================================================
 """
 
+from blueprint.blueprint_analysis import BlueprintAnalise
 from analysis.analise import Analise
 from model.model_molecula import Molecule
 from model.model_operacao_simetria import SymmetryOperation
@@ -26,13 +27,19 @@ import os
 # Placeholder temporário até implementarmos o cálculo na unha
 from utils.grupo_identificacao import identificar_grupo_pontual, encontrar_json_grupo  # Ajuste seu import conforme seu projeto
 
-class AnaliseGrupo(Analise):
+class AnaliseGrupo(BlueprintAnalise):
+
+    """Summary
+    """
+
     def __init__(self, molecule: Molecule):
+        """Summary
+        """
         self.molecule = molecule
         self._resultado = {}
 
-    def executar(self) -> dict:
-        grupo_nome = self.identificar_grupo_pontual(molecule)
+    def executar(self) -> [dict, SymmetryOperation]:
+        grupo_nome = self.identificar_grupo_pontual(self.molecule)
         grupo_path = self.encontrar_json_grupo(grupo_nome)
         operacoes = self.carregar_operacoes(grupo_path)
         sistema = self.determinar_sistema(grupo_path)
@@ -44,11 +51,11 @@ class AnaliseGrupo(Analise):
             "operacoes": [op.to_dict() for op in operacoes]
         }
 
-        return self._resultado
+        return self._resultado, operacoes
 
     def identificar_grupo_pontual(self, molecule: Molecule) -> str:
-        especies = [atom.elemento for atom in molecule.elemento]
-        coords = [atom.coordenadas for atom in molecule.elemento]
+        especies = [atom.elemento for atom in molecule.elementos]
+        coords = [atom.coordenadas for atom in molecule.elementos]
         mol = PymatgenMolecule(especies, coords)
         return PointGroupAnalyzer(mol).sch_symbol
 

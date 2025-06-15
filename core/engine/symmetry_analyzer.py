@@ -35,11 +35,9 @@ class SymmetryAnalyzer:
     """
 
     def __init__(self, molecule: Molecule):
-        """Summary
-        """
         self.molecule = molecule
-        self._rep: Optional[Representation] = None
-        self._symm_ops = []
+        self._symm_ops = None
+        self._rep = None
         self._analises = {}
         self._resultados_pedidos = {}
 
@@ -50,6 +48,37 @@ class SymmetryAnalyzer:
         self._score = calculate_score(self._analises)
 
         return self
+
+class SymmetryAnalyzer:
+
+
+
+    def execute(self) -> dict:
+        self._run_blueprint_phase()
+        self._run_representation_phase()
+        self._run_analysis_phase()
+        return self._results
+
+    def _run_blueprint_phase(self):
+        blueprint_analyzer = AnaliseGrupo(SymmetryOperation)
+        resultado, operacoes = blueprint_analyzer.executar(self.molecule)
+        self._symm_ops = operacoes
+        self._results['grupo'] = resultado
+
+    def _run_representation_phase(self):
+        self._rep = (
+            RepresentationBuilder()
+            .de_blueprint(self._symm_ops)
+            .usar(RepresentationType.PERMUTATION)
+            .construir()
+        )
+
+    def _run_analysis_phase(self):
+        # Aqui pode até aplicar um Strategy
+        for analise_tipo in self._analises_solicitadas:
+            analise = AnaliseBuilder(analise_tipo, self._rep).build()
+            resultado = analise.executar()
+            self._results.update(resultado)
 
     def execute(self) -> dict:
         """Summary
