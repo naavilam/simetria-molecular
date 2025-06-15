@@ -15,6 +15,7 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
+
 from render.render_tipo import RenderTipo
 from pydantic import BaseModel, field_validator
 from typing import Optional, Dict

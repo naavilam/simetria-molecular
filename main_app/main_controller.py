@@ -22,7 +22,7 @@ import os
 import uuid
 from model.model_molecula import Molecule
 from main_app.main_dto import AnaliseRequest
-from engine.molecule_symmetry_app import MoleculeSymmetryApp
+from engine_analyzer.molecule_symmetry_app import MoleculeSymmetryApp
 from render.render_tipo import RenderTipo
 
 async def processar_analise(molecula: UploadFile, data: AnaliseRequest):

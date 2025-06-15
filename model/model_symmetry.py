@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
+**                                                                Date: 2025-06-14                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -16,61 +16,62 @@
 ====================================================================================================================================================
 """
 
-from types import ClassMethodDescriptorType
+from typing import List
+from fastapi.openapi.models import Components
 import numpy as np
+from typing import List, Optional
 
-class Molecule:
-
-    """Summary
+class SymmetryOperation:
     """
-    
-    def __init__(self, nome, elementos, coordenadas):
-        """Summary
+    Blueprint abstrato de uma operação de simetria.
+
+    Essa classe descreve a essência conceitual da operação (tipo, eixo, ângulo, plano, etc),
+    mas NÃO contém nenhuma representação matemática (matriz, permutação, etc).
+    """
+
+    def __init__(
+        self,
+        tipo: str,
+        nome: Optional[str] = None,
+        id: Optional[int] = None,
+        eixo: Optional[List[float]] = None,
+        angulo: Optional[float] = None,
+        plano_normal: Optional[List[float]] = None,
+        comentario: Optional[str] = None
+    ):
         """
+        Args:
+            tipo (str): Tipo da operação (ex: 'identidade', 'rotacao', 'reflexao', 'inversao', etc)
+            nome (str, opcional): Nome simbólico (ex: "mathrm{C}_3", "sigma_h", etc)
+            id (int, opcional): ID da operação dentro do grupo
+            eixo (List[float], opcional): Eixo da operação, se aplicável
+            angulo (float, opcional): Ângulo de rotação (em graus), se aplicável
+            plano_normal (List[float], opcional): Normal do plano de reflexão, se aplicável
+        """
+        self.tipo = tipo
         self.nome = nome
-        self.elementos = elementos
-        self.coordenadas = coordenadas
+        self.id = id
+        self.eixo = eixo
+        self.angulo = angulo
+        self.plano_normal = plano_normal
+        self.comentario = comentario
 
-    @classmethod
-    def from_file(cls, path_file):
-        """Summary
+    def __repr__(self):
+        return f"SymmetryOperation(id={self.id}, tipo='{self.tipo}', nome='{self.nome}')"
+
+    def as_dict(self) -> dict:
         """
-        with open(path_file, 'r') as f:
-            linhas = f.readlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
+        Exporta a operação para um dicionário (útil para JSON ou logs).
 
-    @classmethod
-    def from_data(cls, data: str):
-        """Summary
+        Returns:
+            dict: Representação em dicionário.
         """
-        linhas = data.splitlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
-
-    @classmethod
-    def _carregar(cls, linhas):
-        """Summary
-        """
-        natomos = int(linhas[0])
-        nome = linhas[1]
-        # print(">>>>>>>>>>>>>>>>>>>>")
-        # print(nome)
-        dados = linhas[2:2 + natomos]
-
-        elementos = []
-        coordenadas = []
-
-        for linha in dados:
-            partes = linha.split()
-            elemento = partes[0]
-            coords = np.array(list(map(float, partes[1:4])))
-            elementos.append(elemento)
-            coordenadas.append(coords)
-        return nome, elementos, coordenadas
-
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
-
-    def __len__(self):
-        return len(self.elementos)
+        return {
+            "id": self.id,
+            "tipo": self.tipo,
+            "nome": self.nome,
+            "eixo": self.eixo,
+            "angulo": self.angulo,
+            "plano_normal": self.plano_normal,
+            "comentario": self.comentario
+        }

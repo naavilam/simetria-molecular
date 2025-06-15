@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
+**                                                                Date: 2025-06-15                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -16,61 +16,60 @@
 ====================================================================================================================================================
 """
 
-from types import ClassMethodDescriptorType
-import numpy as np
 
-class Molecule:
+    @staticmethod
+    def _matriz_da_operacao(op):
+        if op["tipo"] == "identidade":
+            return np.identity(3)
 
-    """Summary
-    """
-    
-    def __init__(self, nome, elementos, coordenadas):
-        """Summary
-        """
-        self.nome = nome
-        self.elementos = elementos
-        self.coordenadas = coordenadas
+        elif op["tipo"] == "rotacao":
+            eixo = np.array(op["eixo"])
+            angulo = np.deg2rad(op["angulo"])
+            return Matrix3DRepresentation._matriz_rotacao(eixo, angulo)
 
-    @classmethod
-    def from_file(cls, path_file):
-        """Summary
-        """
-        with open(path_file, 'r') as f:
-            linhas = f.readlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
+        elif op["tipo"] == "reflexao":
+            normal = np.array(op["plano_normal"])
+            return Matrix3DRepresentation._matriz_reflexao(normal)
 
-    @classmethod
-    def from_data(cls, data: str):
-        """Summary
-        """
-        linhas = data.splitlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
+        elif op["tipo"] == "inversao":
+            return -np.identity(3)
 
-    @classmethod
-    def _carregar(cls, linhas):
-        """Summary
-        """
-        natomos = int(linhas[0])
-        nome = linhas[1]
-        # print(">>>>>>>>>>>>>>>>>>>>")
-        # print(nome)
-        dados = linhas[2:2 + natomos]
+        elif op["tipo"] == "impropria":
+            eixo = np.array(op["eixo"])
+            angulo = np.deg2rad(op["angulo"])
+            rot = Matrix3DRepresentation._matriz_rotacao(eixo, angulo)
+            plano = np.array(op["plano_normal"])
+            refl = Matrix3DRepresentation._matriz_reflexao(plano)
+            return refl @ rot
 
-        elementos = []
-        coordenadas = []
+        else:
+            raise ValueError(f"Tipo de operação desconhecido: {op['tipo']}")
 
-        for linha in dados:
-            partes = linha.split()
-            elemento = partes[0]
-            coords = np.array(list(map(float, partes[1:4])))
-            elementos.append(elemento)
-            coordenadas.append(coords)
-        return nome, elementos, coordenadas
+    @staticmethod
+    def _matriz_rotacao(eixo, angulo):
+        eixo = eixo / np.linalg.norm(eixo)
+        x, y, z = eixo
+        c = np.cos(angulo)
+        s = np.sin(angulo)
+        C = 1 - c
+        matriz = np.array([
+            [x*x*C + c,   x*y*C - z*s, x*z*C + y*s],
+            [y*x*C + z*s, y*y*C + c,   y*z*C - x*s],
+            [z*x*C - y*s, z*y*C + x*s, z*z*C + c  ]
+        ])
+        return np.round(matriz, decimals=10)  # <- ESSENCIAL
 
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
+    @staticmethod
+    def _matriz_reflexao(normal):
+        n = normal / np.linalg.norm(normal)
+        return np.identity(3) - 2 * np.outer(n, n)
 
-    def __len__(self):
-        return len(self.elementos)
+
+    def compor(self, a, b):
+        return a @ b
+
+    def inverso(self, a):
+        return np.linalg.inv(a)
+
+    def conjugar(self, a, b):
+        return self.inverso(b) @ a @ b

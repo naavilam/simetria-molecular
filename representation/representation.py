@@ -29,17 +29,6 @@ class Representation(ABC):
         """Summary
         """
 
-    @abstractmethod
-    def compor(self, a: Any, b: Any) -> Any:
-        """Retorna a composição a ∘ b."""
-        pass
 
-    @abstractmethod
-    def inverso(self, a: Any) -> Any:
-        """Retorna o inverso de uma operação."""
-        pass
 
-    @abstractmethod
-    def conjugar(self, a: Any, b: Any) -> Any:
-        """Retorna a conjugação b⁻¹ a b."""
-        pass
+

@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
+**                                                                Date: 2025-06-15                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -16,61 +16,18 @@
 ====================================================================================================================================================
 """
 
-from types import ClassMethodDescriptorType
-import numpy as np
+    @abstractmethod
+    def compor(self, a: Any, b: Any) -> Any:
+        """Retorna a composição a ∘ b."""
+        pass
 
-class Molecule:
+    @abstractmethod
+    def inverso(self, a: Any) -> Any:
+        """Retorna o inverso de uma operação."""
+        pass
 
-    """Summary
-    """
-    
-    def __init__(self, nome, elementos, coordenadas):
-        """Summary
+    @abstractmethod
+    def conjugar(self, a: Any, b: Any) -> Any:
+        """Retorna a conjugação b⁻¹ a b.
         """
-        self.nome = nome
-        self.elementos = elementos
-        self.coordenadas = coordenadas
-
-    @classmethod
-    def from_file(cls, path_file):
-        """Summary
-        """
-        with open(path_file, 'r') as f:
-            linhas = f.readlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
-
-    @classmethod
-    def from_data(cls, data: str):
-        """Summary
-        """
-        linhas = data.splitlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
-
-    @classmethod
-    def _carregar(cls, linhas):
-        """Summary
-        """
-        natomos = int(linhas[0])
-        nome = linhas[1]
-        # print(">>>>>>>>>>>>>>>>>>>>")
-        # print(nome)
-        dados = linhas[2:2 + natomos]
-
-        elementos = []
-        coordenadas = []
-
-        for linha in dados:
-            partes = linha.split()
-            elemento = partes[0]
-            coords = np.array(list(map(float, partes[1:4])))
-            elementos.append(elemento)
-            coordenadas.append(coords)
-        return nome, elementos, coordenadas
-
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
-
-    def __len__(self):
-        return len(self.elementos)
+        pass

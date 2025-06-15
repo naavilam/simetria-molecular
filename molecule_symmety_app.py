@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-05-25                                                                **
+**                                                                Date: 2025-06-14                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -16,61 +16,56 @@
 ====================================================================================================================================================
 """
 
-from types import ClassMethodDescriptorType
-import numpy as np
+from typing import overload, Union
+from model.model_molecula import Molecule
+from engine.engine_symmetry_analyser import SymmetryAnalyzer
+from analysis.analise_tipo import AnaliseTipo
+from render.builder import RendererBuilder
+from engine_analyser.symmetry_analyzer import SymmetryAnalyzer
+from main_app.main_dto import RenderConfig
 
-class Molecule:
-
-    """Summary
+class MoleculeSymmetryApp:
+    """Main application for molecular symmetry analysis.
     """
-    
-    def __init__(self, nome, elementos, coordenadas):
+
+    def __init__(self, molecule: str):
+        self.molecule = Molecule.from_data(molecule)
+        self.analyser = SymmetryAnalyzer(self.molecule)
+        self.renderer = None
+        self._uuid = None
+
+    def config(self, param: Union[list, RenderConfig, str]) -> 'MoleculeSymmetryApp':
         """Summary
+
+        Raises:
+            TypeError: Description
         """
-        self.nome = nome
-        self.elementos = elementos
-        self.coordenadas = coordenadas
+        if isinstance(param, list):
+            self.analyser.set(param)
 
-    @classmethod
-    def from_file(cls, path_file):
-        """Summary
-        """
-        with open(path_file, 'r') as f:
-            linhas = f.readlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
+        elif isinstance(param, RenderConfig):
+            self.renderer = RendererBuilder.getRenderer(param)
 
-    @classmethod
-    def from_data(cls, data: str):
-        """Summary
-        """
-        linhas = data.splitlines()
-        nome, elementos, coordenadas = cls._carregar(linhas)
-        return cls(nome, elementos, coordenadas)
+        elif isinstance(param, str):
+            self._uuid = param
 
-    @classmethod
-    def _carregar(cls, linhas):
-        """Summary
-        """
-        natomos = int(linhas[0])
-        nome = linhas[1]
-        # print(">>>>>>>>>>>>>>>>>>>>")
-        # print(nome)
-        dados = linhas[2:2 + natomos]
+        else:
+            raise TypeError(f"Tipo de configuração inválido: {type(param)}")
 
-        elementos = []
-        coordenadas = []
+        return self
 
-        for linha in dados:
-            partes = linha.split()
-            elemento = partes[0]
-            coords = np.array(list(map(float, partes[1:4])))
-            elementos.append(elemento)
-            coordenadas.append(coords)
-        return nome, elementos, coordenadas
+    def run(self) -> str:
+        """Executa as análises e realiza o render final."""
 
-    def como_tuplas(self):
-        return list(zip(self.elementos, self.coordenadas))
+        # 1. Executa as análises de acordo com a estratégia
+        results = self.analyser.execute()
 
-    def __len__(self):
-        return len(self.elementos)
+        # 2. Gera os metadados
+        metadata = self.analyser.generate_metadata(self._uuid)
+
+        # 3. Passa os metadados para o renderer
+        self.renderer.set_metadata(metadata)
+
+        # 4. Renderiza o resultado
+        return self.renderer.render(results)
+

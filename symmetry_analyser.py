@@ -17,17 +17,15 @@
 """
 
 from representation.builder import RepresentationBuilder, RepresentationType
-from representation.representation import Representation
 from analysis.analise_grupo import AnaliseGrupo
 from analysis.analise_permutacao import Permutacao
 from analysis.analise_tabela_multiplicacao import TabelaMultiplicacao
 from analysis.analise_classe_conjugacao import ClasseConjugacao
 from analysis.analise_tabela_caracteres import TabelaCaracteres
-from model.model_molecula import Molecule
-from model.model_grupo import Group
-from engine_analyzer.execution_strategy import calculate_score, select_strategy
+from core.core_molecula import Molecule
+from core.core_grupo import Group
+from engine.execution_strategy import calculate_score, select_strategy
 from analysis.analise_tipo import AnaliseTipo
-from typing import Optional
 
 class SymmetryAnalyzer:
 
@@ -38,16 +36,13 @@ class SymmetryAnalyzer:
         """Summary
         """
         self.molecule = molecule
-        self._rep: Optional[Representation] = None
-        self._symm_ops = []
-        self._analises = {}
-        self._resultados_pedidos = {}
+        self._analise_flags = []
 
-    def set(self, analises: dict) -> 'SymmetryAnalyzer':
+    def set(self, analises_flags: dict) -> 'SymmetryAnalyzer':
         """Recebe as flags de análises escolhidas pelo usuário e guarda internamente
         """
-        self._analises = analises
-        self._score = calculate_score(self._analises)
+        self._analises_flags = analises_flags
+        self._score = calculate_score(self._analises_flags)
 
         return self
 
@@ -56,66 +51,41 @@ class SymmetryAnalyzer:
         """
         strategy = select_strategy(self._score)
 
-        return strategy.execute(self)
+        return strategy.execute()
 
     def qual_grupo(self) -> 'SymmetryAnalyzer':
-        self._analises[AnaliseTipo.GRUPO], self._symm_ops = AnaliseGrupo(self.molecule).executar()
-        if AnaliseTipo.GRUPO in self._analises:
-            self._resultados_pedidos[AnaliseTipo.GRUPO] = self._analises[AnaliseTipo.GRUPO]
+        """Summary
+        """
+        self._analise_grupo_resultados = AnaliseGrupo(self.rep).executar()
+        if AnaliseTipo.GRUPO in self._analises_flags:
+            self._resultados_pedidos.update(self._analise_grupo_resultados)
         return self
 
     def permutacoes(self) -> 'SymmetryAnalyzer':
-        self._analises[AnaliseTipo.PERMUTACOES] = Permutacao(self._symm_ops).executar()
-        if AnaliseTipo.PERMUTACOES in self._analises:
-            self._resultados_pedidos[AnaliseTipo.PERMUTACOES] = self._analises[AnaliseTipo.PERMUTACOES]
+        self._analise_permutacoes_resultados = Permutacao(self.rep).executar()
+        if AnaliseTipo.PERMUTACOES in self._analises_flags:
+            self._resultados_pedidos.update(self._analise_permutacoes_resultados)
         return self
 
     def tabela_multiplicacao(self) -> 'SymmetryAnalyzer':
-        self._analises[AnaliseTipo.TABELA_MULTIPLICACAO] = TabelaMultiplicacao(self._symm_ops).executar()
-        if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises:
-            self._resultados_pedidos[AnaliseTipo.TABELA_MULTIPLICACAO] = self._analises[AnaliseTipo.TABELA_MULTIPLICACAO]
+        self._analise_multiplicacao_resultados = TabelaMultiplicacao(self.rep).executar()
+        if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises_flags:
+            self._resultados_pedidos.update(self._analise_multiplicacao_resultados)
         return self
 
     def classes_conjugacao(self) -> 'SymmetryAnalyzer':
-        """Summary
-        """
-        self._analises[AnaliseTipo.CLASSES_CONJUGACAO] = ClasseConjugacao(self._symm_ops).executar()
-        if AnaliseTipo.CLASSES_CONJUGACAO in self._analises:
-            self._resultados_pedidos[AnaliseTipo.CLASSES_CONJUGACAO] = self._analises[AnaliseTipo.CLASSES_CONJUGACAO]
+        self._analise_classes_resultados = ClasseConjugacao(self.rep).executar()
+        if AnaliseTipo.TABELA_MULTIPLICACAO in self._analises_flags:
+            self._resultados_pedidos.update(self._analise_classes_resultados)
         return self
 
     def tabela_caracteres(self) -> 'SymmetryAnalyzer':
         """Summary
         """
-        self._analises[AnaliseTipo.TABELA_CARACTERES] = TabelaCaracteres(self._symm_ops).executar()
-        if AnaliseTipo.TABELA_CARACTERES in self._analises:
-            self._resultados_pedidos[AnaliseTipo.TABELA_CARACTERES] = self._analises[AnaliseTipo.TABELA_CARACTERES]
+        self._analise_caracteres_resultados = TabelaCaracteres(self.rep).executar()
+        if AnaliseTipo.TABELA_CARACTERES in self._analises_flags:
+            self._resultados_pedidos.update(self._analise_caracteres_resultados)
         return self
 
-    def results(self) -> 'SymmetryAnalyzer':
-        """Summary
-        """
-        return self
-
-    def add_metadata(self) -> dict:
-        """
-        Adiciona metadados principais ao dicionário de resultados.
-        Inclui informações sobre a molécula, grupo identificado, ordem, UUID, data e sistema cristalino.
-        """
-
-        grupo_resultado = self._analises.get(AnaliseTipo.GRUPO, {})
-        nome_grupo = grupo_resultado.get("grupo", {}).get("nome", "Desconhecido")
-        sistema_grupo = grupo_resultado.get("grupo", {}).get("sistema", "Desconhecido")
-        ordem_grupo = len(grupo_resultado.get("operacoes", []))
-
-        metadados = {
-            "molecula": self.molecule.nome,
-            "grupo": nome_grupo,
-            "ordem": ordem_grupo,
-            "uuid": self._uuid,
-            "data": datetime.today().strftime("%Y-%m-%d %H:%M"),
-            "sistema": sistema_grupo,
-        }
-
-        self._resultados_pedidos["metadados"] = metadados
+    def results(self) -> dict:
         return self._resultados_pedidos

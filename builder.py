@@ -3,7 +3,7 @@
 **                                                                                                                                                **
 **                                                       Author: Chanah Yocheved Bat Sarah                                                        **
 **                                                          Contact: contact@chanah.dev                                                           **
-**                                                                Date: 2025-06-14                                                                **
+**                                                                Date: 2025-06-15                                                                **
 **                                                      License: Custom Attribution License                                                       **
 **                                                                                                                                                **
 **    Este módulo faz parte do projeto de simetria molecular desenvolvido no contexto da disciplina de pós-graduação PGF5261 Teoria de Grupos     **
@@ -15,46 +15,3 @@
 **                                                  For licensing inquiries: contact@chanah.dev                                                   **
 ====================================================================================================================================================
 """
-from typing import overload, Union
-from model.model_molecula import Molecule
-from engine.engine_symmetry_analyser import SymmetryAnalyzer
-from analysis.analise_tipo import AnaliseTipo
-from render.builder import RendererBuilder
-from engine_analyser.symmetry_analyzer import SymmetryAnalyzer
-from main_app.main_dto import RenderConfig
-
-class MoleculeSymmetryApp:
-    """Main application for molecular symmetry analysis.
-    """
-
-    def __init__(self, molecule: str):
-        self.molecule = Molecule.from_data(molecule)
-        self.analyser = SymmetryAnalyzer(self.molecule)
-        self.renderer = None
-        self._uuid = None
-
-    def config(self, param: Union[list, RenderConfig, str]) -> 'MoleculeSymmetryApp':
-        """Summary
-
-        Raises:
-            TypeError: Description
-        """
-        if isinstance(param, list):
-            self.analyser.set(param)
-
-        elif isinstance(param, RenderConfig):
-            self.renderer = RendererBuilder.getRenderer(param)
-
-        elif isinstance(param, str):
-            self._uuid = param
-
-        else:
-            raise TypeError(f"Tipo de configuração inválido: {type(param)}")
-
-        return self
-
-    def run(self) -> str:
-        """Summary
-        """
-        results = self.analyser.execute()
-        return self.renderer.render(results)
